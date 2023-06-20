@@ -1,0 +1,35 @@
+#tnThamKhao {
+    justify-content: unset;
+}
+
+#btnDkyHoc {
+    display: block;
+    background-color: violet;
+    width: 150px;
+    height: 40px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 40px;
+    color: white;
+    font-weight: 500;
+}
+
+.star {
+    color: gold;
+}
+
+.danhGiaForm {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    background-color: violet;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    display: none;
+}
+
+.iconAndUser {
+    display: flex;
+    
+}
