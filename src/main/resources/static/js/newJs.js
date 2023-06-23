@@ -9,3 +9,7 @@ function showDanhGia(){
     form.style.display = "none";
   }
 }
+
+function showFormTaoCourse(){
+    window.location.href = "http://localhost:8080/teacher/createCourse";
+}

@@ -21,6 +21,8 @@ public class CreateCourseDTO {
     private MultipartFile courseAvt;
     private Instant createDate;
     private Instant modifiedDate;
+    private int state;
+    private int stateGuiAdmin;
     @NotNull(message = "Vui lòng chọn khoa cho khóa học")
     private Integer departmentId;
 }

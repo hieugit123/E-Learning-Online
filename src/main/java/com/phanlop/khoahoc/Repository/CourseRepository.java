@@ -26,7 +26,8 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     Page<Course> findEnrolledCoursesSortedByDateJoined(@Param("user") User user, @Param("accessType") AccessType accessType, Pageable pageable);
     @Query("SELECT c FROM Course c WHERE c NOT IN (SELECT e.course FROM Enrollment e WHERE e.user = :user)")
     Page<Course> findUnenrolledCoursesSortedByDateCreated(@Param("user") User user, Pageable pageable);
-
+    @Query("SELECT c FROM Course c JOIN c.enrollments e WHERE e.user = :user AND c.stateGuiAdmin = 0")
+    Page<Course> findCourseDangDoByUser(@Param("user") User user, Pageable pageable);
 
     @Query("SELECT c FROM Course c JOIN c.enrollments e WHERE e.user = :user AND e.accessType = :accessType ORDER BY e.dateJoined DESC")
     List<Course> findBySearchList(@Param("user") User user, @Param("accessType") AccessType accessType);

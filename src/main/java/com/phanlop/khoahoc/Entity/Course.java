@@ -31,6 +31,8 @@ public class Course {
     private Instant createDate;
     @LastModifiedDate
     private Instant modifiedDate;
+    private int state;
+    private int stateGuiAdmin;
 
     // Thêm khóa user_id sở hữu khóa học
     @ManyToOne @JoinColumn(name = "user_id")

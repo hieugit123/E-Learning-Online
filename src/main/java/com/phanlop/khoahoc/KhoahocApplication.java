@@ -36,8 +36,6 @@ public class KhoahocApplication implements CommandLineRunner{
 	private final CourseRepository courseRepository;
         private final DanhGiaRepository danhgiaRepository;
 	private final DepartmentRepository departmentRepository;
-//	private final NotifyRepository notifyRepository;
-//	private final InviteRepository inviteRepository;
 	private final LessonRepository lessonRepository;
 	private final RoleRepository roleRepository;
 	private EnrollmentRepository enrollmentRepository;
@@ -115,12 +113,12 @@ public class KhoahocApplication implements CommandLineRunner{
                 User student2 = new User();
 		student2.setUserId(5L);
 		student2.setFullName("Hieu Khoai To");
-		student2.setEmail("hieu2@gmail.com");
+		student2.setEmail("giaovien@gmail.com");
 		student2.setPassword(passwordEncoder.encode("123456"));
-		student2.getListRoles().add(role2);
-		role2.getListUsers().add(student2);
+		student2.getListRoles().add(role3);
+		role3.getListUsers().add(student2);
 		userRepository.save(student2);
-		roleRepository.save(role2);
+		roleRepository.save(role3);
                 
 
 		Department cntt = new Department();
@@ -146,10 +144,12 @@ public class KhoahocApplication implements CommandLineRunner{
 		for (int i = 0 ;i<5;i++){
 			Course cslt = new Course();
 			cslt.setCourseAvt("https://files.fullstack.edu.vn/f8-prod/courses/7.png");
-			cslt.setCourseOwner(adminUser);
+			cslt.setCourseOwner(student2);
 			cslt.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			cslt.setCourseName("Cơ sở lập trình thứ "+i);
 			cslt.setDepartment(cntt);
+                        cslt.setStateGuiAdmin(1);
+                        cslt.setState(1);
 			courseRepository.save(cslt);
                         
                         DanhGia danhgia = new DanhGia();
@@ -220,11 +220,13 @@ public class KhoahocApplication implements CommandLineRunner{
 
 
 			Course laptrinhc = new Course();
-			laptrinhc.setCourseOwner(adminUser);
+			laptrinhc.setCourseOwner(student2);
 			laptrinhc.setCourseAvt("https://files.fullstack.edu.vn/f8-prod/courses/21/63e1bcbaed1dd.png");
 			laptrinhc.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			laptrinhc.setCourseName("Lập trình c cơ bản, nâng cao thứ "+ i);
 			laptrinhc.setDepartment(cntt);
+                        laptrinhc.setStateGuiAdmin(0);
+                        laptrinhc.setState(1);
 			courseRepository.save(laptrinhc);
 
                         DanhGia danhgia1 = new DanhGia();
@@ -286,10 +288,12 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			Course winform = new Course();
 			winform.setCourseAvt("https://static.skillshare.com/uploads/discussion/tmp/b8ba300b.png");
-			winform.setCourseOwner(adminUser);
+			winform.setCourseOwner(student2);
 			winform.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			winform.setCourseName("Lập trình winform thứ"+i);
 			winform.setDepartment(cntt);
+                        winform.setStateGuiAdmin(1);
+                        winform.setState(1);
 			courseRepository.save(winform);
                         
                         DanhGia danhgia2 = new DanhGia();
@@ -338,10 +342,12 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			Course dientu = new Course();
 			dientu.setCourseAvt("https://codelearn.io/Upload/Blog/nganh-dien-tu-vien-thong-hoc-gi-63729858518.6825.jpg");
-			dientu.setCourseOwner(adminUser);
+			dientu.setCourseOwner(student2);
 			dientu.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			dientu.setCourseName("Điện tử và điện tử số "+i);
 			dientu.setDepartment(dtvt);
+                        dientu.setStateGuiAdmin(1);
+                        dientu.setState(1);
 			courseRepository.save(dientu);
                         
                         DanhGia danhgia3 = new DanhGia();

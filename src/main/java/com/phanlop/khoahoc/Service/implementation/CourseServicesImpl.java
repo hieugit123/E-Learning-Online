@@ -122,4 +122,11 @@ public class CourseServicesImpl implements CourseServices {
         list.removeIf(c -> !c.getCourseName().contains(search));
         return list;
     }
+
+    @Override
+    public Page<Course> findCourseDangDo(User user, int pageSize) {
+        Pageable pageable = PageRequest.of(1, pageSize);
+        return courseRepository.findCourseDangDoByUser(user, pageable);
+    }
+    
 }

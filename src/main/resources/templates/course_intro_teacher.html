@@ -20,6 +20,7 @@
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <link rel="stylesheet" th:href="@{/css/course_intro.css}">
     <link rel="stylesheet" th:href="@{/css/course_intro_admin.css}">
+    
 </head>
 <body>
 
@@ -77,7 +78,7 @@
                         Thêm
                     </button>
                 </div>
-                <div class="course_list_video" style="display: flex; gap: 10px; flex-wrap: wrap">
+<!--                <div class="course_list_video" style="display: flex; gap: 10px; flex-wrap: wrap">
                     <div class="card" th:each="file : ${course.listDocuments}">
                         <div class="card-body position-relative">
                             <a th:href="@{{fileLink}(fileLink=${file.fileLink})}" download>
@@ -89,7 +90,7 @@
                             x
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="content-right mt-4">
                 <div class="container_right_video">
@@ -106,10 +107,10 @@
                         Khoa: <span th:text="${course.department.departmentName}"></span>
                     </div>
                     <div>
-                        Tổng số: <span class="total" th:text="${#lists.size(chapters)}"></span> bài học
+                        Tổng số: <span class="total" th:text="${#lists.size(lessons)}"></span> bài học
                     </div>
                     <div>
-                        Tài liệu tham khảo: <span th:text="${#lists.size(course.listDocuments)}"></span> tài liệu
+                        Tài liệu tham khảo: 0 tài liệu
                     </div>
                     <div>
                         Học viên: <span th:text="${#lists.size(course.enrollments)}"></span> học viên

@@ -31,6 +31,7 @@
                 <div class="d-flex" style="gap: 20px">
                     <h4>Khóa học của bạn đã tạo</h4>
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCourseModal">Thêm khóa học</button>
+                    <a th:href="@{/teacher/courseDangDo}">Xem các course chưa tạo xong</a>
                 </div>
 
                 <form method="get">
@@ -61,11 +62,11 @@
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" th:attr="onclick=|openEditCourseModal('${course.courseID}')|">Sửa</a></li>
+                                <li><a class="dropdown-item" href="#" th:attr="onclick=|openEditCourseModal('${course.courseID}')|">Sửa do có lỗi</a></li>
                                 <li><a class="dropdown-item" href="#" th:attr="onclick=|removeCourse('${course.courseID}')|">Xóa</a></li>
                             </ul>
                         </div>
-                        <a th:href="@{/admin/detail/{id}(id=${course.courseID})}">
+                        <a th:href="@{/teacher/detail/{id}(id=${course.courseID})}">
                             <img th:src="${course.courseAvt}" class="img-fluid">
                             <h6 class="mt-3 text-dark" th:text="${course.courseName}"></h6>
                             <p class="text-small m-0 text-muted" th:text="${course.department.departmentName}"></p>
@@ -131,7 +132,7 @@
     </div>
 
     <!--    Modal edit khóa học-->
-    <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--    <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form id="formEditCourse">
@@ -166,7 +167,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 
 <script>
