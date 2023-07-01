@@ -1,11 +1,11 @@
 package com.phanlop.khoahoc.DTO;
 
+import java.io.Serializable;
+import java.util.Random;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.Random;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class OTP implements Serializable {
         int otp = rand.nextInt(1000000);
         //Nếu otp có ít hơn 6 chữ số, các chữ số dư sẽ được điền bằng số 0 từ trái qua phải.
         //đảm bảo otp luôn là 6 số.
-        return String.format("%06d", otp);
+        return "%06d".formatted(otp);
     }
 
     public static long getCurrentTime() {

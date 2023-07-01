@@ -8,6 +8,7 @@ import com.phanlop.khoahoc.Repository.UserRepository;
 import com.phanlop.khoahoc.Repository.CourseRepository;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
 import com.phanlop.khoahoc.Service.*;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 //import com.phanlop.khoahoc.Utils.ObjectMapperUtils;
@@ -54,11 +55,11 @@ public class GiangVienController {
     public String getFormCourseDangDo(Authentication authentication, Model model) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userServices.getUserByUserName(userDetails.getUsername());
-        Page<Course> courses = courseService.findCourseDangDo(user, 12);
-        model.addAttribute("courses", courses.getContent());
+        List<Course> courses = courseService.findCourseDangDo(user);
+        model.addAttribute("courses", courses);
         model.addAttribute("departments", departmentRepository.findAll());
         model.addAttribute("khoaId", 0);
-        model.addAttribute("totalPages", courses.getTotalPages());
+        model.addAttribute("totalPages", 1);
         model.addAttribute("currentPage", 1 + 1);
         return "courseDangDo";
     }

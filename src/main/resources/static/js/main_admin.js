@@ -22,6 +22,39 @@ const fetchDepartment = () => {
     })
 }
 
+$('#formCreateCourse').submit(function(event) {
+    event.preventDefault();
+    let formData = new FormData();
+    formData.append("courseAvt", $("#courseAvt")[0].files[0]);
+    formData.append("courseName", $("#courseName").val())
+    formData.append("courseDes", $("#courseDes").val())
+    formData.append("departmentId", $("#departmentId").val())
+    $.ajax({
+        url: '/course/add',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            // handle success response
+            console.log(response);
+            Swal.fire({
+                icon: 'success',
+                title: 'Khóa học đã được thêm',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(()=>{
+                location.reload();
+            })
+        },
+        error: function(xhr, status, error) {
+            Swal.fire('Có lỗi khi thêm!', '', 'error');
+        }
+    });
+});
+
 $('#formAddCourse').submit(function(event) {
     event.preventDefault();
     let formData = new FormData();

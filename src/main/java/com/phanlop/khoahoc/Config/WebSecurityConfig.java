@@ -1,6 +1,5 @@
 package com.phanlop.khoahoc.Config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -46,7 +47,7 @@ public class WebSecurityConfig{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("login", "signup", "/css/*", "/img/*", "/js/*").permitAll()
+                        .requestMatchers("login", "signup","forget", "dieukhoan", "/css/*", "/img/*", "/js/*").permitAll()
                         .anyRequest().authenticated()
 //                                .anyRequest().permitAll()
                 )

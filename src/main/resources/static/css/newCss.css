@@ -31,5 +31,8 @@
 
 .iconAndUser {
     display: flex;
-    
+}
+
+.showDG {
+    cursor: pointer;
 }

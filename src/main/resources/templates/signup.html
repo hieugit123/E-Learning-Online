@@ -51,6 +51,15 @@
                                                    class="form-control form-control-lg" />
                                         </div>
 
+                                        <div class="form-outline mb-4">
+                                            <input name="dieukhoan" type="checkbox" id="form2Example27"/>
+                                            <label class="form-label" for="form2Example27">Đồng ý với điều khoản F9</label>
+                                        </div>
+
+                                        <div class="mt-2 mb-3 text-danger" th:if="${param.error}">
+                                            Vui lòng đọc rõ điều khoản và tuân theo điều khoản của chúng tôi !
+                                        </div>
+
                                         <div class="mt-2 mb-3 text-danger" th:if="${param.error}">
                                             Email đã được sử dụng !
                                         </div>
@@ -60,6 +69,7 @@
                                         </div>
 
                                         <p class="mb-5 pb-lg-2" style="color: #393f81;">Đã có tài khoản ? <a href="/login" style="color: #393f81;">Login ngay</a></p>
+                                        <p><a href="/dieukhoan" class="small text-muted">Điều khoản của F9</a></p>
                                         <a href="#!" class="small text-muted">Terms of use.</a>
                                         <a href="#!" class="small text-muted">Privacy policy</a>
                                     </form>

@@ -1,17 +1,10 @@
 package com.phanlop.khoahoc.Controller;
 
-import com.phanlop.khoahoc.Config.CustomUserDetails;
-import com.phanlop.khoahoc.Entity.AccessType;
-import com.phanlop.khoahoc.Entity.Lesson;
-import com.phanlop.khoahoc.Entity.Course;
-import com.phanlop.khoahoc.Entity.Enrollment;
-import com.phanlop.khoahoc.Entity.User;
-import com.phanlop.khoahoc.Repository.CourseRepository;
-import com.phanlop.khoahoc.Repository.DepartmentRepository;
-import com.phanlop.khoahoc.Service.CourseServices;
-import com.phanlop.khoahoc.Service.EnrollmentServices;
-import com.phanlop.khoahoc.Service.UserServices;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -21,8 +14,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
+import com.phanlop.khoahoc.Config.CustomUserDetails;
+import com.phanlop.khoahoc.Entity.AccessType;
+import com.phanlop.khoahoc.Entity.Course;
+import com.phanlop.khoahoc.Entity.Enrollment;
+import com.phanlop.khoahoc.Entity.Lesson;
+import com.phanlop.khoahoc.Entity.User;
+import com.phanlop.khoahoc.Repository.DepartmentRepository;
+import com.phanlop.khoahoc.Service.CourseServices;
+import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.LessonServices;
+import com.phanlop.khoahoc.Service.UserServices;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -71,6 +75,11 @@ public class HomeController {
         model.addAttribute("currentPage", page + 1);
 
         return "courseThamkhao";
+    }
+
+    @GetMapping("/dieukhoan")
+    public String getDieuKhoan(){
+        return "dieu_khoan";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_TEACHER')")

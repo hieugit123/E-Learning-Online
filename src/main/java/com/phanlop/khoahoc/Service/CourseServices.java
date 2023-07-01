@@ -23,5 +23,5 @@ public interface CourseServices {
 //    List<Course> filterOwnedByUser1(List<Course> courses, Long usser)
     List<Course> filterAccessByUser(List<Course> courses, Long userId);
     List<Course> filterBySearch(User user, String search);
-    Page<Course> findCourseDangDo(User user, int pageSize);
+    List<Course> findCourseDangDo(User user);
 }

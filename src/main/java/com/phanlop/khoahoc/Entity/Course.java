@@ -1,7 +1,7 @@
 package com.phanlop.khoahoc.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+// import com.fasterxml.jackson.annotation.JsonBackReference;
+// import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,8 +33,9 @@ public class Course {
     private Instant modifiedDate;
     private int state;
     private int stateGuiAdmin;
+    private int gia;
 
-    // Thêm khóa user_id sở hữu khóa học
+    //user_id, người sở hữu khóa học
     @ManyToOne @JoinColumn(name = "user_id")
     private User courseOwner;
 
@@ -51,5 +52,8 @@ public class Course {
     private List<Enrollment> enrollments = new ArrayList<>();
     
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<DanhGia> danhgias = new ArrayList<>();;
+    private List<DanhGia> danhgias = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Report> reports = new ArrayList<>();
 }

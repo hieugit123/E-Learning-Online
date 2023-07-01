@@ -8,24 +8,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.phanlop.khoahoc.Entity.AccessType;
-import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.Course;
+import com.phanlop.khoahoc.Entity.DanhGia;
 import com.phanlop.khoahoc.Entity.Department;
 import com.phanlop.khoahoc.Entity.Enrollment;
+import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
-import com.phanlop.khoahoc.Entity.DanhGia;
-import com.phanlop.khoahoc.Repository.DanhGiaRepository;
 import com.phanlop.khoahoc.Repository.CourseRepository;
+import com.phanlop.khoahoc.Repository.DanhGiaRepository;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
 import com.phanlop.khoahoc.Repository.EnrollmentRepository;
-//import com.phanlop.khoahoc.Repository.InviteRepository;
-//import com.phanlop.khoahoc.Repository.NotifyRepository;
+import com.phanlop.khoahoc.Repository.LessonRepository;
 import com.phanlop.khoahoc.Repository.RoleRepository;
 import com.phanlop.khoahoc.Repository.UserRepository;
 
 import lombok.AllArgsConstructor;
-import com.phanlop.khoahoc.Repository.LessonRepository;
 
 @SpringBootApplication
 @EnableJpaAuditing // Cái này để lưu ngày createDate với modifiedDate - đừng quan tâm
@@ -67,7 +65,7 @@ public class KhoahocApplication implements CommandLineRunner{
 		roleRepository.save(role2);
 		roleRepository.save(role3);
 
-		// Tạo user
+		// Tạo userAdmin
 		User adminUser = new User();
 		adminUser.setUserId(1L);
 		adminUser.setFullName("Mai Xuan Hieu");
@@ -81,14 +79,14 @@ public class KhoahocApplication implements CommandLineRunner{
 		User guest = new User();
 		guest.setUserId(2L);
 		guest.setFullName("Guest");
-		guest.setEmail("hieu3@gmail.com");
+		guest.setEmail("hocvien1@gmail.com");
 		guest.setPassword(passwordEncoder.encode("123456"));
 		guest.getListRoles().add(role2);
 		role2.getListUsers().add(guest);
 		userRepository.save(guest);
 		roleRepository.save(role2);
                 
-                User student = new User();
+        User student = new User();
 		student.setUserId(3L);
 		student.setFullName("Hieu Xuan");
 		student.setEmail("hieu@gmail.com");
@@ -99,7 +97,7 @@ public class KhoahocApplication implements CommandLineRunner{
 		roleRepository.save(role2);
                 
                 
-                User student1 = new User();
+        User student1 = new User();
 		student1.setUserId(4L);
 		student1.setFullName("Hieu Dep Trai");
 		student1.setEmail("hieu1@gmail.com");
@@ -108,18 +106,48 @@ public class KhoahocApplication implements CommandLineRunner{
 		role2.getListUsers().add(student1);
 		userRepository.save(student1);
 		roleRepository.save(role2);
-                
-                
-                User student2 = new User();
-		student2.setUserId(5L);
-		student2.setFullName("Hieu Khoai To");
-		student2.setEmail("giaovien@gmail.com");
+
+		User student2 = new User();
+		student2.setUserId(6L);
+		student2.setFullName("Cong Minh");
+		student2.setEmail("congminh@gmail.com");
 		student2.setPassword(passwordEncoder.encode("123456"));
-		student2.getListRoles().add(role3);
-		role3.getListUsers().add(student2);
+		student2.getListRoles().add(role2);
+		role2.getListUsers().add(student2);
 		userRepository.save(student2);
+		roleRepository.save(role2);
+
+		User student3 = new User();
+		student3.setUserId(7L);
+		student3.setFullName("Ngoc Thanh");
+		student3.setEmail("ngocthanh@gmail.com");
+		student3.setPassword(passwordEncoder.encode("123456"));
+		student3.getListRoles().add(role2);
+		role2.getListUsers().add(student3);
+		userRepository.save(student3);
+		roleRepository.save(role2);
+
+                
+                
+        User giaovien = new User();
+		giaovien.setUserId(5L);
+		giaovien.setFullName("Teacher Hieu");
+		giaovien.setEmail("giaovien@gmail.com");
+		giaovien.setPassword(passwordEncoder.encode("123456"));
+		giaovien.getListRoles().add(role3);
+		role3.getListUsers().add(giaovien);
+		userRepository.save(giaovien);
 		roleRepository.save(role3);
                 
+		User giaovien1 = new User();
+		giaovien1.setUserId(8L);
+		giaovien1.setFullName("Teacher Minh");
+		giaovien1.setEmail("giaovien1@gmail.com");
+		giaovien1.setPassword(passwordEncoder.encode("123456"));
+		giaovien1.getListRoles().add(role3);
+		role3.getListUsers().add(giaovien1);
+		userRepository.save(giaovien1);
+		roleRepository.save(role3);
 
 		Department cntt = new Department();
 		cntt.setDepartmentId(1);
@@ -144,12 +172,13 @@ public class KhoahocApplication implements CommandLineRunner{
 		for (int i = 0 ;i<5;i++){
 			Course cslt = new Course();
 			cslt.setCourseAvt("https://files.fullstack.edu.vn/f8-prod/courses/7.png");
-			cslt.setCourseOwner(student2);
+			cslt.setCourseOwner(giaovien);
 			cslt.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			cslt.setCourseName("Cơ sở lập trình thứ "+i);
 			cslt.setDepartment(cntt);
-                        cslt.setStateGuiAdmin(1);
-                        cslt.setState(1);
+            cslt.setStateGuiAdmin(1);
+            cslt.setState(1);
+			cslt.setGia(499000);
 			courseRepository.save(cslt);
                         
                         DanhGia danhgia = new DanhGia();
@@ -192,6 +221,16 @@ public class KhoahocApplication implements CommandLineRunner{
 			enrollment.setCourse(cslt);
 			enrollmentRepository.save(enrollment);
 
+			Enrollment.EnrollmentId enrollmentId1 = new Enrollment.EnrollmentId();
+			enrollmentId1.setUserId(student.getUserId());
+			enrollmentId1.setCourseId(cslt.getCourseID());
+			Enrollment enrollment1 = new Enrollment();
+			enrollment1.setId(enrollmentId1);
+			enrollment1.setUser(student);
+			enrollment1.setAccessType(AccessType.ACCEPT);
+			enrollment1.setCourse(cslt);
+			enrollmentRepository.save(enrollment1);
+
 			Lesson lesson1 = new Lesson();
 			lesson1.setLessonTitle("1. Khái niệm, kỹ thuật cần biết");
 			lesson1.setLessonSort(1);
@@ -212,21 +251,24 @@ public class KhoahocApplication implements CommandLineRunner{
 			lesson3.setLessonTitle("3. Phương hướng học lập trình");
 			lesson3.setLessonSort(3);
 			lesson3.setLessonVideo("https://www.youtube.com/embed/DpvYHLUiZpc");
-			lesson3.setLessonContent("Bạn cần có mục tiêu cho việc làm của mình, học lập trình cũng vậy, từ đó bạn sẽ lên được lộ trình học lập trình và phương pháp học lập trình phù hợp với bản thân hơn. Nếu không có mục tiêu thì bạn sẽ không thể tìm ra được lộ trình học lập trình đâu nhé.\n" +
-					"\n" +
-					"Tiếp theo là sự chủ động, nếu như ngày học phổ thông thì hầu hết chúng ta có tư tưởng là \"phải\" học. Học lập trình nó khác, phần lớn các bạn đều mong muốn học lập trình để đi làm và kiếm nhiều tiền nên mỗi lúc có thời gian hãy tự chủ động học và suy nghĩ về nó nhé. Bây giờ lớn rồi! Đừng để ai phải nhắc cho tương lai của chính mình nhé!.");
+			lesson3.setLessonContent("""
+                    Bạn cần có mục tiêu cho việc làm của mình, học lập trình cũng vậy, từ đó bạn sẽ lên được lộ trình học lập trình và phương pháp học lập trình phù hợp với bản thân hơn. Nếu không có mục tiêu thì bạn sẽ không thể tìm ra được lộ trình học lập trình đâu nhé.
+                    
+                    Tiếp theo là sự chủ động, nếu như ngày học phổ thông thì hầu hết chúng ta có tư tưởng là "phải" học. Học lập trình nó khác, phần lớn các bạn đều mong muốn học lập trình để đi làm và kiếm nhiều tiền nên mỗi lúc có thời gian hãy tự chủ động học và suy nghĩ về nó nhé. Bây giờ lớn rồi! Đừng để ai phải nhắc cho tương lai của chính mình nhé!.\
+                    """);
 			lesson3.setCourse(cslt);
 			lessonRepository.save(lesson3);
 
 
 			Course laptrinhc = new Course();
-			laptrinhc.setCourseOwner(student2);
+			laptrinhc.setCourseOwner(giaovien);
 			laptrinhc.setCourseAvt("https://files.fullstack.edu.vn/f8-prod/courses/21/63e1bcbaed1dd.png");
 			laptrinhc.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			laptrinhc.setCourseName("Lập trình c cơ bản, nâng cao thứ "+ i);
 			laptrinhc.setDepartment(cntt);
                         laptrinhc.setStateGuiAdmin(0);
                         laptrinhc.setState(1);
+						laptrinhc.setGia(450000);
 			courseRepository.save(laptrinhc);
 
                         DanhGia danhgia1 = new DanhGia();
@@ -250,15 +292,27 @@ public class KhoahocApplication implements CommandLineRunner{
 			enrollment2.setCourse(laptrinhc);
 			enrollmentRepository.save(enrollment2);
 
+			Enrollment.EnrollmentId enrollmentId7 = new Enrollment.EnrollmentId();
+			enrollmentId7.setUserId(student1.getUserId());
+			enrollmentId7.setCourseId(laptrinhc.getCourseID());
+			Enrollment enrollment7 = new Enrollment();
+			enrollment7.setId(enrollmentId7);
+			enrollment7.setUser(student1);
+			enrollment7.setAccessType(AccessType.ACCEPT);
+			enrollment7.setCourse(laptrinhc);
+			enrollmentRepository.save(enrollment7);
+
 			Lesson lessonc1 = new Lesson();
 			lessonc1.setLessonTitle("1. Tổng quan về khóa học Lập trình C++");
 			lessonc1.setLessonSort(1);
 			lessonc1.setLessonVideo("https://www.youtube.com/embed/WS05AU6YYm4");
-			lessonc1.setLessonContent("Ngôn ngữ lập trình C++ là một ngôn ngữ lập trình hướng đối tượng(OOP – Object-oriented programming) được phát triển bởi Bjarne Stroustrup. C++ là ngôn ngữ lập trình được phát triển trên nên tảng của ngôn ngữ lập trình C. Do đó, C++ có song song cả 2 phong cách(style) lập trình hướng cấu trúc giống C và có thêm phong cách hướng đối tượng. Trong nhiều trường hợp, C++ sử dụng kết hợp cả 2 style trên. Do đó, nó được xem là một ngôn ngữ “lai tạo”.\n" +
-					"\n" +
-					"Ngôn ngữ C++ là một ngôn ngữ lập trình cấp trung. Bởi vì nó có các tính chất của cả ngôn ngữ lập trình bậc thấp(Pascal, C…) và ngôn ngữ lập trình bậc cao(C#, Java, Python…).\n" +
-					"\n" +
-					"Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp");
+			lessonc1.setLessonContent("""
+                    Ngôn ngữ lập trình C++ là một ngôn ngữ lập trình hướng đối tượng(OOP – Object-oriented programming) được phát triển bởi Bjarne Stroustrup. C++ là ngôn ngữ lập trình được phát triển trên nên tảng của ngôn ngữ lập trình C. Do đó, C++ có song song cả 2 phong cách(style) lập trình hướng cấu trúc giống C và có thêm phong cách hướng đối tượng. Trong nhiều trường hợp, C++ sử dụng kết hợp cả 2 style trên. Do đó, nó được xem là một ngôn ngữ “lai tạo”.
+                    
+                    Ngôn ngữ C++ là một ngôn ngữ lập trình cấp trung. Bởi vì nó có các tính chất của cả ngôn ngữ lập trình bậc thấp(Pascal, C…) và ngôn ngữ lập trình bậc cao(C#, Java, Python…).
+                    
+                    Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp\
+                    """);
 			lessonc1.setCourse(laptrinhc);
 			lessonRepository.save(lessonc1);
 
@@ -266,11 +320,13 @@ public class KhoahocApplication implements CommandLineRunner{
 			lessonc2.setLessonTitle("2. Biến trong C++");
                         lessonc2.setLessonSort(2);
 			lessonc2.setLessonVideo("https://www.youtube.com/embed/i3nJyEt42Y8");
-			lessonc2.setLessonContent("Ngôn ngữ lập trình C++ là một ngôn ngữ lập trình hướng đối tượng(OOP – Object-oriented programming) được phát triển bởi Bjarne Stroustrup. C++ là ngôn ngữ lập trình được phát triển trên nên tảng của ngôn ngữ lập trình C. Do đó, C++ có song song cả 2 phong cách(style) lập trình hướng cấu trúc giống C và có thêm phong cách hướng đối tượng. Trong nhiều trường hợp, C++ sử dụng kết hợp cả 2 style trên. Do đó, nó được xem là một ngôn ngữ “lai tạo”.\n" +
-					"\n" +
-					"Ngôn ngữ C++ là một ngôn ngữ lập trình cấp trung. Bởi vì nó có các tính chất của cả ngôn ngữ lập trình bậc thấp(Pascal, C…) và ngôn ngữ lập trình bậc cao(C#, Java, Python…).\n" +
-					"\n" +
-					"Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp");
+			lessonc2.setLessonContent("""
+                    Ngôn ngữ lập trình C++ là một ngôn ngữ lập trình hướng đối tượng(OOP – Object-oriented programming) được phát triển bởi Bjarne Stroustrup. C++ là ngôn ngữ lập trình được phát triển trên nên tảng của ngôn ngữ lập trình C. Do đó, C++ có song song cả 2 phong cách(style) lập trình hướng cấu trúc giống C và có thêm phong cách hướng đối tượng. Trong nhiều trường hợp, C++ sử dụng kết hợp cả 2 style trên. Do đó, nó được xem là một ngôn ngữ “lai tạo”.
+                    
+                    Ngôn ngữ C++ là một ngôn ngữ lập trình cấp trung. Bởi vì nó có các tính chất của cả ngôn ngữ lập trình bậc thấp(Pascal, C…) và ngôn ngữ lập trình bậc cao(C#, Java, Python…).
+                    
+                    Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp\
+                    """);
 			lessonc2.setCourse(laptrinhc);
 			lessonRepository.save(lessonc2);
 
@@ -278,30 +334,33 @@ public class KhoahocApplication implements CommandLineRunner{
 			lessonc3.setLessonTitle("3. Vòng lặp For trong C++");
 			lessonc3.setLessonSort(3);
 			lessonc3.setLessonVideo("https://www.youtube.com/embed/aL59MpOFMe0");
-			lessonc3.setLessonContent("Ngôn ngữ lập trình C++ là một ngôn ngữ lập trình hướng đối tượng(OOP – Object-oriented programming) được phát triển bởi Bjarne Stroustrup. C++ là ngôn ngữ lập trình được phát triển trên nên tảng của ngôn ngữ lập trình C. Do đó, C++ có song song cả 2 phong cách(style) lập trình hướng cấu trúc giống C và có thêm phong cách hướng đối tượng. Trong nhiều trường hợp, C++ sử dụng kết hợp cả 2 style trên. Do đó, nó được xem là một ngôn ngữ “lai tạo”.\n" +
-					"\n" +
-					"Ngôn ngữ C++ là một ngôn ngữ lập trình cấp trung. Bởi vì nó có các tính chất của cả ngôn ngữ lập trình bậc thấp(Pascal, C…) và ngôn ngữ lập trình bậc cao(C#, Java, Python…).\n" +
-					"\n" +
-					"Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp");
+			lessonc3.setLessonContent("""
+                    Ngôn ngữ lập trình C++ là một ngôn ngữ lập trình hướng đối tượng(OOP – Object-oriented programming) được phát triển bởi Bjarne Stroustrup. C++ là ngôn ngữ lập trình được phát triển trên nên tảng của ngôn ngữ lập trình C. Do đó, C++ có song song cả 2 phong cách(style) lập trình hướng cấu trúc giống C và có thêm phong cách hướng đối tượng. Trong nhiều trường hợp, C++ sử dụng kết hợp cả 2 style trên. Do đó, nó được xem là một ngôn ngữ “lai tạo”.
+                    
+                    Ngôn ngữ C++ là một ngôn ngữ lập trình cấp trung. Bởi vì nó có các tính chất của cả ngôn ngữ lập trình bậc thấp(Pascal, C…) và ngôn ngữ lập trình bậc cao(C#, Java, Python…).
+                    
+                    Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp\
+                    """);
 			lessonc3.setCourse(laptrinhc);
 			lessonRepository.save(lessonc3);
 
 			Course winform = new Course();
 			winform.setCourseAvt("https://static.skillshare.com/uploads/discussion/tmp/b8ba300b.png");
-			winform.setCourseOwner(student2);
+			winform.setCourseOwner(giaovien);
 			winform.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			winform.setCourseName("Lập trình winform thứ"+i);
 			winform.setDepartment(cntt);
                         winform.setStateGuiAdmin(1);
                         winform.setState(1);
+						winform.setGia(500000);
 			courseRepository.save(winform);
                         
                         DanhGia danhgia2 = new DanhGia();
-                        danhgia2.setUser(student2);
+                        danhgia2.setUser(giaovien);
                         danhgia2.setCourse(winform);
                         danhgia2.setContentDanhgia("Khóa học khá bổ ích. Tuyệt vời!");
                         danhgia2.setSao(4);
-                        danhgia2.setTenUser(student2.getFullName());
+                        danhgia2.setTenUser(giaovien.getFullName());
                         danhgiaRepository.save(danhgia2);
                         winform.getDanhgias().add(danhgia2);
                         courseRepository.save(winform);
@@ -342,7 +401,7 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			Course dientu = new Course();
 			dientu.setCourseAvt("https://codelearn.io/Upload/Blog/nganh-dien-tu-vien-thong-hoc-gi-63729858518.6825.jpg");
-			dientu.setCourseOwner(student2);
+			dientu.setCourseOwner(giaovien);
 			dientu.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			dientu.setCourseName("Điện tử và điện tử số "+i);
 			dientu.setDepartment(dtvt);
@@ -351,11 +410,11 @@ public class KhoahocApplication implements CommandLineRunner{
 			courseRepository.save(dientu);
                         
                         DanhGia danhgia3 = new DanhGia();
-                        danhgia3.setUser(student2);
+                        danhgia3.setUser(giaovien);
                         danhgia3.setCourse(dientu);
                         danhgia3.setContentDanhgia("Khóa học khá bổ ích. Tuyệt vời! Thanks,you so much!");
                         danhgia3.setSao(5);
-                        danhgia3.setTenUser(student2.getFullName());
+                        danhgia3.setTenUser(giaovien.getFullName());
                         danhgiaRepository.save(danhgia3);
                         dientu.getDanhgias().add(danhgia3);
                         courseRepository.save(dientu);

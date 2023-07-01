@@ -124,9 +124,13 @@ public class CourseServicesImpl implements CourseServices {
     }
 
     @Override
-    public Page<Course> findCourseDangDo(User user, int pageSize) {
-        Pageable pageable = PageRequest.of(1, pageSize);
-        return courseRepository.findCourseDangDoByUser(user, pageable);
-    }
-    
+    public List<Course> findCourseDangDo(User user) {
+        List<Course> courses = user.getSelfCourses().stream().toList();
+        List<Course> returnList = new ArrayList<>();
+        for (Course course : courses){
+            if (course.getStateGuiAdmin() == 0)
+                returnList.add(course);
+        }
+        return returnList;
+    }   
 }

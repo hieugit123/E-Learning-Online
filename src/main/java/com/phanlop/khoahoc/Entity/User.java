@@ -73,4 +73,7 @@ public class User {
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<DanhGia> danhgias = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Report> reports = new ArrayList<>();
 }
