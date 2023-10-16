@@ -19,6 +19,7 @@
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <link rel="stylesheet" th:href="@{/css/course_intro.css}">
     <link rel="stylesheet" th:href="@{/css/newCss.css}">
+    <link rel="stylesheet" th:href="@{/css/footerCss.css}">
 </head>
 <body>
 
@@ -42,7 +43,6 @@
                 </div>
             </div>
             <h5 class="mt-4">Tài liệu tham khảo</h5>
-            <a href="#">Báo cáo</a>
             <!--<div class="course_list_video" style="display: flex; gap: 10px;">-->
                 <!--<div class="card" th:each="file : ${course.listDocuments}">-->
                     <!--<div class="card-body">-->
@@ -76,7 +76,10 @@
         </div>
     </div>
 </div>
+<div id="courseRelate">
 
+</div>
+<div th:replace="~{fragments/footer}"></div>
 <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))

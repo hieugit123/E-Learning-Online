@@ -47,9 +47,8 @@ public class WebSecurityConfig{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("login", "signup","forget", "dieukhoan", "/css/*", "/img/*", "/js/*").permitAll()
-                        .anyRequest().authenticated()
-//                                .anyRequest().permitAll()
+                .requestMatchers("login", "signup", "forget", "dieukhoan","/detail1111/*","/course/search-student","/css/*", "/img/*", "/js/*").permitAll()
+                .anyRequest().permitAll()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
@@ -59,5 +58,9 @@ public class WebSecurityConfig{
                 .logout((logout) -> logout.permitAll());
 
         return http.build();
+        // return http
+        //     .csrf(csrf -> csrf.disable())
+        //     .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        //     .build();
     }
 }

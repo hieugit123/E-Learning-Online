@@ -20,6 +20,7 @@
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
     <link rel="stylesheet" th:href="@{/css/newCss.css}">
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/footerCss.css}">
     <script>
         
     </script>
@@ -103,6 +104,7 @@
         </div>
     </div>
 </div>
+<div th:replace="~{fragments/footer}"></div>
 <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))

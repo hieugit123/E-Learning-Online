@@ -1,0 +1,31 @@
+.ud-footer {
+    margin-top: 100px;
+    padding: 50px 0 50px 0;
+    background-color: black;
+}
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.footerend {
+    display: flex;
+    justify-content: space-around;
+}
+
+.links-and-language-selector {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn-settingCookie {
+    background-color: black;
+    border: none;
+    color: white;
+}
+
+.ulfooter li a{
+    color: white;
+}

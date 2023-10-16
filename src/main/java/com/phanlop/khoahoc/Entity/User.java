@@ -1,6 +1,6 @@
 package com.phanlop.khoahoc.Entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+// import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -54,10 +54,6 @@ public class User {
 //    // Khóa ngoại cho file
 //    @OneToMany(mappedBy = "uploadedUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private Set<File> uploadFiles = new HashSet<>();
-
-    // Khóa ngoại cho Discuss
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Discuss> listDiscuss = new HashSet<>();
 
     // Khóa ngoại cho bảng UserRole
     @ManyToMany(mappedBy = "listUsers", fetch = FetchType.EAGER)

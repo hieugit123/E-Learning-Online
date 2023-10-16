@@ -4,7 +4,7 @@
 
 #btnDkyHoc {
     display: block;
-    background-color: violet;
+    background-color: #ef07ef;
     width: 150px;
     height: 40px;
     border-radius: 10px;
@@ -35,4 +35,110 @@
 
 .showDG {
     cursor: pointer;
+}
+
+#btnShowFormBaoCao {
+    background-color: red;
+}
+
+#courseRelate {
+    margin-bottom: 100px;
+}
+
+.xxxx{
+    background-color: #4f7ff3;
+    border-radius: 10px;
+}
+
+
+/* .container {
+    display: flex;
+    flex-direction: column;
+} */
+
+.slider{
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    margin: 30px 0;
+}
+
+figure{
+    position: relative;
+    left: 0;
+    width: 400%;
+    animation: 10s slide infinite;
+}
+
+.slide{
+    position: relative;
+    width: 25%;
+    float: left;
+    /* height: 100%; */
+}
+
+.slide h1{
+    position: absolute;
+    font-size: 3em;
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+    color: red;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.slide img{
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes slide{
+    0%{
+        left: 0;
+    }
+    10%{
+        left: 0;
+    }
+    20%{
+        left: -100%;
+    }
+    30%{
+        left: -100%;
+    }
+    40%{
+        left: -200%;
+    }
+    50%{
+        left: -200%;
+    }
+    55%{
+        left: -300%;
+    }
+    65%{
+        left: -300%;
+    }
+    66%{
+        left: -200%;
+    }
+    74%{
+        left: -200%;
+    }
+    75%{
+        left: -100%;
+    }
+    85%{
+        left: -100%
+    }
+    90%{
+        left: 0;
+    }
+    1000%{
+        left: 0;
+    }
+}
+
+
+.teaching {
+    margin-left: 200px;
+    color: black;
 }

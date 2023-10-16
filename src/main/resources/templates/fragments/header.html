@@ -9,7 +9,36 @@
                 <p class="nav-logo-text">Khóa học trực tuyến</p>
             </div>
         </a>
+        <div class="input-group ms-md-auto d-flex form-search position-relative" style="width: 250px;">
+            <input id="input-search-box" class="form-control me-2 form-search-input" type="text" placeholder="Tìm kiếm khóa học ..." aria-label="Search" style="margin-top: 10px;">
+                <!-- <i class="bi bi-search"></i> -->
+                <div id="popup-search-box" class="popup-search position-absolute">
+                    <h6 class="text-dark ms-4">Các khóa học phù hợp</h6>
+                    <ul class="list-group" id="list-data-search">
+                    </ul>
+                </div>
+        </div>
+        <select name="theloai" id="theloai" class="theloai">
+            <option value="0">Thể loại</option>
+            <option value="1">Công nghệ thông tin</option>
+            <option value="2">Ngôn ngữ anh</option>
+            <option value="3">Điện tử viễn thông</option>
+            <option value="4">Toán ứng dụng</option>
+        </select>
+        <a href="/dkyGiangVien" class="teaching">
+            <span class="title-teaching">Giảng dạy trên F9</span>
+            <div class="">
+                <span></span>
+            </div>
+        </a>
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            <div class="CART">
+                <i class="bi bi-cart3 cartCss"></i>
+                <div class="form-cart">
+                    <h6>Giỏ hàng của bạn đang trống</h6>
+                    <a href="/tieptucmuasam">Tiếp tục mua sắm</a>
+                </div>
+            </div>
             <div class="ms-md-auto login-group">
                 <a class="btn btn-login nav-btn-text" href="/login"> Đăng nhập </a>
                 <a class="btn btn-signup nav-btn-text" href="/signup"> Đăng kí </a>
@@ -47,7 +76,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                 </div>
-                    <input id="input-search-box" class="form-control me-2 form-search-input" type="text" placeholder="Tìm kiếm khóa học ..." aria-label="Search">
+                    <input id="input-search-box-student" class="form-control me-2 form-search-input" type="text" placeholder="Tìm kiếm khóa học ..." aria-label="Search">
                     <div id="popup-search-box" class="popup-search position-absolute">
                         <h6 class="text-dark ms-4">Các khóa học phù hợp</h6>
                         <ul class="list-group" id="list-data-search">

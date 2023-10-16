@@ -9,22 +9,24 @@
             integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footerCss.css}">
+    <link rel="stylesheet" th:href="@{/css/newCss.css}">
 </head>
 <body>
 <div th:replace="~{fragments/header}"></div>
 <div>
-    <section style="background-color: #f05123e3;">
+    <section>
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
                     <div class="card" style="border-radius: 1rem;">
-                        <div class="row g-0">
+                        <div class="row g-0 xxxx">
                             <div class="col-md-6 col-lg-5 d-none d-md-block my-auto">
                                 <img src="https://pro-seeds.com.vn/wp-content/uploads/2018/10/contents.png"
                                      alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
                             </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                                <div class="card-body p-4 p-lg-5 text-black">
+                                <div class="card-body p-4 p-lg-5 text-white">
                                     <form th:action="@{/signup}" method="post">
                                         <div class="d-flex align-items-center mb-3 pb-1">
                                             <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
@@ -52,12 +54,8 @@
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input name="dieukhoan" type="checkbox" id="form2Example27"/>
+                                            <input name="dieukhoan" type="checkbox" id="form2Example27" required title="Vui lòng đọc rõ điều khoản và tuân theo điều khoản của chúng tôi !">
                                             <label class="form-label" for="form2Example27">Đồng ý với điều khoản F9</label>
-                                        </div>
-
-                                        <div class="mt-2 mb-3 text-danger" th:if="${param.error}">
-                                            Vui lòng đọc rõ điều khoản và tuân theo điều khoản của chúng tôi !
                                         </div>
 
                                         <div class="mt-2 mb-3 text-danger" th:if="${param.error}">
@@ -68,10 +66,10 @@
                                             <button class="btn btn-dark btn-lg btn-block" type="submit">Đăng kí</button>
                                         </div>
 
-                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Đã có tài khoản ? <a href="/login" style="color: #393f81;">Login ngay</a></p>
-                                        <p><a href="/dieukhoan" class="small text-muted">Điều khoản của F9</a></p>
-                                        <a href="#!" class="small text-muted">Terms of use.</a>
-                                        <a href="#!" class="small text-muted">Privacy policy</a>
+                                        <p class="mb-5 pb-lg-2">Đã có tài khoản ? <a class="text-white" href="/login">Login ngay</a></p>
+                                        <p><a href="/dieukhoan" class="small text-white">Điều khoản của F9</a></p>
+                                        <a href="#!" class="small text-white">Terms of use.</a>
+                                        <a href="#!" class="small text-white">Privacy policy</a>
                                     </form>
 
                                 </div>
@@ -83,5 +81,6 @@
         </div>
     </section>
 </div>
+<div th:replace="~{fragments/footer}"></div>
 </body>
 </html>

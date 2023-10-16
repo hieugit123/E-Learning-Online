@@ -4,14 +4,16 @@ $("#input-search-box").on('input',(function(){
         $("#popup-search-box").css("display", "none");
         $("#list-data-search").html("");
         $.ajax({
-            url: "/course/search",
+            url: "/course/search-student",
             method: "GET",
             data:{
                 text: inputValue
             },
             success: function(data) {
-                if (!data.length) return;
-
+                if (!data.length) 
+                {   console.log("thất bại là mẹ thành công:p");
+                    return;}
+                console.log("Thành công là ba của thất bại:p");
                 $("#popup-search-box").css("display", "block");
                 let html = data.map(item=>{
                     return `<li class="list-item">
@@ -31,6 +33,7 @@ $("#input-search-box").on('input',(function(){
     else {
         $("#popup-search-box").css("display", "none");
     }
+    // console.log("ok"+inputValue);
 }));
 
 

@@ -22,6 +22,7 @@
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/menu.css}">
   <link rel="stylesheet" th:href="@{/css/discuss.css}">
+  <link rel="stylesheet" th:href="@{/css/footerCss.css}">
 </head>
 <body>
 <div th:replace="~{fragments/header :: logined-header}"></div>
@@ -108,6 +109,7 @@
 </div>
 <input type="text" id="courseID" th:value="${courseID}" hidden>
 <input type="text" id="userID" th:value="${userID}" hidden>
+<div th:replace="~{fragments/footer}"></div>
 <!-- <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))

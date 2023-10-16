@@ -37,8 +37,27 @@ public class HomeController {
     private final UserServices userServices;
     private final EnrollmentServices enrollmentServices;
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+
     @GetMapping("/")
+    public String getIndex(Model model){
+        List<Course> listCourse = courseService.getAllCourses();
+        model.addAttribute("listCourse", listCourse);
+        return "index";
+    }
+
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @GetMapping("/student")
+    public String getHomePageStudent(Authentication authentication, Model model){
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());
+        List<Course> listCourse = courseService.filterNoOwnedByUser(user);
+        model.addAttribute("listCourse", listCourse);
+
+        return "index";
+    }
+
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @GetMapping("/main/student")
     public String getHomePage(@RequestParam(defaultValue = "0") int khoa,
                               @RequestParam(defaultValue = "1") int page,
                               @RequestParam(defaultValue = "12") int pageSize,
@@ -129,6 +148,16 @@ public class HomeController {
         lessons.sort(Comparator.comparing(Lesson::getLessonSort));
         model.addAttribute("lessons", lessons);
         return "course_intro";
+    }
+
+    @GetMapping("/detail1111/{courseId}")
+    public String getChiTietCourse(@PathVariable String courseId, Model model) {
+        Course myCourse = courseService.getCourseById(UUID.fromString(courseId));
+        model.addAttribute("course", myCourse);
+        List<Lesson> lessons = new ArrayList<>(myCourse.getListLessons().stream().toList());
+        lessons.sort(Comparator.comparing(Lesson::getLessonSort));
+        model.addAttribute("lessons", lessons);
+        return "courseChitiet";
     }
     //SỬA
     @PreAuthorize("hasRole('ROLE_STUDENT')")

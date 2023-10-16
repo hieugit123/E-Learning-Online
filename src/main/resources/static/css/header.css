@@ -140,4 +140,47 @@ a{
     }
 }
 
+.theloai {
+    font-size: 16px;
+    color: black;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.CART {
+    position: relative;
+}
+.cartCss {
+    color: black;
+    font-size: 30px;
+    margin-left: 50px;
+    cursor: pointer;
+}
 
+.cartCss:hover {
+    color: #ec5206;
+}
+
+.form-cart {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    width: 300px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    display: none;
+}
+.CART:hover .form-cart{
+    display: flex;
+}
+
+.teaching:hover {
+    color: #ec5206;
+}
+
+.form-cart h6 {
+    color: black;
+    margin-top: 30px;
+}

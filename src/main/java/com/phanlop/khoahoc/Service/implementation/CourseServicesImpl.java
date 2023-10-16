@@ -106,6 +106,12 @@ public class CourseServicesImpl implements CourseServices {
         courses.removeIf(c -> !isOwned(c, userId));
         return courses;
     }
+    
+    @Override
+    public List<Course> filterNoOwnedByUser(User user) {
+        List<Course> courses = courseRepository.findCourseUserNotOwned(user);
+        return courses;
+    }
 
     @Override
     public List<Course> filterAccessByUser(List<Course> courses, Long userId) {
@@ -119,6 +125,13 @@ public class CourseServicesImpl implements CourseServices {
             return Collections.emptyList();
         }
         List<Course> list = courseRepository.findBySearchList(user, AccessType.ACCEPT);
+        list.removeIf(c -> !c.getCourseName().contains(search));
+        return list;
+    }
+
+    @Override
+    public List<Course> filterBySearch1(String search) {
+        List<Course> list = courseRepository.findAll();
         list.removeIf(c -> !c.getCourseName().contains(search));
         return list;
     }

@@ -19,6 +19,7 @@
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <link rel="stylesheet" th:href="@{/css/course_intro.css}">
     <link rel="stylesheet" th:href="@{/css/newCss.css}">
+    <link rel="stylesheet" th:href="@{/css/footerCss.css}">
     <script th:src="@{/js/newJs.js}"></script>
 </head>
 <body>
@@ -32,7 +33,7 @@
             <div class="sao">
                             <span th:text="${course.danhgias.size()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
                             <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                            <span class="showDG" onclick="showDanhGia()">  <span th:text="${course.danhgias.size()}"></span>Xếp hạng</span>
+                            <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#danhgiaModal">  <span th:text="${course.danhgias.size()}"></span>Xếp hạng</span>
             </div>
             <h4 class="mt-2" th:text="${course.courseName}"></h4>
             <h6 class="mt-3">Mô tả khóa học khóa học</h6>
@@ -49,15 +50,7 @@
                 </div>
             </div>
             <h5 class="mt-4">Tài liệu tham khảo</h5>
-            <button id="btnShowFormBaoCao" onclick="showFormBaoCao()">Báo cáo khóa học này</button>
-        </div>
-        <div class="danhGiaForm">
-            <div th:each="danhgia :${course.danhgias}">
-                <div class="iconAndUser"><i class="bi bi-person-circle"></i><h4 th:text="${danhgia.tenUser}"></h4></div>
-                <span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                            <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i></span>
-                <p th:text="${danhgia.contentDanhgia}"></p>
-            </div>
+            <button id="btnShowFormBaoCao" onclick="showFormBaoCao()" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCourseModal">Báo cáo khóa học này</button>
         </div>
         <div class="container_right mt-4">
             <div class="tiendo">
@@ -85,7 +78,53 @@
         </div>
     </div>
 </div>
+<!--    Modal đánh giá khóa học-->
+<div class="modal fade" id="danhgiaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div th:each="danhgia :${course.danhgias}">
+                <div class="iconAndUser"><i class="bi bi-person-circle"></i><h4 th:text="${danhgia.tenUser}"></h4></div>
+                <span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                            <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i></span>
+                <p th:text="${danhgia.contentDanhgia}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--    Modal report khóa học-->
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="formAddCourse">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Vui lòng cho biết lý do report của bạn</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="tieuchi" class="form-label">Quy phạm tiêu chí</label>
+                        <select id="tieuchi">
+                            <option value="0">---CHỌN---</option>
+                            <option value="1">Chứa nội dung nhạy cảm</option>
+                            <option value="2">Khóa học có nội dung không đáp ứng</option>
+                            <option value="3">Khóa học quá kém</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reportND" class="form-label">Mô tả thêm lý do report</label>
+                        <input type="text" class="form-control" id="reportND" placeholder="">
+                    </div>
 
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Báo cáo</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer}"></div>
 <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))

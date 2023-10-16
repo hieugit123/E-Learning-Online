@@ -19,6 +19,7 @@
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
     <link rel="stylesheet" th:href="@{/css/dashboard_admin.css}">
+    <link rel="stylesheet" th:href="@{/css/footerCss.css}">
 </head>
 <body>
 
@@ -52,7 +53,7 @@
 
             <div th:if="${#lists.isEmpty(courses)}" class="course-empty py-4 d-flex justify-content-center align-items-center flex-column">
                 <img class="img-fluid" th:src="@{/img/empty.svg}" style="max-width: 480px; width:100%">
-                <div class="mt-4">Chưa tham gia khóa học nào</div>
+                <div class="mt-4">Chưa có khóa học nào</div>
             </div>
             <div th:if="${not #lists.isEmpty(courses)}" class="course-list d-flex flex-wrap">
                 <th:block th:each="course : ${courses}">
@@ -169,6 +170,7 @@
         </div>
     </div>-->
 </div>
+<div th:replace="~{fragments/footer}"></div>
 
 <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

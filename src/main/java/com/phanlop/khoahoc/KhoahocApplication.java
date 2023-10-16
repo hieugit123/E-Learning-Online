@@ -32,7 +32,7 @@ public class KhoahocApplication implements CommandLineRunner{
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 	private final CourseRepository courseRepository;
-        private final DanhGiaRepository danhgiaRepository;
+    private final DanhGiaRepository danhgiaRepository;
 	private final DepartmentRepository departmentRepository;
 	private final LessonRepository lessonRepository;
 	private final RoleRepository roleRepository;
@@ -231,6 +231,16 @@ public class KhoahocApplication implements CommandLineRunner{
 			enrollment1.setCourse(cslt);
 			enrollmentRepository.save(enrollment1);
 
+			Enrollment.EnrollmentId enrollmentId15 = new Enrollment.EnrollmentId();
+			enrollmentId15.setUserId(student1.getUserId());
+			enrollmentId15.setCourseId(cslt.getCourseID());
+			Enrollment enrollment15 = new Enrollment();
+			enrollment15.setId(enrollmentId15);
+			enrollment15.setUser(student1);
+			enrollment15.setAccessType(AccessType.ACCEPT);
+			enrollment15.setCourse(cslt);
+			enrollmentRepository.save(enrollment15);
+
 			Lesson lesson1 = new Lesson();
 			lesson1.setLessonTitle("1. Khái niệm, kỹ thuật cần biết");
 			lesson1.setLessonSort(1);
@@ -356,14 +366,16 @@ public class KhoahocApplication implements CommandLineRunner{
 			courseRepository.save(winform);
                         
                         DanhGia danhgia2 = new DanhGia();
-                        danhgia2.setUser(giaovien);
+                        danhgia2.setUser(student3);
                         danhgia2.setCourse(winform);
                         danhgia2.setContentDanhgia("Khóa học khá bổ ích. Tuyệt vời!");
                         danhgia2.setSao(4);
-                        danhgia2.setTenUser(giaovien.getFullName());
+                        danhgia2.setTenUser(student3.getFullName());
                         danhgiaRepository.save(danhgia2);
                         winform.getDanhgias().add(danhgia2);
                         courseRepository.save(winform);
+
+
 
 			Enrollment.EnrollmentId enrollmentId3 = new Enrollment.EnrollmentId();
 			enrollmentId3.setUserId(guest.getUserId());
@@ -410,13 +422,43 @@ public class KhoahocApplication implements CommandLineRunner{
 			courseRepository.save(dientu);
                         
                         DanhGia danhgia3 = new DanhGia();
-                        danhgia3.setUser(giaovien);
+                        danhgia3.setUser(student2);
                         danhgia3.setCourse(dientu);
                         danhgia3.setContentDanhgia("Khóa học khá bổ ích. Tuyệt vời! Thanks,you so much!");
                         danhgia3.setSao(5);
-                        danhgia3.setTenUser(giaovien.getFullName());
+                        danhgia3.setTenUser(student2.getFullName());
                         danhgiaRepository.save(danhgia3);
                         dientu.getDanhgias().add(danhgia3);
+                        courseRepository.save(dientu);
+
+						DanhGia danhgia8 = new DanhGia();
+                        danhgia8.setUser(student3);
+                        danhgia8.setCourse(dientu);
+                        danhgia8.setContentDanhgia("Khóa học khá bổ ích. Tuy nhiên có 1 số chỗ cần cải thiện.");
+                        danhgia8.setSao(4);
+                        danhgia8.setTenUser(student3.getFullName());
+                        danhgiaRepository.save(danhgia8);
+                        dientu.getDanhgias().add(danhgia8);
+                        courseRepository.save(dientu);
+
+						DanhGia danhgia9 = new DanhGia();
+                        danhgia9.setUser(student);
+                        danhgia9.setCourse(dientu);
+                        danhgia9.setContentDanhgia("Khóa học khá hay. Tôi thích cách bạn truyền đạt vấn đề.");
+                        danhgia9.setSao(4);
+                        danhgia9.setTenUser(student.getFullName());
+                        danhgiaRepository.save(danhgia9);
+                        dientu.getDanhgias().add(danhgia9);
+                        courseRepository.save(dientu);
+
+						DanhGia danhgia10 = new DanhGia();
+                        danhgia10.setUser(guest);
+                        danhgia10.setCourse(dientu);
+                        danhgia10.setContentDanhgia("Khóa học sâu sắc và tỉ mỉ. Tôi thích cách bạn truyền đạt vấn đề.");
+                        danhgia10.setSao(5);
+                        danhgia10.setTenUser(guest.getFullName());
+                        danhgiaRepository.save(danhgia10);
+                        dientu.getDanhgias().add(danhgia10);
                         courseRepository.save(dientu);
 
 			Lesson dientu1 = new Lesson();
