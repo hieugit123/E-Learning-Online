@@ -1,6 +1,4 @@
 package com.phanlop.khoahoc.Entity;
-
-// import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -9,8 +7,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -36,12 +32,4 @@ public class Lesson {
     // Khóa ngoại courseID
     @ManyToOne @JoinColumn(name = "course_id")
     private Course course;
-    
-    // Quan hệ One-to-Many với Comment
-    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();;
-    
-    // Quan hệ One-to-Many với Assignment
-    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-    private List<Assignment> assignments = new ArrayList<>();;
 }

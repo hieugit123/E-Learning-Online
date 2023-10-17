@@ -29,7 +29,6 @@ import com.phanlop.khoahoc.Entity.Department;
 import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.User;
-import com.phanlop.khoahoc.Repository.AssignmentRepository;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
@@ -50,7 +49,6 @@ public class CourseController {
 //    private final FileServices fileServices;
     private final EnrollmentServices enrollmentServices;
 //    private final FileRepository fileRepository;
-    private final AssignmentRepository assignmentRepository;
 
     @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
     @GetMapping("/search")

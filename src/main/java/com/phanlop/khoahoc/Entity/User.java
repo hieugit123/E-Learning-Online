@@ -19,8 +19,8 @@ import java.util.Set;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@ToString(exclude = {"selfCourses", "selfSubmit", "listDiscuss", "listRoles", "enrollments"})
-@EqualsAndHashCode(exclude = {"selfCourses", "selfSubmit", "listDiscuss", "listRoles", "enrollments"})
+@ToString(exclude = {"selfCourses","listDiscuss", "listRoles", "enrollments"})
+@EqualsAndHashCode(exclude = {"selfCourses", "listDiscuss", "listRoles", "enrollments"})
 public class User {
     public static final String defaultAvt = "https://img.freepik.com/free-icon/user_318-159711.jpg";
     @Id
@@ -62,10 +62,6 @@ public class User {
     // Khoá ngoại cho user
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments = new ArrayList<>();
-    
-    // Quan hệ One-to-Many với Comment
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<DanhGia> danhgias = new ArrayList<>();
