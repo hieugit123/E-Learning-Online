@@ -21,39 +21,62 @@
     <link rel="stylesheet" th:href="@{/css/newCss.css}">
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/footerCss.css}">
+    <style>
+        .sidebar {
+            float: left;
+            width: 200px;
+        }
+        
+        .content {
+            margin-left: 220px;
+        }
+        .not-found {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 200px;
+            margin-left: 300px;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/header}"></div>
 <div class="container" style="margin: 0 50px 0 50px;">
-    <!-- <div class="slider">
-        <img th:src="@{/img/slider2.jpg}" class="slider-1">
-    </div> -->
-    <div class="slider">
-        <figure>
-            <div class="slide">
-                <h1>Gambar Satu</h1>
-                <img th:src="@{/img/slider1.jpg}" alt="">
-            </div>
-            <div class="slide">
-                <h1>Gambar Satu</h1>
-                <img th:src="@{/img/slider2.jpg}" alt="">
-            </div>
-            <div class="slide">
-                <h1>Gambar Satu</h1>
-                <img th:src="@{/img/slider3.png}" alt="">
-            </div>
-            <div class="slide">
-                <h1>Gambar Satu</h1>
-                <img th:src="@{/img/slider4.jpg}" alt="">
-            </div>
-        </figure>
+   
+    
+    
+    <div class="sidebar">
+        <h2>Filter</h2>
+        <form action="/search/filter" method="post">
+            <h3>Sort By</h3>
+            <select id="priceOrder" name="priceOrder">
+                <option value="asc">Price Ascending</option>
+                <option value="desc">Price Descending</option>
+                <option value="evaluate">Most Evaluated</option>
+                <option value="recent">Recently Course</option>
+            </select>
+            <h3>Rating</h3>
+            <input type="radio" name="rating" value=0 checked> All<br>
+            <input type="radio" name="rating" value=5 > 5 sao<br>
+            <input type="radio" name="rating" value=4> 4 sao trở lên<br>
+            <input type="radio" name="rating" value=3> 3 sao trở lên<br>
+            
+            <h3>Price Range</h3>
+            <input type="radio" name="priceRange" value=1 checked>All<br>
+            <input type="radio" name="priceRange" value=0>Free<br>
+            <input type="radio" name="priceRange" value=500000> smaller than 500.000VNĐ<br>
+            <input type="radio" name="priceRange" value=51000> 500.000 - 1.000.000<br>
+            <h3>Department</h3>
+            <button type="submit">Filter</button>
+        </form>
     </div>
     <div style="display: flex;">
-        <h2>Các khóa học nổi bật</h2>
+        <h2>Kết quả tìm kiếm: <span th:text="${searchText}"></span></h2></span>
         <th:block sec:authorize="hasAuthority('ROLE_STUDENT')">
             <a href="/course/owned" style="margin-left: 300px;"><h6>Quá trình học tập của tôi</h6></a>
         </th:block>
     </div>
+    
     <div class="w-100">
         
         <div th:if="${not #lists.isEmpty(listCourse)}" class="course-list d-flex flex-wrap">
@@ -70,6 +93,9 @@
                     <p class="text-small m-0 text-muted" th:text="${course.department.departmentName}"></p>
                 </a>
             </th:block>
+        </div>
+        <div th:if="${#lists.isEmpty(listCourse)}" class="course-list d-flex flex-wrap">
+            <div class="not-found">Not Found</div>
         </div>
     </div>
 </div>

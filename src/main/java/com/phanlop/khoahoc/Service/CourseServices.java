@@ -26,4 +26,8 @@ public interface CourseServices {
     List<Course> filterBySearch(User user, String search);
     List<Course> filterBySearch1(String search);
     List<Course> findCourseDangDo(User user);
+    //Filter
+    List<Course> sortCoursesByGia(String priceOrder);
+    List<Course> filterCoursesByGiaRange(String priceRange);
+
 }

@@ -146,4 +146,40 @@ public class CourseServicesImpl implements CourseServices {
         }
         return returnList;
     }   
+    @Override
+    public List<Course> sortCoursesByGia(String priceOrder) {
+        if (priceOrder.equals("asc")) {
+            // Triển khai truy vấn cơ sở dữ liệu để lấy danh sách khóa học và sắp xếp giá tăng dần
+            return courseRepository.findByOrderByGiaAsc();
+        } 
+        else if(priceOrder.equals("desc"))  {
+            // Triển khai truy vấn cơ sở dữ liệu để lấy danh sách khóa học và sắp xếp giá giảm dần
+            return courseRepository.findByOrderByGiaDesc();
+        }
+        else{
+            return courseRepository.findAll();
+        }
+    }
+    @Override
+    public List<Course> filterCoursesByGiaRange(String priceRange) {
+        double minPrice, maxPrice;
+        switch (priceRange) {
+            case "<500000":
+                minPrice = 0;
+                maxPrice = 500000;
+                break;
+            case "500000-1000000":
+                minPrice = 500000;
+                maxPrice = 1000000;
+                break;
+            case ">1000000":
+                minPrice = 1000000;
+                maxPrice = Double.MAX_VALUE;
+                break;
+            default:
+                // Trường hợp mặc định, không lọc theo khoảng giá
+                return courseRepository.findAll();
+        }
+        return courseRepository.findByGiaBetween(minPrice, maxPrice);
+    }
 }

@@ -56,4 +56,5 @@ public class Course {
     
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();
+    
 }
