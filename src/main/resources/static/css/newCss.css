@@ -142,3 +142,25 @@ figure{
     margin-left: 200px;
     color: black;
 }
+
+.formBtnShopping {
+    display: flex;
+}
+
+.formBtnShopping a {
+    margin-right: 5px;
+}
+
+#btnAddCart {
+    background-color: #073def;
+    width: 150px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    color: white;
+    font-weight: 500;
+    margin-right: 10px;
+}

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.phanlop.khoahoc.Entity.AccessType;
+import com.phanlop.khoahoc.Entity.Cart;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.DanhGia;
 import com.phanlop.khoahoc.Entity.Department;
@@ -15,6 +16,7 @@ import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
+import com.phanlop.khoahoc.Repository.CartRepository;
 import com.phanlop.khoahoc.Repository.CourseRepository;
 import com.phanlop.khoahoc.Repository.DanhGiaRepository;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
@@ -36,7 +38,8 @@ public class KhoahocApplication implements CommandLineRunner{
 	private final DepartmentRepository departmentRepository;
 	private final LessonRepository lessonRepository;
 	private final RoleRepository roleRepository;
-	private EnrollmentRepository enrollmentRepository;
+	private final EnrollmentRepository enrollmentRepository;
+	private final CartRepository cartRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(KhoahocApplication.class, args);
@@ -241,12 +244,19 @@ public class KhoahocApplication implements CommandLineRunner{
 			enrollment15.setCourse(cslt);
 			enrollmentRepository.save(enrollment15);
 
+			//create data cart
+			Cart cart1 = new Cart();
+			cart1.setCourse(cslt);
+			cart1.setUser(student2);
+			cartRepository.save(cart1);
+
 			Lesson lesson1 = new Lesson();
 			lesson1.setLessonTitle("1. Khái niệm, kỹ thuật cần biết");
 			lesson1.setLessonSort(1);
 			lesson1.setLessonVideo("https://www.youtube.com/embed/zoELAirXMJY");
 			lesson1.setLessonContent("Mô hình Client - Server là mô hình được sử dụng để triển khai các trang web hiện nay. Toàn bộ các trang web mà bạn có thể truy cập đều đang sử dụng mô hình này. Hãy cùng tìm hiểu tổng quan về mô hình Client - Server trước khi bắt đầu vào các khóa học về lập trình web bạn nhé.");
 			lesson1.setCourse(cslt);
+			lesson1.setXemTruoc(1);
 			lessonRepository.save(lesson1);
 
 			Lesson lesson2 = new Lesson();
@@ -324,6 +334,7 @@ public class KhoahocApplication implements CommandLineRunner{
                     Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp\
                     """);
 			lessonc1.setCourse(laptrinhc);
+			lessonc1.setXemTruoc(1);
 			lessonRepository.save(lessonc1);
 
 			Lesson lessonc2 = new Lesson();
@@ -393,6 +404,7 @@ public class KhoahocApplication implements CommandLineRunner{
 			winform1.setLessonVideo("https://www.youtube.com/embed/dtYVRWfGhzI");
 			winform1.setLessonContent("Windows Forms là thư viện lớp đồ họa mã nguồn mở và miễn phí được bao gồm như một phần của Microsoft.NET Framework hoặc Mono Framework, cung cấp nền tảng để viết các ứng dụng khách phong phú cho máy tính để bàn, máy tính xách tay và máy tính bảng");
 			winform1.setCourse(winform);
+			winform1.setXemTruoc(1);
 			lessonRepository.save(winform1);
 
 			Lesson winform2 = new Lesson();
@@ -467,6 +479,7 @@ public class KhoahocApplication implements CommandLineRunner{
 			dientu1.setLessonVideo("https://www.youtube.com/embed/dtYVRWfGhzI");
 			dientu1.setLessonContent("Windows Forms là thư viện lớp đồ họa mã nguồn mở và miễn phí được bao gồm như một phần của Microsoft.NET Framework hoặc Mono Framework, cung cấp nền tảng để viết các ứng dụng khách phong phú cho máy tính để bàn, máy tính xách tay và máy tính bảng");
 			dientu1.setCourse(dientu);
+			dientu1.setXemTruoc(1);
 			lessonRepository.save(dientu1);
 
 			Lesson dientu2 = new Lesson();

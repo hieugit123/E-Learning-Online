@@ -28,6 +28,7 @@ public class Lesson {
     private Instant lessonDate;
     @LastModifiedDate
     private Instant modifiedDate;
+    private int xemTruoc;
 
     // Khóa ngoại courseID
     @ManyToOne @JoinColumn(name = "course_id")

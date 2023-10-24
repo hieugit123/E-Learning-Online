@@ -20,6 +20,46 @@
     <link rel="stylesheet" th:href="@{/css/course_intro.css}">
     <link rel="stylesheet" th:href="@{/css/newCss.css}">
     <link rel="stylesheet" th:href="@{/css/footerCss.css}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.all.min.js"></script>
+    <script th:src="@{/js/newJs.js}"></script>
+    <script>        
+        function addCart(courseId){
+            // var courseId = document.getElementById("idCourse").value;
+            $.ajax({
+                url: `/cart/add/${courseId}`,
+                type: 'GET',
+                success: function(response) {
+                    var src = document.querySelector(".img-fluid").getAttribute('src');
+                    var name = document.querySelector(".nameCourse").textContent;
+                    var html = document.querySelector(".form-cart1").innerHTML;
+                    var html1 = `<div class="cartItem">\n
+                                        <img src="${src}" class="img-cartItem">\n
+                                        <span class="text-cartItem">${name}</span>\n
+                                    </div>\n  `;
+                    var htmlInsert = html1 + html;
+                    document.querySelector(".form-cart1").innerHTML = htmlInsert;
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Khóa học đã được thêm',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setTimeout(function() {
+                        var btnAddCart = document.getElementById("btnAddCart");
+                        btnAddCart.style.display = 'none';
+                    }, 2000);
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire('Bạn cần đăng nhập!', '', 'warning');
+                    setTimeout(function() {
+                        window.location.href = 'http://localhost:8081/login';
+                    }, 2000);
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 
@@ -28,10 +68,15 @@
     <div th:replace="~{fragments/menu :: left-menu}"></div>
     <div class="w-100 d-flex mx-auto mt-4">
         <div class="container_center ms-5">
-            <h4 class="mt-2" th:text="${course.courseName}"></h4>
+            <h4 class="mt-2 nameCourse" th:text="${course.courseName}"></h4>
             <h6 class="mt-3">Mô tả khóa học khóa học</h6>
             <span th:text="${course.courseDes}"></span>
             <h5 class="mt-4">Nội dung khóa học</h5>
+            <div class="sao">
+                            <span th:text="${course.danhgias.size()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                            <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                            <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#danhgiaModal">  <span th:text="${course.danhgias.size()}"></span>Xếp hạng</span>
+            </div>
             <div class="course_list_video" style="display: flex; gap: 10px; flex-direction: column;">
                 <div class="card" th:each="lesson : ${lessons}">
                     <div class="card-body">
@@ -71,13 +116,34 @@
                 <div>
                     Tài liệu tham khảo: 0 tài liệu
                 </div>
-                    <a th:href="@{/dangkyCourse/{id}(id=${course.courseID})}" id="btnDkyHoc">ĐĂNG KÝ HỌC</a>
+                <div class="formBtnShopping">
+                    <th:block th:unless="${#authorization.expression('isAuthenticated()')}" th:fragment="non-login-header">
+                        <button id="btnAddCart" th:attr="onclick=|addCart('${course.courseID}')|">THÊM VÀO GIỎ</button>
+                    </th:block>
+                    <th:block th:if="${#authorization.expression('isAuthenticated()')}" th:fragment="logined-header">
+                        <button th:if="${isInCart}" id="btnAddCart" th:attr="onclick=|addCart('${course.courseID}')|">THÊM VÀO GIỎ</button>
+                    </th:block>
+                    <a th:href="@{/dangkyCourse/{id}(id=${course.courseID})}" id="btnDkyHoc">ĐĂNG KÝ NGAY</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <div id="courseRelate">
 
+</div>
+<!--    Modal đánh giá khóa học-->
+<div class="modal fade" id="danhgiaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div th:each="danhgia :${course.danhgias}">
+                <div class="iconAndUser"><i class="bi bi-person-circle"></i><h4 th:text="${danhgia.tenUser}"></h4></div>
+                <span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                            <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i></span>
+                <p th:text="${danhgia.contentDanhgia}"></p>
+            </div>
+        </div>
+    </div>
 </div>
 <div th:replace="~{fragments/footer}"></div>
 <script>

@@ -21,6 +21,7 @@ import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
+import com.phanlop.khoahoc.Service.CartServices;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.LessonServices;
@@ -36,6 +37,7 @@ public class HomeController {
     private final CourseServices courseService;
     private final UserServices userServices;
     private final EnrollmentServices enrollmentServices;
+    private final CartServices cartServices;
 
 
     @GetMapping("/")
@@ -52,7 +54,8 @@ public class HomeController {
         User user = userServices.getUserByUserName(userDetails.getUsername());
         List<Course> listCourse = courseService.filterNoOwnedByUser(user);
         model.addAttribute("listCourse", listCourse);
-
+        List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        model.addAttribute("listCourseInCart", listCourseInCart);
         return "index";
     }
 
@@ -151,7 +154,24 @@ public class HomeController {
     }
 
     @GetMapping("/detail1111/{courseId}")
-    public String getChiTietCourse(@PathVariable String courseId, Model model) {
+    public String getChiTietCourse(@PathVariable String courseId, Model model, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());
+        Course myCourse = courseService.getCourseById(UUID.fromString(courseId));
+        model.addAttribute("course", myCourse);
+        List<Lesson> lessons = new ArrayList<>(myCourse.getListLessons().stream().toList());
+        lessons.sort(Comparator.comparing(Lesson::getLessonSort));
+        model.addAttribute("lessons", lessons);
+        boolean isInCart = cartServices.isInCart(myCourse, user);
+        model.addAttribute("isInCart", isInCart);
+        List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        model.addAttribute("listCourseInCart", listCourseInCart);
+        return "courseChitiet";
+    }
+
+    //MỚI
+    @GetMapping("/detail2222/{courseId}")
+    public String getChiTietCourse2(@PathVariable String courseId, Model model) {
         Course myCourse = courseService.getCourseById(UUID.fromString(courseId));
         model.addAttribute("course", myCourse);
         List<Lesson> lessons = new ArrayList<>(myCourse.getListLessons().stream().toList());

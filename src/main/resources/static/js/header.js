@@ -89,3 +89,27 @@ btnChange.addEventListener("click", function() {
 });
 
 
+
+
+function deleteCartItem(courseId){
+    // var courseId = document.getElementById("idCourse").value;
+    $.ajax({
+        url: `/cart/delete/${courseId}`,
+        type: 'POST',
+        success: function(response) {
+            // handle success response
+            console.log(response);
+            Swal.fire({
+                icon: 'success',
+                title: 'Khóa học đã xóa khỏi giỏ hàng',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(()=>{
+                location.reload();
+            })
+        },
+        error: function(xhr, status, error) {
+            Swal.fire('Có lỗi khi xóa khóa học!', '', 'error');
+        }
+    });
+}
