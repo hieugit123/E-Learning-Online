@@ -41,4 +41,11 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
 
     Page<Course> findCourseByCourseOwnerAndDepartmentOrderByCreateDateDesc(User user, Department department, Pageable pageable);
     Page<Course> findCourseByCourseOwnerOrderByCreateDateDesc(User user, Pageable pageable);
+    //Filter
+    @Query("SELECT c FROM Course c ORDER BY c.gia ASC")
+    List<Course> findByOrderByGiaAsc();
+    @Query("SELECT c FROM Course c ORDER BY c.gia DESC")
+    List<Course> findByOrderByGiaDesc();
+
+    List<Course> findByGiaBetween(double minPrice,double maxPrice);
 }

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 /**
  *
@@ -30,6 +32,22 @@ public class DanhGiaServicesImpl implements DanhGiaServices{
     public Long getSoLuongDanhGia() {
         Long soluong = danhgiaRepository.count();
         return soluong;
+    }
+
+    @Override
+    public int calculateAvarageRating(UUID courseId) {
+        List<DanhGia> reviews = danhgiaRepository.getDanhGiaByCourseCourseID(courseId);
+        int totalStars = 0;
+
+        for (DanhGia review : reviews) {
+            totalStars += review.getSao();
+        }
+
+        if (reviews.size() > 0) {
+            return (int) totalStars / reviews.size();
+        } else {
+            return 0; // Trường hợp không có đánh giá, trả về 0.0
+        }
     }
   
 }

@@ -14,8 +14,10 @@ import com.phanlop.khoahoc.Entity.Course;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface DanhGiaServices {
     List<DanhGia> getAllDanhGia(Course course);
     Long getSoLuongDanhGia();
+    int calculateAvarageRating(UUID course);
 }

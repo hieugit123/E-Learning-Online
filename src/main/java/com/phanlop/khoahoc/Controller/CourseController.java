@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -395,5 +396,6 @@ public class CourseController {
     public List<DepartmentDTO> getAllDepartments(){
         return ObjectMapperUtils.mapAll(departmentRepository.findAll(), DepartmentDTO.class);
     }
+    
 
 }
