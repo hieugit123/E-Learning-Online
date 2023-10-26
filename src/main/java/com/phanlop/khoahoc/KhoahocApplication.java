@@ -1,5 +1,6 @@
 package com.phanlop.khoahoc;
 
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.phanlop.khoahoc.Entity.AccessType;
 import com.phanlop.khoahoc.Entity.Cart;
+import com.phanlop.khoahoc.Entity.Chatlog;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.DanhGia;
 import com.phanlop.khoahoc.Entity.Department;
@@ -17,6 +19,7 @@ import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Repository.CartRepository;
+import com.phanlop.khoahoc.Repository.ChatlogRepository;
 import com.phanlop.khoahoc.Repository.CourseRepository;
 import com.phanlop.khoahoc.Repository.DanhGiaRepository;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
@@ -40,6 +43,7 @@ public class KhoahocApplication implements CommandLineRunner{
 	private final RoleRepository roleRepository;
 	private final EnrollmentRepository enrollmentRepository;
 	private final CartRepository cartRepository;
+	private final ChatlogRepository chatlogRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(KhoahocApplication.class, args);
@@ -67,7 +71,7 @@ public class KhoahocApplication implements CommandLineRunner{
 		roleRepository.save(role);
 		roleRepository.save(role2);
 		roleRepository.save(role3);
-
+		
 		// Tạo userAdmin
 		User adminUser = new User();
 		adminUser.setUserId(1L);
@@ -498,6 +502,15 @@ public class KhoahocApplication implements CommandLineRunner{
 			dientu3.setCourse(dientu);
 			lessonRepository.save(dientu3);
 		}
+		//Chatlog
+		Chatlog chatLog=new Chatlog();
+		chatLog.setContent("Chao T");
+		User chatusr=userRepository.findUserByuserId((long)5);
+		chatLog.setCourseOwner(chatusr);
+		User buser=userRepository.findUserByuserId((long)2);
+		chatLog.setCourseBuyer(buser);
+		chatLog.setSendBy(0);
+		chatlogRepository.save(chatLog);
                 
 	}
 }

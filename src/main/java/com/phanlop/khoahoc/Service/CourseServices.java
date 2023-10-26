@@ -29,5 +29,7 @@ public interface CourseServices {
     //Filter
     List<Course> sortCoursesByGia(String priceOrder);
     List<Course> filterCoursesByGiaRange(String priceRange);
+    List<Course> findCoursesbyTeacherId(User user);
+    List<Course> findCourseByUserId(User user);
 
 }

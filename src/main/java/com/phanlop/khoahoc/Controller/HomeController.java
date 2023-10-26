@@ -57,6 +57,7 @@ public class HomeController {
         model.addAttribute("listCourse", listCourse);
         List<Course> listCourseInCart = cartServices.getCartByUser(user);
         model.addAttribute("listCourseInCart", listCourseInCart);
+        model.addAttribute("user", user);
         return "index";
     }
 
@@ -116,6 +117,7 @@ public class HomeController {
         User user = userServices.getUserByUserName(userDetails.getUsername());
         page = page - 1;
         Page<Course> courses = courseService.filterByUserAndDepartmentAdmin(khoa, user, page, pageSize);
+        model.addAttribute("user", user);
         model.addAttribute("courses", courses.getContent());
         model.addAttribute("departments", departmentRepository.findAll());
         model.addAttribute("khoaId", khoa);

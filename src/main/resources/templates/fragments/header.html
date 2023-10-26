@@ -59,11 +59,14 @@
 
         <th:block sec:authorize="hasAuthority('ROLE_STUDENT')">
             <a class="navbar-brand mx-md-0 mx-3" href="/">
+               
                 <div class="d-flex align-items-center">
                     <img th:src="@{/img/f9.png}" class="nav-logo-icon">
                     <p class="nav-logo-text">Khóa học trực tuyến</p>
+                    
                 </div>
             </a>
+           
         </th:block>
 
         <th:block sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')">
@@ -86,6 +89,7 @@
                         <ul class="list-group" id="list-data-search">
                         </ul>
                     </div>
+                    
             </div>
             </th:block>
             <th:block sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')">
@@ -130,6 +134,7 @@
                     <button type="button" class="btn btn-danger dropdown-toggle header-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" style="width: 25px; height: 25px">
                         <div class="header-username text-dark mx-2" sec:authentication="name"></div>
+                        
                     </button>
                     <form action="/logout" method="post">
                         <ul class="dropdown-menu dropdown-menu-end">

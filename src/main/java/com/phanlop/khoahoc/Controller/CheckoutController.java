@@ -12,9 +12,13 @@ import com.phanlop.khoahoc.Config.CustomUserDetails;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Service.UserServices;
+
+import lombok.RequiredArgsConstructor;
+
 import com.phanlop.khoahoc.Service.CartServices;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/checkout")
 public class CheckoutController {
     private final UserServices userServices;

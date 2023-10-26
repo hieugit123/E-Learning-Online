@@ -75,6 +75,10 @@
 
         <!-- nếu đã đăng nhập -->
         <th:block th:if="${#authorization.expression('isAuthenticated()')}" th:fragment="logined-header">
+                    <form action="/chat" method="get">
+                            <input type="hidden" name="usid" th:value="${user.userId}">
+                            <button type="submit">Chat</button>
+                        </form>
             <div th:if="${not #lists.isEmpty(listCourse)}" class="course-list d-flex flex-wrap">
                 <th:block th:each="course : ${listCourse}">
                     <a th:href="@{/detail1111/{id}(id=${course.courseID})}" class="course-item">

@@ -48,4 +48,6 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     List<Course> findByOrderByGiaDesc();
 
     List<Course> findByGiaBetween(double minPrice,double maxPrice);
+    Course findByCourseID(UUID courseID);
+    List<Course> findByCourseOwner(User courseOwner);
 }
