@@ -28,13 +28,17 @@
     <div th:replace="~{fragments/menu :: left-menu}"></div>
     <div class="w-100">
         <div class="course-wrapper">
+            <form action="/chatteacher" method="get">
+                <input type="hidden" name="usid" th:value="${user.userId}">
+                <button type="submit">Chat</button>
+            </form>
             <div class="d-flex justify-content-between mb-3">
                 <div class="d-flex" style="gap: 20px">
                     <h4>Khóa học của bạn đã tạo</h4>
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCourseModal">Thêm khóa học</button>
                     <a th:href="@{/teacher/courseDangDo}">Xem các course chưa tạo xong</a>
                 </div>
-
+                
                 <form method="get">
                     <select class="form-select form-department-select" name="khoa" onchange="this.form.submit()">
                         <option th:if="${khoaId == 0}" value="0" selected>Tất cả</option>

@@ -27,6 +27,7 @@ public class CourseServicesImpl implements CourseServices {
     private EnrollmentRepository enrolmentRepository;
     @Autowired
     private UserRepository userRepository;
+    
 
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
@@ -181,5 +182,20 @@ public class CourseServicesImpl implements CourseServices {
                 return courseRepository.findAll();
         }
         return courseRepository.findByGiaBetween(minPrice, maxPrice);
+    }
+
+    @Override
+    public List<Course> findCoursesbyTeacherId(User user) {
+        List<Enrollment> enrollments=enrolmentRepository.findByUser(user);
+        List<Course> courses=new ArrayList<>();
+        for(Enrollment enrollment:enrollments){
+           courses.add(courseRepository.findByCourseID(enrollment.getCourse().getCourseID()));
+        }
+        return courses;
+    }
+
+    @Override
+    public List<Course> findCourseByUserId(User user) {
+        return courseRepository.findByCourseOwner(user);
     }
 }
