@@ -7,6 +7,7 @@ import com.phanlop.khoahoc.Entity.User;
 import java.util.List;
 
 public interface EnrollmentServices {
+    List<Enrollment> getAll();
     Enrollment saveEnrollment(Enrollment enrollment);
     void deleteEnrollment(Enrollment enrollment);
     List<Enrollment> getEnrollmentsByUser(User user);

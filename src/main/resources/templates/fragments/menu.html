@@ -18,6 +18,11 @@
             <i class="bi bi-list-task" style="font-size: 20px"></i>
             <div>Bill từ admin</div>
         </a>
+        <form action="/thongke" method="get">
+            <input type="hidden" name="teacherid" th:value="${user.userId}">
+            <button type="submit">Thống kê</button>
+        </form>
+
      </th:block>
 
      <th:block sec:authorize="hasAuthority('ROLE_STUDENT')">

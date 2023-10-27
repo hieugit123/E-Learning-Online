@@ -31,5 +31,5 @@ public interface CourseServices {
     List<Course> filterCoursesByGiaRange(String priceRange);
     List<Course> findCoursesbyTeacherId(User user);
     List<Course> findCourseByUserId(User user);
-
+    List<Course> findCourseOfTeacher(User user);
 }

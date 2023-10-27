@@ -28,6 +28,7 @@ public class CourseServicesImpl implements CourseServices {
     @Autowired
     private UserRepository userRepository;
     
+    
 
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
@@ -198,4 +199,11 @@ public class CourseServicesImpl implements CourseServices {
     public List<Course> findCourseByUserId(User user) {
         return courseRepository.findByCourseOwner(user);
     }
+
+    @Override
+    public List<Course> findCourseOfTeacher(User user) {
+        return courseRepository.findByCourseOwner(user);
+    }
+
+    
 }

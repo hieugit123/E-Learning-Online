@@ -60,4 +60,9 @@ public class EnrollmentServicesImpl implements EnrollmentServices {
         }
         return users;
     }
+
+    @Override
+    public List<Enrollment> getAll() {
+       return enrollmentRepository.findAll();
+    }
 }
