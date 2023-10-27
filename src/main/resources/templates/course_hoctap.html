@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'F9 - Quá trình học tập'"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel = "icon" th:href="@{/img/f9.png}" type = "image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/course_intro.css}">
+    <link rel="stylesheet" th:href="@{/css/newCss.css}">
+    <link rel="stylesheet" th:href="@{/css/footerCss.css}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.all.min.js"></script>
+    <script th:src="@{/js/newJs.js}"></script>
+    <style>
+        .content_left {
+            width: 70%;
+            margin-left: 20px;
+        }
+        .content_right {
+            width: 30%;
+            margin-left: 20px;
+        }
+        .content-list {
+            margin-left: 30px;
+        }
+        .video-course {
+            width: 95%;
+            height: 425px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header}"></div>
+<div class="content d-flex">
+    <!-- 70% -->
+    <div class="content_left">
+        <div class="content_video">
+            <div class="video-course">
+                <iframe width="95%" height="425" th:src="${lessons.get(0).getLessonVideo()}" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="content_mota">
+            <h2>Giới thiệu về khóa học</h2>
+            <h3>Mô tả</h3>
+            <span>In diesem Kurs zeige ich dir, wie du die HTTP Sessions deines Projekts in Spring Boot in einem schnellen Key/Value Speicher wie Redis persistieren kannst.
+
+                Anhand eines sehr einfachen Spring Boot Projektes, das nur ein Objekt in einer HTTP Session speichert, werden wir gemeinsam die Session Replikation aktivieren.
+                
+                Ich werde dir zeigen wie du
+                
+                die Session Deiner Anwendung mit Prometheus und Firefox betrachten kannst
+                
+                wie Du Redis in einem Docker Container installiert und
+                
+                Redis als Session Repository für HTTP Sessions verwenden kannst.
+                
+                Wir gehen auf die Serialisierung von Objekten aus der HTTP Session ein und ich zeige Dir alternative Serializer zum Standard (JSON Serializer). Am Ende des Kurses gibt es einen Ausblick auf weitere Problemstellungen zum Thema HTTP Session Replikation, die z.B. im Cloud-Umfeld / Kubernetes auftreten.
+                
+                Das Thema "HTTP Session Replication" ist im Kubernetes Umfeld wichtig, da Kubernetes Pods "flüchtig" sind. Das bedeutet, dass sie jederzeit heruntergefahren werden können, z.B. bei einem Rolling Update. Dieses Problem wird durch die Persistenz der HTTP Session bei Anwendungen gelöst, die einen State haben, also z.B. eine Benutzerinteraktion über ein UI erlauben.
+                
+                Redis eignet sich hervoragend als Speicher für HTTP Sessions, da die Speicherung extrem schnell ist und Redis auch zusätzliche Features wie TTL (Time to Live) für Sessions anbietet.
+                
+                Những kiến thức bạn sẽ học
+                Sticky Session Problematik im Cloud / Kubernetes Umfeld verstehen
+                HTTP Session in Firefox und Prometheus untersuchen
+                Redis als Key/Value Speicher für Session Replikation verwenden und in Docker installieren
+                Session Replikation mit Redis in Spring Boot einrichten
+                Eigene Session Serializer einrichten und bestehende austauschen
+                TTL (Time to Live) einer Sessin in Redis verstehen
+                Weiterführende Probleme der Session Replikation verstehen
+                Có bất kỳ yêu cầu hoặc điều kiện tiên quyết nào về khóa học không?
+                Java, Maven Grundkenntnisse
+                Grundlagen von Spring Boot Anwendungen
+                Grundlagen von Docker
+                Đối tượng của khóa học này:
+                Spring Boot Entwickler im Unternehmensumfeld
+                JEE Entwickler, die die Funktionsweise von Session Replikation in einem nicht JEE Umfeld verstehen möchten
+                Java Entwickler mit Schwerpunkt auf Cloud Anwendungen, insb. Kubernetes</span>
+                <!-- <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#danhgiaModal">  <span th:text="${course.danhgias.size()}"></span>Xếp hạng</span> -->
+            <h2>Báo cáo khóa học</h2>
+            <h2>Yêu cầu hoàn tiền</h2>
+        </div>
+    </div>
+    <!-- 30% -->
+    <div class="content_right">
+        <div class="content-list">
+            <h1>Nội dung khóa học</h1>
+            <div class="listItem">
+                <input type="checkbox" name="checkItem">
+                <div class="content-listItem">
+                    <span>Lập trình winform thứ 2</span>
+                    <div class="time-video">
+                        <i class="bi bi-list-task" style="font-size: 20px"></i>
+                        <span>4 phút</span>
+                    </div>
+                </div>
+            </div>
+            <div class="listItem">
+                <input type="checkbox" name="checkItem">
+                <div class="content-listItem">
+                    <span>Lập trình winform thứ 2</span>
+                    <div class="time-video">
+                        <i class="bi bi-list-task" style="font-size: 20px"></i>
+                        <span>4 phút</span>
+                    </div>
+                </div>
+            </div>
+            <div class="listItem">
+                <input type="checkbox" name="checkItem">
+                <div class="content-listItem">
+                    <span>Lập trình winform thứ 2</span>
+                    <div class="time-video">
+                        <i class="bi bi-list-task" style="font-size: 20px"></i>
+                        <span>4 phút</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--    Modal đánh giá khóa học-->
+<!-- <div class="modal fade" id="danhgiaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div th:each="danhgia :${course.danhgias}">
+                <div class="iconAndUser"><i class="bi bi-person-circle"></i><h4 th:text="${danhgia.tenUser}"></h4></div>
+                <span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                            <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i></span>
+                <p th:text="${danhgia.contentDanhgia}"></p>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div th:replace="~{fragments/footer}"></div>
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
+<script th:src="@{/js/header.js}"></script>
+</body>
+</html>

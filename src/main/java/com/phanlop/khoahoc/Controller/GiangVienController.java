@@ -63,4 +63,9 @@ public class GiangVienController {
         model.addAttribute("currentPage", 1 + 1);
         return "courseDangDo";
     }
+
+    @GetMapping("/hoadon")
+    public String getPageQLHD() {
+            return "thanhtoan_teacher";
+    }
 }

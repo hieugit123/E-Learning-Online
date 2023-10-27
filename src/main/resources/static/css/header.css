@@ -197,6 +197,11 @@ a{
 
 .cartItem {
     margin: 10px 0 10px 0;
+    display: flex;
+}
+
+.cartItem a{
+    display: flex;
 }
 
 .img-cartItem {

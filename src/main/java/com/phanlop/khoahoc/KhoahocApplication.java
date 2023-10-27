@@ -1,5 +1,8 @@
 package com.phanlop.khoahoc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,19 +11,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.phanlop.khoahoc.Entity.AccessType;
+import com.phanlop.khoahoc.Entity.CTHoaDon;
 import com.phanlop.khoahoc.Entity.Cart;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.DanhGia;
 import com.phanlop.khoahoc.Entity.Department;
 import com.phanlop.khoahoc.Entity.Enrollment;
+import com.phanlop.khoahoc.Entity.HoaDon;
 import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
+import com.phanlop.khoahoc.Repository.CTHDRepository;
 import com.phanlop.khoahoc.Repository.CartRepository;
 import com.phanlop.khoahoc.Repository.CourseRepository;
 import com.phanlop.khoahoc.Repository.DanhGiaRepository;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
 import com.phanlop.khoahoc.Repository.EnrollmentRepository;
+import com.phanlop.khoahoc.Repository.HoaDonRepository;
 import com.phanlop.khoahoc.Repository.LessonRepository;
 import com.phanlop.khoahoc.Repository.RoleRepository;
 import com.phanlop.khoahoc.Repository.UserRepository;
@@ -40,6 +47,8 @@ public class KhoahocApplication implements CommandLineRunner{
 	private final RoleRepository roleRepository;
 	private final EnrollmentRepository enrollmentRepository;
 	private final CartRepository cartRepository;
+	private final HoaDonRepository hoaDonRepository;
+	private final CTHDRepository cthdRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(KhoahocApplication.class, args);
@@ -300,6 +309,16 @@ public class KhoahocApplication implements CommandLineRunner{
                         danhgiaRepository.save(danhgia1);
                         laptrinhc.getDanhgias().add(danhgia1);
                         courseRepository.save(laptrinhc);
+
+						DanhGia danhgia11 = new DanhGia();
+                        danhgia11.setUser(student1);
+                        danhgia11.setCourse(laptrinhc);
+                        danhgia11.setContentDanhgia("Khóa học khá bổ ích. Cảm ơn tác giả!");
+                        danhgia11.setSao(4);
+                        danhgia11.setTenUser(student1.getFullName());
+                        danhgiaRepository.save(danhgia11);
+                        laptrinhc.getDanhgias().add(danhgia11);
+                        courseRepository.save(laptrinhc);
                         
                         
 			Enrollment.EnrollmentId enrollmentId2 = new Enrollment.EnrollmentId();
@@ -321,6 +340,16 @@ public class KhoahocApplication implements CommandLineRunner{
 			enrollment7.setAccessType(AccessType.ACCEPT);
 			enrollment7.setCourse(laptrinhc);
 			enrollmentRepository.save(enrollment7);
+
+			Enrollment.EnrollmentId enrollmentId77 = new Enrollment.EnrollmentId();
+			enrollmentId77.setUserId(student.getUserId());
+			enrollmentId77.setCourseId(laptrinhc.getCourseID());
+			Enrollment enrollment77 = new Enrollment();
+			enrollment77.setId(enrollmentId77);
+			enrollment77.setUser(student);
+			enrollment77.setAccessType(AccessType.ACCEPT);
+			enrollment77.setCourse(laptrinhc);
+			enrollmentRepository.save(enrollment77);
 
 			Lesson lessonc1 = new Lesson();
 			lessonc1.setLessonTitle("1. Tổng quan về khóa học Lập trình C++");
@@ -398,6 +427,16 @@ public class KhoahocApplication implements CommandLineRunner{
 			enrollment3.setCourse(winform);
 			enrollmentRepository.save(enrollment3);
 
+			Enrollment.EnrollmentId enrollmentId33 = new Enrollment.EnrollmentId();
+			enrollmentId33.setUserId(student3.getUserId());
+			enrollmentId33.setCourseId(winform.getCourseID());
+			Enrollment enrollment33 = new Enrollment();
+			enrollment33.setId(enrollmentId33);
+			enrollment33.setUser(student3);
+			enrollment33.setAccessType(AccessType.ACCEPT);
+			enrollment33.setCourse(winform);
+			enrollmentRepository.save(enrollment33);
+
 			Lesson winform1 = new Lesson();
 			winform1.setLessonTitle("1. Tổng quan lập trình Winform");
 			winform1.setLessonSort(1);
@@ -473,6 +512,46 @@ public class KhoahocApplication implements CommandLineRunner{
                         dientu.getDanhgias().add(danhgia10);
                         courseRepository.save(dientu);
 
+			Enrollment.EnrollmentId enrollmentId34 = new Enrollment.EnrollmentId();
+			enrollmentId34.setUserId(student3.getUserId());
+			enrollmentId34.setCourseId(dientu.getCourseID());
+			Enrollment enrollment34 = new Enrollment();
+			enrollment34.setId(enrollmentId34);
+			enrollment34.setUser(student3);
+			enrollment34.setAccessType(AccessType.ACCEPT);
+			enrollment34.setCourse(dientu);
+			enrollmentRepository.save(enrollment34);
+
+			Enrollment.EnrollmentId enrollmentId35 = new Enrollment.EnrollmentId();
+			enrollmentId35.setUserId(student.getUserId());
+			enrollmentId35.setCourseId(dientu.getCourseID());
+			Enrollment enrollment35 = new Enrollment();
+			enrollment35.setId(enrollmentId35);
+			enrollment35.setUser(student);
+			enrollment35.setAccessType(AccessType.ACCEPT);
+			enrollment35.setCourse(dientu);
+			enrollmentRepository.save(enrollment35);
+
+			Enrollment.EnrollmentId enrollmentId36 = new Enrollment.EnrollmentId();
+			enrollmentId36.setUserId(student2.getUserId());
+			enrollmentId36.setCourseId(dientu.getCourseID());
+			Enrollment enrollment36 = new Enrollment();
+			enrollment36.setId(enrollmentId36);
+			enrollment36.setUser(student2);
+			enrollment36.setAccessType(AccessType.ACCEPT);
+			enrollment36.setCourse(dientu);
+			enrollmentRepository.save(enrollment36);
+
+			Enrollment.EnrollmentId enrollmentId37 = new Enrollment.EnrollmentId();
+			enrollmentId37.setUserId(guest.getUserId());
+			enrollmentId37.setCourseId(dientu.getCourseID());
+			Enrollment enrollment37 = new Enrollment();
+			enrollment37.setId(enrollmentId37);
+			enrollment37.setUser(guest);
+			enrollment37.setAccessType(AccessType.ACCEPT);
+			enrollment37.setCourse(dientu);
+			enrollmentRepository.save(enrollment37);
+
 			Lesson dientu1 = new Lesson();
 			dientu1.setLessonTitle("1. Tổng quan lập trình Winform");
 			dientu1.setLessonSort(1);
@@ -497,6 +576,147 @@ public class KhoahocApplication implements CommandLineRunner{
 			dientu3.setLessonContent("Windows Forms là thư viện lớp đồ họa mã nguồn mở và miễn phí được bao gồm như một phần của Microsoft.NET Framework hoặc Mono Framework, cung cấp nền tảng để viết các ứng dụng khách phong phú cho máy tính để bàn, máy tính xách tay và máy tính bảng");
 			dientu3.setCourse(dientu);
 			lessonRepository.save(dientu3);
+
+			HoaDon hd = new HoaDon();
+			hd.setUser(guest);
+			hd.setTongTien(1500000);
+			hoaDonRepository.save(hd);
+
+			CTHoaDon cthd = new CTHoaDon();
+			cthd.setHoadon(hd);
+			cthd.setCourse(cslt);
+			cthd.setGia(500000);
+			cthd.setHoantien(0);
+			cthdRepository.save(cthd);
+
+			CTHoaDon cthd1 = new CTHoaDon();
+			cthd1.setHoadon(hd);
+			cthd1.setCourse(laptrinhc);
+			cthd1.setGia(500000);
+			cthd1.setHoantien(0);
+			cthdRepository.save(cthd1);
+
+			CTHoaDon cthd2 = new CTHoaDon();
+			cthd2.setHoadon(hd);
+			cthd2.setCourse(winform);
+			cthd2.setGia(500000);
+			cthd2.setHoantien(0);
+			cthdRepository.save(cthd2);
+
+			CTHoaDon cthd3 = new CTHoaDon();
+			cthd3.setHoadon(hd);
+			cthd3.setCourse(dientu);
+			cthd3.setGia(500000);
+			cthd3.setHoantien(0);
+			cthdRepository.save(cthd3);
+			List<CTHoaDon> list = new ArrayList<>();
+			list.add(cthd);
+			list.add(cthd1);
+			list.add(cthd2);
+			list.add(cthd3);
+			hd.setListCTHD(list);
+			hoaDonRepository.save(hd);
+
+
+			HoaDon hd1 = new HoaDon();
+			hd1.setUser(student);
+			hd1.setTongTien(1500000);
+			hoaDonRepository.save(hd1);
+
+			CTHoaDon cthd4 = new CTHoaDon();
+			cthd4.setHoadon(hd1);
+			cthd4.setCourse(cslt);
+			cthd4.setGia(500000);
+			cthd4.setHoantien(0);
+			cthdRepository.save(cthd4);
+
+			CTHoaDon cthd5 = new CTHoaDon();
+			cthd5.setHoadon(hd1);
+			cthd5.setCourse(laptrinhc);
+			cthd5.setGia(500000);
+			cthd5.setHoantien(0);
+			cthdRepository.save(cthd5);
+
+			CTHoaDon cthd6 = new CTHoaDon();
+			cthd6.setHoadon(hd1);
+			cthd6.setCourse(dientu);
+			cthd6.setGia(500000);
+			cthd6.setHoantien(0);
+			cthdRepository.save(cthd6);
+			List<CTHoaDon> list1 = new ArrayList<>();
+			list1.add(cthd4);
+			list1.add(cthd5);
+			list1.add(cthd6);
+			hd1.setListCTHD(list1);
+			hoaDonRepository.save(hd1);
+
+
+			HoaDon hd2 = new HoaDon();
+			hd2.setUser(student1);
+			hd2.setTongTien(1500000);
+			hoaDonRepository.save(hd2);
+
+			CTHoaDon cthd7 = new CTHoaDon();
+			cthd7.setHoadon(hd2);
+			cthd7.setCourse(cslt);
+			cthd7.setGia(500000);
+			cthd7.setHoantien(0);
+			cthdRepository.save(cthd7);
+
+			CTHoaDon cthd8 = new CTHoaDon();
+			cthd8.setHoadon(hd2);
+			cthd8.setCourse(laptrinhc);
+			cthd8.setGia(500000);
+			cthd8.setHoantien(0);
+			cthdRepository.save(cthd8);
+
+			List<CTHoaDon> list2 = new ArrayList<>();
+			list2.add(cthd7);
+			list2.add(cthd8);
+			hd2.setListCTHD(list2);
+			hoaDonRepository.save(hd2);
+
+
+			HoaDon hd3 = new HoaDon();
+			hd3.setUser(student2);
+			hd3.setTongTien(1500000);
+			hoaDonRepository.save(hd3);
+
+			CTHoaDon cthd9 = new CTHoaDon();
+			cthd9.setHoadon(hd3);
+			cthd9.setCourse(dientu);
+			cthd9.setGia(500000);
+			cthd9.setHoantien(0);
+			cthdRepository.save(cthd9);
+			List<CTHoaDon> list3 = new ArrayList<>();
+			list3.add(cthd9);
+			hd3.setListCTHD(list3);
+			hoaDonRepository.save(hd3);
+
+
+			HoaDon hd4 = new HoaDon();
+			hd4.setUser(student3);
+			hd4.setTongTien(1500000);
+			hoaDonRepository.save(hd4);
+
+			CTHoaDon cthd10 = new CTHoaDon();
+			cthd10.setHoadon(hd4);
+			cthd10.setCourse(winform);
+			cthd10.setGia(500000);
+			cthd10.setHoantien(0);
+			cthdRepository.save(cthd10);
+
+			CTHoaDon cthd11 = new CTHoaDon();
+			cthd11.setHoadon(hd4);
+			cthd11.setCourse(dientu);
+			cthd11.setGia(500000);
+			cthd11.setHoantien(0);
+			cthdRepository.save(cthd11);
+			List<CTHoaDon> list4 = new ArrayList<>();
+			list4.add(cthd10);
+			list4.add(cthd11);
+			hd4.setListCTHD(list4);
+			hoaDonRepository.save(hd4);
 		}
                 
 	}

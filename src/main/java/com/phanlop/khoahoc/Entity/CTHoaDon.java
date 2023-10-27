@@ -13,7 +13,10 @@ public class CTHoaDon {
     private Long CTHDId;
 
     @ManyToOne @JoinColumn(name = "course_id")
-    private User course;
+    private Course course;
+
+    @ManyToOne @JoinColumn(name = "hoadon_id")
+    private HoaDon hoadon;
 
     private int hoantien;
 

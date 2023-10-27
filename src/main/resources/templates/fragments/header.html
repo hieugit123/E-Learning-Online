@@ -40,7 +40,7 @@
                 <i class="bi bi-cart3 cartCss"></i>
                 <div class="form-cart">
                     <h6>Giỏ hàng của bạn đang trống</h6>
-                    <a href="/tieptucmuasam">Tiếp tục mua sắm</a>
+                    <a href="/">Tiếp tục mua sắm</a>
                 </div>
             </div>
             <div class="ms-md-auto login-group">
@@ -58,7 +58,7 @@
         </button>
 
         <th:block sec:authorize="hasAuthority('ROLE_STUDENT')">
-            <a class="navbar-brand mx-md-0 mx-3" href="/">
+            <a class="navbar-brand mx-md-0 mx-3" href="/student">
                 <div class="d-flex align-items-center">
                     <img th:src="@{/img/f9.png}" class="nav-logo-icon">
                     <p class="nav-logo-text">Khóa học trực tuyến</p>
@@ -66,7 +66,15 @@
             </a>
         </th:block>
 
-        <th:block sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')">
+        <th:block sec:authorize="hasAnyAuthority('ROLE_TEACHER')">
+        <a class="navbar-brand mx-md-0 mx-3" href="/teacher">
+            <div class="d-flex align-items-center">
+                <img th:src="@{/img/f9.png}" class="nav-logo-icon">
+                <p class="nav-logo-text">Khóa học trực tuyến</p>
+            </div>
+        </a>
+        </th:block>
+        <th:block sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
         <a class="navbar-brand mx-md-0 mx-3" href="/admin">
             <div class="d-flex align-items-center">
                 <img th:src="@{/img/f9.png}" class="nav-logo-icon">
@@ -103,30 +111,33 @@
             </th:block>
             <div class="ms-md-auto login-group">
                 <div class="btn-group d-flex align-items-center">
-                    <div th:if="${not #lists.isEmpty(listCourseInCart)}" class="CART1">
-                        <i class="bi bi-cart3 cartCss"></i>
-                        <div class="form-cart1">
-                            
-                                <div class="cartItem" th:each="course : ${listCourseInCart}">
-                                    <a th:href="@{/detail1111/{id}(id=${course.courseID})}">
-                                        <img th:src="${course.courseAvt}" class="img-cartItem">
-                                        <span th:text="${course.courseName}" class="text-cartItem"></span>
-                                    </a>
-                                    <button id="btnDeleteCartItem" th:attr="onclick=|deleteCartItem('${course.courseID}')|">Xóa</button>
-                                </div>
-                           
-                            <a th:href="@{/checkout}"><button id="btnThanhToan">Thanh toán</button></a>
-                        </div>
-                    </div>
-                    <th:block th:if="${#lists.isEmpty(listCourseInCart)}">
-                        <div class="CART">
+                    <!-- khi da dang nhap -->
+                    <th:block sec:authorize="hasAuthority('ROLE_STUDENT')">
+                        <div class="CART1">
                             <i class="bi bi-cart3 cartCss"></i>
-                            <div class="form-cart">
-                                <h6>Giỏ hàng của bạn đang trống</h6>
-                                <a href="/tieptucmuasam">Tiếp tục mua sắm</a>
-                            </div>
+                            <th:block th:if="${not #lists.isEmpty(listCourseInCart)}" >
+                                <div class="form-cart1">
+                                
+                                        <div class="cartItem" th:each="course : ${listCourseInCart}">
+                                            <a th:href="@{/detail1111/{id}(id=${course.courseID})}">
+                                                <img th:src="${course.courseAvt}" class="img-cartItem">
+                                                <span th:text="${course.courseName}" class="text-cartItem" style="width: 145px; display: block;"></span>
+                                            </a>
+                                            <button id="btnDeleteCartItem" th:attr="onclick=|deleteCartItem('${course.courseID}')|">Xóa</button>
+                                        </div>
+                                
+                                    <a th:href="@{/checkout}"><button id="btnThanhToan">Thanh toán</button></a>
+                                </div>
+                            </th:block>
+                            <th:block th:if="${#lists.isEmpty(listCourseInCart)}">
+                                    <div class="form-cart1">
+                                        <h6 style="color: black; font-size: 14px; margin: 50px 0 0 50px;">Giỏ hàng của bạn đang trống</h6>
+                                        <a href="/student" style="margin:20px 0 0 80px;">Tiếp tục mua sắm</a>
+                                    </div>
+                            </th:block>
                         </div>
                     </th:block>
+
                     <button type="button" class="btn btn-danger dropdown-toggle header-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" style="width: 25px; height: 25px">
                         <div class="header-username text-dark mx-2" sec:authentication="name"></div>

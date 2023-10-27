@@ -33,11 +33,25 @@
                     var src = document.querySelector(".img-fluid").getAttribute('src');
                     var name = document.querySelector(".nameCourse").textContent;
                     var html = document.querySelector(".form-cart1").innerHTML;
+                    var ele = document.querySelector(".cartItem");
                     var html1 = `<div class="cartItem">\n
+                                    <a href="/detail1111/4c6919fe-1fe9-40bf-ab20-ffa596ab3293">\n 
                                         <img src="${src}" class="img-cartItem">\n
                                         <span class="text-cartItem">${name}</span>\n
-                                    </div>\n  `;
-                    var htmlInsert = html1 + html;
+                                    </a>\n 
+                                    <button id="btnDeleteCartItem" onclick="deleteCartItem('${courseId}')">Xóa</button>\n
+                                 </div>\n  `;
+                    if(ele !== null)
+                        var htmlInsert = html1 + html;
+                    else
+                        var htmlInsert = `<div class="cartItem">\n
+                                    <a href="/detail1111/4c6919fe-1fe9-40bf-ab20-ffa596ab3293">\n 
+                                        <img src="${src}" class="img-cartItem">\n
+                                        <span class="text-cartItem">${name}</span>\n
+                                    </a>\n 
+                                    <button id="btnDeleteCartItem" onclick="deleteCartItem('${courseId}')">Xóa</button>\n
+                                 </div>\n  
+                                 <a href="/checkout"><button id="btnThanhToan">Thanh toán</button></a>\n `; 
                     document.querySelector(".form-cart1").innerHTML = htmlInsert;
                     
                     Swal.fire({
@@ -123,7 +137,7 @@
                     <th:block th:if="${#authorization.expression('isAuthenticated()')}" th:fragment="logined-header">
                         <button th:if="${isInCart}" id="btnAddCart" th:attr="onclick=|addCart('${course.courseID}')|">THÊM VÀO GIỎ</button>
                     </th:block>
-                    <a th:href="@{/dangkyCourse/{id}(id=${course.courseID})}" id="btnDkyHoc">ĐĂNG KÝ NGAY</a>
+                    <a th:href="@{/checkout/{idCourse}(idCourse=${course.courseID})}" id="btnDkyHoc">ĐĂNG KÝ NGAY</a>
                 </div>
             </div>
         </div>

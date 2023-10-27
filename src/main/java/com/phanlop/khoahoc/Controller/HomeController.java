@@ -40,6 +40,54 @@ public class HomeController {
     private final EnrollmentServices enrollmentServices;
     private final CartServices cartServices;
 
+    //MỚI
+    @GetMapping("/course/usrenroll")
+    public String getCourseOfUser(Model model,Authentication authentication){
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());
+        List<Enrollment> list = user.getEnrollments();
+        List<Course> listCourse = new ArrayList<>();
+        for(Enrollment e : list){
+            listCourse.add(e.getCourse());
+        }
+        model.addAttribute("listCourse", listCourse);
+        return "course_quatrinh";
+    }
+
+    //MỚI
+    @GetMapping("/course/quatrinhhoc/{idCourse}")
+    public String getQuaTrinh(Model model, @PathVariable UUID idCourse){
+        Course myCourse = courseService.getCourseById(idCourse);
+        List<Lesson> lessons = new ArrayList<>(myCourse.getListLessons().stream().toList());
+        lessons.sort(Comparator.comparing(Lesson::getLessonSort));
+        model.addAttribute("lessons", lessons);
+        return "course_hoctap";
+    }
+
+    //MỚI
+    @GetMapping("/checkout")
+    public String getPageCheckout(Authentication authentication, Model model){
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());
+        List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        int tong = 0;
+        for(Course c : listCourseInCart){
+            tong = tong + c.getGia();
+        }
+        model.addAttribute("tongcart", tong);
+        model.addAttribute("listCourseInCart", listCourseInCart);
+        return "checkout";
+    }
+
+    @GetMapping("/checkout/{idCourse}")
+    public String checkOutCourse(@PathVariable UUID idCourse, Model model){
+        Course course = courseService.getCourseById(idCourse);
+        List<Course> list = new ArrayList<>();
+        list.add(course);
+        model.addAttribute("tongcart", course.getGia());
+        model.addAttribute("listCourseInCart", list);
+        return "checkout";
+    }
 
     @GetMapping("/")
     public String getIndex(Model model){
@@ -60,45 +108,45 @@ public class HomeController {
         return "index";
     }
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
-    @GetMapping("/main/student")
-    public String getHomePage(@RequestParam(defaultValue = "0") int khoa,
-                              @RequestParam(defaultValue = "1") int page,
-                              @RequestParam(defaultValue = "12") int pageSize,
-                              Authentication authentication,
-                              Model model) {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        User user = userServices.getUserByUserName(userDetails.getUsername());
-        page = page - 1;
-        Page<Course> courses = courseService.filterByUserAndDepartment(khoa, user, page, pageSize);
-        model.addAttribute("courses", courses.getContent());
-        model.addAttribute("departments", departmentRepository.findAll());
-        model.addAttribute("khoaId", khoa);
-        model.addAttribute("totalPages", courses.getTotalPages());
-        model.addAttribute("currentPage", page + 1);
+    // @PreAuthorize("hasRole('ROLE_STUDENT')")
+    // @GetMapping("/main/student")
+    // public String getHomePage(@RequestParam(defaultValue = "0") int khoa,
+    //                           @RequestParam(defaultValue = "1") int page,
+    //                           @RequestParam(defaultValue = "12") int pageSize,
+    //                           Authentication authentication,
+    //                           Model model) {
+    //     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+    //     User user = userServices.getUserByUserName(userDetails.getUsername());
+    //     page = page - 1;
+    //     Page<Course> courses = courseService.filterByUserAndDepartment(khoa, user, page, pageSize);
+    //     model.addAttribute("courses", courses.getContent());
+    //     model.addAttribute("departments", departmentRepository.findAll());
+    //     model.addAttribute("khoaId", khoa);
+    //     model.addAttribute("totalPages", courses.getTotalPages());
+    //     model.addAttribute("currentPage", page + 1);
 
-        return "main";
-    }
+    //     return "main";
+    // }
     
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
-    @GetMapping("/courseThamKhaoo")
-    public String getHomeCoursesThamKhao(@RequestParam(defaultValue = "0") int khoa,
-                              @RequestParam(defaultValue = "1") int page,
-                              @RequestParam(defaultValue = "12") int pageSize,
-                              Authentication authentication,
-                              Model model) {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        User user = userServices.getUserByUserName(userDetails.getUsername());
-        page = page - 1;
-        Page<Course> courses = courseService.filterByUserAndDepartment1(khoa, user, page, pageSize);
-        model.addAttribute("courses", courses.getContent());
-        model.addAttribute("departments", departmentRepository.findAll());
-        model.addAttribute("khoaId", khoa);
-        model.addAttribute("totalPages", courses.getTotalPages());
-        model.addAttribute("currentPage", page + 1);
+    // @PreAuthorize("hasRole('ROLE_STUDENT')")
+    // @GetMapping("/courseThamKhaoo")
+    // public String getHomeCoursesThamKhao(@RequestParam(defaultValue = "0") int khoa,
+    //                           @RequestParam(defaultValue = "1") int page,
+    //                           @RequestParam(defaultValue = "12") int pageSize,
+    //                           Authentication authentication,
+    //                           Model model) {
+    //     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+    //     User user = userServices.getUserByUserName(userDetails.getUsername());
+    //     page = page - 1;
+    //     Page<Course> courses = courseService.filterByUserAndDepartment1(khoa, user, page, pageSize);
+    //     model.addAttribute("courses", courses.getContent());
+    //     model.addAttribute("departments", departmentRepository.findAll());
+    //     model.addAttribute("khoaId", khoa);
+    //     model.addAttribute("totalPages", courses.getTotalPages());
+    //     model.addAttribute("currentPage", page + 1);
 
-        return "courseThamkhao";
-    }
+    //     return "courseThamkhao";
+    // }
 
     @GetMapping("/dieukhoan")
     public String getDieuKhoan(){
@@ -124,24 +172,25 @@ public class HomeController {
         return "main_teacher";
     }
     
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping("/admin")
-    public String getHomeAdminPage(@RequestParam(defaultValue = "0") int khoa,
-                              @RequestParam(defaultValue = "1") int page,
-                              @RequestParam(defaultValue = "12") int pageSize,
-                              Authentication authentication,
-                              Model model) {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        User user = userServices.getUserByUserName(userDetails.getUsername());
-        page = page - 1;
-        Page<Course> courses = courseService.filterByUserAndDepartmentAdmin(khoa, user, page, pageSize);
-        model.addAttribute("courses", courses.getContent());
-        model.addAttribute("departments", departmentRepository.findAll());
-        model.addAttribute("khoaId", khoa);
-        model.addAttribute("totalPages", courses.getTotalPages());
-        model.addAttribute("currentPage", page + 1);
-        return "main_admin";
-    }
+    // @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    // @GetMapping("/admin")
+    // public String getHomeAdminPage(@RequestParam(defaultValue = "0") int khoa,
+    //                           @RequestParam(defaultValue = "1") int page,
+    //                           @RequestParam(defaultValue = "12") int pageSize,
+    //                           Authentication authentication,
+    //                           Model model) {
+    //     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+    //     User user = userServices.getUserByUserName(userDetails.getUsername());
+    //     page = page - 1;
+    //     Page<Course> courses = courseService.filterByUserAndDepartmentAdmin(khoa, user, page, pageSize);
+    //     model.addAttribute("courses", courses.getContent());
+    //     model.addAttribute("departments", departmentRepository.findAll());
+    //     model.addAttribute("khoaId", khoa);
+    //     model.addAttribute("totalPages", courses.getTotalPages());
+    //     model.addAttribute("currentPage", page + 1);
+    //     return "main_admin";
+    // }
+
     //SỬA
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping("/detail/{courseId}")
@@ -200,7 +249,7 @@ public class HomeController {
         List<Lesson> lessons = new ArrayList<>(myCourse.getListLessons().stream().toList());
         lessons.sort(Comparator.comparing(Lesson::getLessonSort));
         model.addAttribute("lessons", lessons);
-        return "course_intro_teacher";
+        return "course_detail_teacher";
     }
     //SỬA
     @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN')")
@@ -235,52 +284,53 @@ public class HomeController {
     }
     
     //SỬA
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
-    @GetMapping("/dangkyCourse/{id}")
-    public String dkyCourse(@PathVariable UUID id, Authentication authentication, Model model){
-        Course course = courseService.getCourseById(id);
-//        try {
-//            course = courseServices.getCourseById(UUID.fromString(courseId));
-//        } catch (IllegalArgumentException e){
-//            return ResponseEntity.badRequest().body("Mã khóa học không đúng định dạng");
-//        }
+//     @PreAuthorize("hasRole('ROLE_STUDENT')")
+//     @GetMapping("/dangkyCourse/{id}")
+//     public String dkyCourse(@PathVariable UUID id, Authentication authentication, Model model){
+//         Course course = courseService.getCourseById(id);
+// //        try {
+// //            course = courseServices.getCourseById(UUID.fromString(courseId));
+// //        } catch (IllegalArgumentException e){
+// //            return ResponseEntity.badRequest().body("Mã khóa học không đúng định dạng");
+// //        }
 
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        User user = userServices.getUserByUserName(userDetails.getUsername());
-        if (course != null && user != null){
-            Enrollment enroll = enrollmentServices.getEnrollmentByUserAndCourse(user, course);
-            if (enroll == null){
-                Enrollment.EnrollmentId enrollmentId = new Enrollment.EnrollmentId();
-                enrollmentId.setUserId(user.getUserId());
-                enrollmentId.setCourseId(course.getCourseID());
-                Enrollment enrollment = new Enrollment();
-                enrollment.setId(enrollmentId);
-                enrollment.setUser(user);
-                enrollment.setAccessType(AccessType.PENDING);
-                enrollment.setCourse(course);
-                enrollmentServices.saveEnrollment(enrollment);
-//                return ResponseEntity.ok("Đã gửi yêu cầu tham gia khóa học! Vui lòng chờ duyệt");
-                Lesson lesson = lessonServices.getLessonById(0);
-                if (lesson != null){
-                    List<Lesson> lessons = new ArrayList<>(course.getListLessons().stream().toList());
-                    lessons.sort(Comparator.comparing(Lesson::getLessonSort));
-                    if (lesson.getLessonVideo().contains("youtube.com/embed/")){
-                        model.addAttribute("isYoutube", true);
-                    } else {
-                        model.addAttribute("isYoutube", false);
-                    }
-                    model.addAttribute("lesson", lesson);
-                    model.addAttribute("course", course);
-                    model.addAttribute("lessons", lessons);
-                }
-                return "chapter_watch";
-            } else {
-//                return ResponseEntity.badRequest().body("Bạn đã gửi yêu cầu cho người sở hữu hoặc đã tham gia khóa học này");
-            }
-        }
-//        return ResponseEntity.badRequest().body("Khóa học yêu cầu không tồn tại!");
-           return "chapter_watch";
-    }
+//         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//         User user = userServices.getUserByUserName(userDetails.getUsername());
+//         if (course != null && user != null){
+//             Enrollment enroll = enrollmentServices.getEnrollmentByUserAndCourse(user, course);
+//             if (enroll == null){
+//                 Enrollment.EnrollmentId enrollmentId = new Enrollment.EnrollmentId();
+//                 enrollmentId.setUserId(user.getUserId());
+//                 enrollmentId.setCourseId(course.getCourseID());
+//                 Enrollment enrollment = new Enrollment();
+//                 enrollment.setId(enrollmentId);
+//                 enrollment.setUser(user);
+//                 enrollment.setAccessType(AccessType.PENDING);
+//                 enrollment.setCourse(course);
+//                 enrollmentServices.saveEnrollment(enrollment);
+// //                return ResponseEntity.ok("Đã gửi yêu cầu tham gia khóa học! Vui lòng chờ duyệt");
+//                 Lesson lesson = lessonServices.getLessonById(0);
+//                 if (lesson != null){
+//                     List<Lesson> lessons = new ArrayList<>(course.getListLessons().stream().toList());
+//                     lessons.sort(Comparator.comparing(Lesson::getLessonSort));
+//                     if (lesson.getLessonVideo().contains("youtube.com/embed/")){
+//                         model.addAttribute("isYoutube", true);
+//                     } else {
+//                         model.addAttribute("isYoutube", false);
+//                     }
+//                     model.addAttribute("lesson", lesson);
+//                     model.addAttribute("course", course);
+//                     model.addAttribute("lessons", lessons);
+//                 }
+//                 return "chapter_watch";
+//             } else {
+// //                return ResponseEntity.badRequest().body("Bạn đã gửi yêu cầu cho người sở hữu hoặc đã tham gia khóa học này");
+//             }
+//         }
+// //        return ResponseEntity.badRequest().body("Khóa học yêu cầu không tồn tại!");
+//            return "chapter_watch";
+//     }
+
     @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN', 'ROLE_STUDENT')")
     @GetMapping("/account_info")
     public String accountInfo() {

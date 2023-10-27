@@ -13,3 +13,12 @@ function showDanhGia(){
 function showFormTaoCourse(){
     window.location.href = "http://localhost:8080/teacher/createCourse";
 }
+
+setInterval(function() {
+  var ele = document.querySelector(".title-pageCheckout");
+  var element = document.querySelector(".editColor");
+  if(element === null){
+      ele.classList.add("editColor");
+  } else
+    ele.classList.remove("editColor");
+}, 500)

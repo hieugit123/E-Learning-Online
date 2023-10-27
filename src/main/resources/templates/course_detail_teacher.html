@@ -21,13 +21,54 @@
     <link rel="stylesheet" th:href="@{/css/course_intro.css}">
     <link rel="stylesheet" th:href="@{/css/course_intro_admin.css}">
     <link rel="stylesheet" th:href="@{/css/footerCss.css}">
+    <style>
+        .list-item{
+            width: 100%;
+            display: flex;
+            justify-content: start;
+        }
+        .item-user {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+    <script>
+        function showHocVien(courseId) {
+            $.ajax({
+                url: `/teacher/hocvien/${courseId}`,
+                type: 'GET',
+                success: function(data) {
+                    if (!data.length) return;
+                    var element = document.querySelector(".content-main");
+                    let html = data.map(item=>{
+                        return `<div class="list-item">
+                                    <div class="item-user">
+                                        <div style="display: flex"><h2>${item.userId}</h2>
+                                        <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" style="width: 25px; height: 25px"></div>
+                                        <span>${item.fullName}</span>
+                                        <span>${item.email}</span>
+                                        <h4>${item.createdDate}</h4>
+                                    </div>
+                                </div>`
+                    }).join(" ");
+                    var htmlInsert = '<h1>Quản lý học viên</h1>' + html;
+                    element.innerHTML = htmlInsert;
+                },
+                error: function(xhr, status, error) {
+                    var element = document.querySelector(".content-main");
+                    element.innerHTML = '<h1>Hello Mai Xuan Hieu oc cho</h1>';
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 
 <div th:replace="~{fragments/header}"></div>
 <div class="content d-flex">
     <div th:replace="~{fragments/menu :: left-menu}"></div>
-    <div class="w-100 d-flex mx-3 mt-4 align-items-center flex-column">
+    <div class="w-100 d-flex mx-3 mt-4 align-items-center flex-column content-main">
         <div class="container-nav d-flex justify-content-center">
             <ul class="nav nav-pills">
                 <li class="nav-item">
@@ -37,7 +78,7 @@
                     <a class="nav-link" th:href="@{/admin/assignment/{courseID}(courseID=${course.courseID})}">Doanh thu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/teacher/member/{courseId}(courseId=${course.courseID})}">Học viên</a>
+                    <button class="nav-link" th:attr="onclick=|showHocVien('${course.courseID}')|">Học viên</button>
                 </li>
             </ul>
         </div>
@@ -51,7 +92,6 @@
                 <span th:text="${course.courseDes}"></span>
                 <div class="mt-4 d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Nội dung khóa học</h5>
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addChapterModal">Thêm nội dung</button>
                 </div>
 
                 <div class="course_list_video" style="display: flex; gap: 10px; flex-direction: column;">
@@ -64,20 +104,11 @@
                                     </div>
                                     <span class="ml-3" th:text="${lesson.lessonTitle}"></span>
                                 </div>
-                                <div class="d-flex" style="gap: 10px">
-                                    <button class="btn btn-warning rounded" th:attr="onclick=|openEditModal('${lesson.lessonId}')|" ><i class="bi bi-pencil"></i></button>
-                                    <button class="btn btn-danger rounded" th:attr="onclick=|removeChapter('${lesson.lessonId}')|"><i class="bi bi-trash"></i></button>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-start align-items-center mt-4">
-                    <h5 class="mb-0 me-3">Tài liệu tham khảo</h5>
-                    <button class="btn btn-success btn-sm" th:attr="onclick=|openFileModal()|">
-                        Thêm
-                    </button>
-                </div>
+                <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#danhgiaModal">Đánh giá của khóa học</span>
 <!--                <div class="course_list_video" style="display: flex; gap: 10px; flex-wrap: wrap">
                     <div class="card" th:each="file : ${course.listDocuments}">
                         <div class="card-body position-relative">
@@ -218,6 +249,19 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--    Modal đánh giá khóa học-->
+<div class="modal fade" id="danhgiaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div th:each="danhgia :${course.danhgias}">
+                <div class="iconAndUser"><i class="bi bi-person-circle"></i><h4 th:text="${danhgia.tenUser}"></h4></div>
+                <span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                            <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i></span>
+                <p th:text="${danhgia.contentDanhgia}"></p>
             </div>
         </div>
     </div>

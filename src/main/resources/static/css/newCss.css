@@ -164,3 +164,50 @@ figure{
     font-weight: 500;
     margin-right: 10px;
 }
+
+.container_checkout {
+    display: flex;
+}
+
+.container-content-right {
+    max-width: 700px;
+
+}
+
+
+.container-content-left {
+    min-width: 800px;
+    border-right: 5px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.container-content-left .cartItem {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    border-bottom: 2px solid red;
+    margin-left: 10px;
+}
+
+.container-content-left a {
+    width: 70%;
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+.container-content-left .cartItem .img-cartItem{
+    width: 90px;
+    height: 90px;
+    margin-right: 100px;
+}
+
+.container-content-left .cartItem .text-cartItem {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.editColor{
+    color: #1cb0ff;
+}
