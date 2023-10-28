@@ -24,8 +24,21 @@
     <title>Chat</title>
     <style>
         .container {
-            text-align: center;
+            display: flex;
+            align-items: flex-start;
             font-family: Arial, sans-serif;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
         }
 
         .title {
@@ -53,25 +66,146 @@
             margin: 0;
         }
 
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        img{
+            width: 100px;
+            height: 100px;
+        }
+        .sort-icon {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .sort-icon.asc:before {
+            content: '^';
+        }
+
+        .sort-icon.desc:before {
+            content: 'v';
+        }
         
     </style>
-    
+    <script>
+        function sortTable(column) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("course-table");
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.getElementsByTagName("tr");
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[column];
+                    y = rows[i + 1].getElementsByTagName("td")[column];
+                    if (dir === "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir === "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount === 0 && dir === "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+            updateSortIcon(column, dir);
+        }
+
+        function updateSortIcon(column, dir) {
+            var sortIcons = document.getElementsByClassName("sort-icon");
+            for (var i = 0; i < sortIcons.length; i++) {
+                sortIcons[i].classList.remove("asc");
+                sortIcons[i].classList.remove("desc");
+            }
+            var sortIcon = document.getElementById("sort-icon-" + column);
+            sortIcon.classList.add(dir);
+        }
+    </script>
 </head>
 <body>
 <div th:replace="~{fragments/header}"></div>
 <div class="container">
-    <h1 class="title">Tổng doanh thu: <span th:text="${tongdoanhthu}"></span></h1>
-    
-    <h2 class="section-title">Top 3 khóa học</h2>
-    <div th:each="course, iterStat : ${top3}" th:limit="3" class="course">
-        <div>
-            <h3 class="course-name" th:text="${course.courseName}"></h3>
-            <p class="course-revenue">Doanh thu: <span th:text="${course.gia}"></span></p>
+    <div class="sidebar">
+        <!-- Đây là nội dung của menu bên trái -->
+        <ul>
+            <form action="/thongke" method="get">
+                <input type="hidden" name="teacherid" th:value="${teacherid}">
+                <button type="submit">Thống kê tổng doanh thu</button>
+            </form>
+            
+            <li>Thống kê doanh thu từ ngày đến ngày</li>
+            <form action="/thongke2" method="get">
+                <input type="hidden" name="teacherid" th:value="${teacherid}">
+                <button type="submit">Xếp hạng doanh thu</button>
+            </form>
+        </ul>
+    </div>
+
+<div class="content">
+    <div th:if="${flag==0}">
+        <h1 class="title">Tổng doanh thu: <span th:text="${tongdoanhthu}"></span></h1>
+        
+        <h2 class="section-title">Top 3 khóa học</h2>
+        <div th:each="course, iterStat : ${courses}" th:limit="3" class="course">
+            <div>
+                <h3 class="course-name" th:text="${course.courseName}"></h3>
+                <p class="course-revenue">Doanh thu: <span th:text="${course.gia}"></span></p>
+            </div>
         </div>
     </div>
+    <div th:if="${flag==2}">
+        <h4>Bảng Xếp hạng doanh thu</h4>
+        <table id="course-table">
+            <thead>
+                <tr>
+                <th>IMG</th>
+                <th>Course Name</th>
+                <th onclick="sortTable(2)">Course Revenue<span id="sort-icon-2" class="sort-icon"></span></th>
+                <th onclick="sortTable(3)">Course Buytime<span id="sort-icon-3" class="sort-icon"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="course : ${courses}">
+                    <td><img th:src="${course.avatar}"></td>
+                    <td th:text="${course.courseName}"></td>
+                    <td th:text="${course.courseRevenue}"></td>
+                    <td th:text="${course.courseBuyCount}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
+</div>
 <script th:src="@{/js/header.js}"></script>
 <div th:replace="~{fragments/footer}"></div>
 </body>

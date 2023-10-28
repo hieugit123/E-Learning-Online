@@ -1,5 +1,6 @@
 package com.phanlop.khoahoc.Controller;
 
+import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
 import com.phanlop.khoahoc.Entity.*;
 
 import java.util.ArrayList;
@@ -54,9 +55,41 @@ public class ThongkeController {
         top3toview.add(coursetop3.get(0));
         top3toview.add(coursetop3.get(1));
         top3toview.add(coursetop3.get(2));
-        model.addAttribute("top3", top3toview);
+        int flag=0;
+        model.addAttribute("flag", flag);
+        model.addAttribute("courses", top3toview);
         model.addAttribute("tongdoanhthu", sum);
         model.addAttribute("teacherid", teacherid);
+        return "thongke";
+    }
+    @GetMapping("/thongke2")
+    public String thongke2(@RequestParam("teacherid") long teacherid,Model model){
+        User user=userServices.getUserById(teacherid);
+        List<Course> courses=courseServices.findCourseOfTeacher(user);
+        List<Enrollment> enrollments=enrollmentServices.getAll();
+        
+        List<ThongkeCourseDTO> coursefix=new ArrayList<>();
+        for (Course course : courses) {
+            int count=0;
+            for (Enrollment enrollment : enrollments) {
+                if(course.getCourseID()==enrollment.getCourse().getCourseID()){
+                    count++;
+                }
+            }
+            ThongkeCourseDTO coursedto=new ThongkeCourseDTO();
+            coursedto.courseName=course.getCourseName();
+            coursedto.gia=course.getGia();
+            coursedto.courseid=course.getCourseID();
+            coursedto.courseRevenue=course.getGia()*count;
+            coursedto.courseBuyCount=count;
+            coursedto.avatar=course.getCourseAvt();
+            coursefix.add(coursedto);
+        }
+       
+        int flag=2;
+        model.addAttribute("flag", flag);
+        model.addAttribute("teacherid", teacherid);
+        model.addAttribute("courses", coursefix);
         return "thongke";
     }
 }
