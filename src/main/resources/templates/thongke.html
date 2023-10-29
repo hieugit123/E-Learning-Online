@@ -100,6 +100,17 @@
         .sort-icon.desc:before {
             content: 'v';
         }
+        .date-picker {
+            display: flex;
+        }
+
+        .date-picker input {
+            margin-right: 10px;
+        }
+
+        .date-picker button {
+            padding: 5px 10px;
+        }
         
     </style>
     <script>
@@ -163,7 +174,10 @@
                 <button type="submit">Thống kê tổng doanh thu</button>
             </form>
             
-            <li>Thống kê doanh thu từ ngày đến ngày</li>
+            <form action="/thongke1" method="get">
+                <input type="hidden" name="teacherid" th:value="${teacherid}">
+                <button type="submit">Thống kê từ ngày đến ngày</button>
+            </form>
             <form action="/thongke2" method="get">
                 <input type="hidden" name="teacherid" th:value="${teacherid}">
                 <button type="submit">Xếp hạng doanh thu</button>
@@ -173,16 +187,55 @@
 
 <div class="content">
     <div th:if="${flag==0}">
-        <h1 class="title">Tổng doanh thu: <span th:text="${tongdoanhthu}"></span></h1>
+        <h1 class="title">Tổng doanh thu: <span th:text="${tongdoanhthu}"></span>VNĐ</h1>
         
-        <h2 class="section-title">Top 3 khóa học</h2>
+        <h2 class="section-title">Top 3 khóa học có doanh thu cao nhất</h2>
         <div th:each="course, iterStat : ${courses}" th:limit="3" class="course">
             <div>
+                <td><img th:src="${course.courseAvt}"></td>
                 <h3 class="course-name" th:text="${course.courseName}"></h3>
-                <p class="course-revenue">Doanh thu: <span th:text="${course.gia}"></span></p>
+                <p class="course-revenue">Doanh thu: <span th:text="${course.gia}"></span>VNĐ</p>
+                <p class="course-revenue">Lượt mua: <span th:text="${course.state}"></span></p>
             </div>
         </div>
     </div>
+    <div th:if="${flag==1}">
+        <form action="/thongkedate" method="get">
+            <div class="date-picker">
+                <input type="hidden" name="teacherid" th:value="${teacherid}">
+                <input type="date" name="startDate" required>
+                <input type="date" name="endDate" required>
+                <button type="submit">Lọc</button>
+            </div>
+        </form>
+        <h1 class="title">Tổng doanh thu: <span th:text="${tongdoanhthu}"></span>VNĐ</h1>
+     
+        <table id="course-table">
+            <thead>
+                <tr>
+                    <th>IMG</th>
+                    <th>Course Name</th>
+                    <th onclick="sortTable(2)">Course Revenue(VNĐ)<span id="sort-icon-2" class="sort-icon"></span></th>
+                    <th onclick="sortTable(3)">Course Buytime<span id="sort-icon-3" class="sort-icon"></span></th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="course : ${courses}">
+                    <td><img th:src="${course.avatar}"></td>
+                    <td th:text="${course.courseName}"></td>
+                    <td th:text="${course.courseRevenue}"></td>
+                    <td th:text="${course.courseBuyCount}"></td>
+                </tr>
+            </tbody>
+        </table>
+            <div th:if="${courses.size()==0}">
+                <h3>NO VALUE FOUND</h3>
+            </div>
+        
+
+    </div>
+
     <div th:if="${flag==2}">
         <h4>Bảng Xếp hạng doanh thu</h4>
         <table id="course-table">
@@ -190,7 +243,7 @@
                 <tr>
                 <th>IMG</th>
                 <th>Course Name</th>
-                <th onclick="sortTable(2)">Course Revenue<span id="sort-icon-2" class="sort-icon"></span></th>
+                <th onclick="sortTable(2)">Course Revenue(VNĐ)<span id="sort-icon-2" class="sort-icon"></span></th>
                 <th onclick="sortTable(3)">Course Buytime<span id="sort-icon-3" class="sort-icon"></span></th>
                 </tr>
             </thead>
