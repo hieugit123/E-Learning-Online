@@ -28,4 +28,5 @@ public class UserDTO {
     private String password;
     private Instant createdDate;
     private Instant modifiedDate;
+    private String mota;
 }

@@ -41,11 +41,18 @@ public class SignUpController {
             User user = ObjectMapperUtils.map(userDTO, User.class);
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             userServices.saveUser(user);
-            Role studentRole = roleRepository.findByRoleName("ROLE_STUDENT");
-            studentRole.getListUsers().add(user);
-            user.getListRoles().add(studentRole);
-            roleRepository.save(studentRole);
-
+            if(user.getMota() != null){
+                Role teacherRole = roleRepository.findByRoleName("ROLE_TEACHER");
+                teacherRole.getListUsers().add(user);
+                user.getListRoles().add(teacherRole);
+                roleRepository.save(teacherRole);
+            } else {
+                Role studentRole = roleRepository.findByRoleName("ROLE_STUDENT");
+                studentRole.getListUsers().add(user);
+                user.getListRoles().add(studentRole);
+                roleRepository.save(studentRole);
+            }
+                
             return new ModelAndView("redirect:/login");
         }
         else {

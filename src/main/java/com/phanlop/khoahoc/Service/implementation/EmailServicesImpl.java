@@ -2,33 +2,38 @@ package com.phanlop.khoahoc.Service.implementation;
 
 import com.phanlop.khoahoc.Service.EmailServices;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 @RequiredArgsConstructor
 public class EmailServicesImpl implements EmailServices {
-    private final JavaMailSender mailSender;
+    private final JavaMailSender javaMailSender;
 
     @Override
     public boolean sendOTPEmail(String email, String title, String body) {
-        try{
-//            cấu hình với địa chỉ email người nhận (email), tiêu đề (title), nội dung (body), và
-//            địa chỉ email người gửi
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(email);
-            message.setSubject(title);
-            message.setText(body);
-            message.setFrom("kodyweinern95@hotmail.com");
-            //dùng thư viện JavaMailSender để gửi.
-            mailSender.send(message);
+        try {
+            // Tạo một MimeMessage để gửi email
+            MimeMessage message = javaMailSender.createMimeMessage();
+
+            // Sử dụng MimeMessageHelper để cấu hình email
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(email);        // Địa chỉ email người nhận
+            helper.setSubject(title);   // Tiêu đề email
+            helper.setText(body, true); // Nội dung email với HTML
+
+            // Gửi email
+            javaMailSender.send(message);
+
             return true;
-        } catch (MailException ex){
-            System.out.println(ex.toString());
+        } catch (MailException | MessagingException ex) {
+            // Xử lý lỗi gửi email
+            ex.printStackTrace();
             return false;
         }
     }

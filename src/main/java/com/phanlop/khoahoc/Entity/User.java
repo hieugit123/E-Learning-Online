@@ -34,6 +34,7 @@ public class User {
     @NotEmpty(message = "Thiếu password")
     @Size(min = 3, message = "Password phải từ 3 kí tự trở lên")
     private String password;
+    private String mota;
     @CreatedDate
     private Instant createdDate;
     @LastModifiedDate
@@ -52,8 +53,8 @@ public class User {
 //    private Set<Submit> selfSubmit = new HashSet<>();
 
 //    // Khóa ngoại cho file
-//    @OneToMany(mappedBy = "uploadedUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<File> uploadFiles = new HashSet<>();
+   @OneToMany(mappedBy = "uploadedUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   private Set<File> uploadFiles = new HashSet<>();
 
     // Khóa ngoại cho bảng UserRole
     @ManyToMany(mappedBy = "listUsers", fetch = FetchType.EAGER)

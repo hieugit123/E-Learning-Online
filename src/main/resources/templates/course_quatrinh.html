@@ -32,17 +32,19 @@
     <div class="w-100">
             <div th:if="${not #lists.isEmpty(listCourse)}" class="course-list d-flex flex-wrap">
                 <th:block th:each="course : ${listCourse}">
-                    <a th:href="@{/course/quatrinhhoc/{idCourse}(idCourse=${course.courseID})}" class="course-item">
-                        <img th:src="${course.courseAvt}" class="img-fluid">
-                        <div class="sao">
-                            <span th:text="${course.danhgias.size()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                            <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                        </div>
-                        <p th:text="${course.courseOwner.fullName}"></p>
-                        <h4 th:text="${course.gia + '₫'}"></h4>
-                        <h6 class="mt-3 text-dark" th:text="${course.courseName}"></h6>
-                        <p class="text-small m-0 text-muted" th:text="${course.department.departmentName}"></p>
-                    </a>
+                    <th:block th:if="${course.state} == 1">
+                        <a th:href="@{/course/quatrinhhoc/{idCourse}(idCourse=${course.courseID})}" class="course-item">
+                            <img th:src="${course.courseAvt}" class="img-fluid">
+                            <div class="sao">
+                                <span th:text="${course.danhgias.size()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                                <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                            </div>
+                            <p th:text="${course.courseOwner.fullName}"></p>
+                            <h4 th:text="${course.gia + '₫'}"></h4>
+                            <h6 class="mt-3 text-dark" th:text="${course.courseName}"></h6>
+                            <p class="text-small m-0 text-muted" th:text="${course.department.departmentName}"></p>
+                        </a>
+                    </th:block>
                 </th:block>
             </div>
     </div>

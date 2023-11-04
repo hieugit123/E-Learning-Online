@@ -98,30 +98,10 @@
     <div class="content_right">
         <div class="content-list">
             <h1>Nội dung khóa học</h1>
-            <div class="listItem">
+            <div class="listItem" th:each="lesson : ${lessons}">
                 <input type="checkbox" name="checkItem">
                 <div class="content-listItem">
-                    <span>Lập trình winform thứ 2</span>
-                    <div class="time-video">
-                        <i class="bi bi-list-task" style="font-size: 20px"></i>
-                        <span>4 phút</span>
-                    </div>
-                </div>
-            </div>
-            <div class="listItem">
-                <input type="checkbox" name="checkItem">
-                <div class="content-listItem">
-                    <span>Lập trình winform thứ 2</span>
-                    <div class="time-video">
-                        <i class="bi bi-list-task" style="font-size: 20px"></i>
-                        <span>4 phút</span>
-                    </div>
-                </div>
-            </div>
-            <div class="listItem">
-                <input type="checkbox" name="checkItem">
-                <div class="content-listItem">
-                    <span>Lập trình winform thứ 2</span>
+                    <span th:text="${lesson.lessonTitle}"></span>
                     <div class="time-video">
                         <i class="bi bi-list-task" style="font-size: 20px"></i>
                         <span>4 phút</span>

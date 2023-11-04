@@ -93,12 +93,20 @@
             </div>
             <div class="course_list_video" style="display: flex; gap: 10px; flex-direction: column;">
                 <div class="card" th:each="lesson : ${lessons}">
-                    <div class="card-body">
+                    <th:block th:if="${lesson.xemTruoc} == 1">
+                        <span>
+                            <i class="bi bi-play-fill"></i>
+                            <span th:text="${lesson.lessonTitle}"></span>
+                            <a th:href="@{/{id}(id=${lesson.getLessonVideo()})}">Xem trước</a>
+                        </span>
+                    </th:block>
+
+                    <th:block th:if="${lesson.xemTruoc} != 1">
                         <span>
                             <i class="bi bi-play-fill"></i>
                             <span th:text="${lesson.lessonTitle}"></span>
                         </span>
-                    </div>
+                    </th:block>
                 </div>
             </div>
             <h5 class="mt-4">Tài liệu tham khảo</h5>

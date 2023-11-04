@@ -56,5 +56,13 @@ public class Course {
     
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();
+
+    // Tạo table chapter document
+    // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // @JoinTable(name = "course_document", // Tên table muốn tạo
+    //         joinColumns = @JoinColumn(name = "course_id"),
+    //         inverseJoinColumns = @JoinColumn(name = "file_id")
+    // )
+    // private Set<File> listDocuments = new HashSet<>();
     
 }

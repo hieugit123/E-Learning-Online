@@ -28,13 +28,17 @@ import com.phanlop.khoahoc.Entity.AccessType;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.Department;
 import com.phanlop.khoahoc.Entity.Enrollment;
+import com.phanlop.khoahoc.Entity.File;
 import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.User;
+// import com.phanlop.khoahoc.Entity.File;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.LessonServices;
 import com.phanlop.khoahoc.Service.UserServices;
+import com.phanlop.khoahoc.Service.FileServices;
+import com.phanlop.khoahoc.Repository.FileRepository;
 import com.phanlop.khoahoc.Utils.ObjectMapperUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -47,9 +51,9 @@ public class CourseController {
     private final LessonServices lessonServices;
     private final UserServices userServices;
     private final DepartmentRepository departmentRepository;
-//    private final FileServices fileServices;
+   private final FileServices fileServices;
     private final EnrollmentServices enrollmentServices;
-//    private final FileRepository fileRepository;
+   private final FileRepository fileRepository;
 
     @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
     @GetMapping("/search")
@@ -93,13 +97,15 @@ public class CourseController {
     public ResponseEntity<CourseDTO> addCourse(@ModelAttribute CreateCourseDTO courseDTO, Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userServices.getUserByUserName(userDetails.getUsername());
-//        File file = fileServices.addFile(courseDTO.getCourseAvt());
+        File file = fileServices.addFile(courseDTO.getCourseAvt()); //
         Department department = departmentRepository.findById(courseDTO.getDepartmentId()).orElse(null);
-        if (department  != null){
+        if (department  != null && file != null){
             Course course = ObjectMapperUtils.map(courseDTO, Course.class);
-//            course.setCourseAvt(file.getFileLink());
+            course.setCourseAvt(file.getFileLink());
             course.setDepartment(department);
             course.setCourseOwner(user);
+            course.setStateGuiAdmin(0);
+            course.setState(0);
             courseServices.saveCourse(course);
             return ResponseEntity.ok(ObjectMapperUtils.map(course, CourseDTO.class));
         }

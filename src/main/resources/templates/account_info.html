@@ -17,6 +17,8 @@
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.all.min.js"></script>
 </head>
 <body>
 <div th:replace="~{fragments/header}"></div>
@@ -55,7 +57,7 @@
                         </form>
                     </div>
                     <div id="change-form" class="collapse">
-                        <form method="POST" action="/account_info">
+                        <form id="formEditAccount">
                             <div class="mb-3">
                                 <label for="input-old-password" class="form-label">Mật khẩu cũ</label>
                                 <input type="password" class="form-control" id="input-old-password">
@@ -84,5 +86,6 @@
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/main_admin.js}"></script>
 </body>
 </html>

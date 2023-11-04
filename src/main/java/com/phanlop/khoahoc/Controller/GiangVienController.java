@@ -56,6 +56,7 @@ public class GiangVienController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userServices.getUserByUserName(userDetails.getUsername());
         List<Course> courses = courseService.findCourseDangDo(user);
+        model.addAttribute("user", user);
         model.addAttribute("courses", courses);
         model.addAttribute("departments", departmentRepository.findAll());
         model.addAttribute("khoaId", 0);

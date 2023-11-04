@@ -55,6 +55,39 @@ $('#formCreateCourse').submit(function(event) {
     });
 });
 
+$('#formEditAccount').submit(function(event) {
+    event.preventDefault();
+    alert("da vao");
+    var passOld = $("#input-old-password").val();
+    var passNew = $("#input-new-password").val();
+    var passNewConfirm = $("#input-confirm-password").val();
+    
+      $.ajax({
+        url: '/account_info1',
+        type: 'POST',
+        data: {
+            passOld: passOld,
+            passNew: passNew,
+            passNewConfirm: passNewConfirm
+        },
+        success: function(response) {
+            // handle success response
+            console.log(response);
+            Swal.fire({
+                icon: 'success',
+                title: 'Khóa học đã được thêm',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(()=>{
+                location.reload();
+            })
+        },
+        error: function(xhr, status, error) {
+            Swal.fire('Có lỗi khi thêm!', '', 'error');
+        }
+    });
+});
+
 $('#formAddCourse').submit(function(event) {
     event.preventDefault();
     let formData = new FormData();

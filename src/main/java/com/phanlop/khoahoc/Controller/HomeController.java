@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.phanlop.khoahoc.Config.CustomUserDetails;
+import com.phanlop.khoahoc.DTO.UserDTO;
 import com.phanlop.khoahoc.Entity.AccessType;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.Enrollment;
@@ -39,6 +40,15 @@ public class HomeController {
     private final UserServices userServices;
     private final EnrollmentServices enrollmentServices;
     private final CartServices cartServices;
+
+    //MỚI
+    @GetMapping("/dkyGiangVien")
+    public String getDkyGiangVien(Model model){
+        boolean isDkyGV = true;
+        model.addAttribute("user", new UserDTO());
+        model.addAttribute("isDKGV", isDkyGV);
+        return "signup";
+    }
 
     //MỚI
     @GetMapping("/course/usrenroll")
@@ -245,12 +255,15 @@ public class HomeController {
     //SỬA
     @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN')")
     @GetMapping("/teacher/detail/{courseId}")
-    public String getAdminDetail(@PathVariable String courseId, Model model) {
+    public String getAdminDetail(@PathVariable String courseId, Model model, Authentication authentication) {
         Course myCourse = courseService.getCourseById(UUID.fromString(courseId));
         model.addAttribute("course", myCourse);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());
         List<Lesson> lessons = new ArrayList<>(myCourse.getListLessons().stream().toList());
         lessons.sort(Comparator.comparing(Lesson::getLessonSort));
         model.addAttribute("lessons", lessons);
+        model.addAttribute("user", user);
         return "course_detail_teacher";
     }
     //SỬA

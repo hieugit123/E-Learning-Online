@@ -26,6 +26,7 @@ import com.phanlop.khoahoc.Service.UserServices;
 import com.phanlop.khoahoc.Utils.ObjectMapperUtils;
 import com.phanlop.khoahoc.Service.CartServices;
 import com.phanlop.khoahoc.Service.CourseServices;
+import com.phanlop.khoahoc.Service.EmailServices;
 import com.phanlop.khoahoc.Service.HoaDonServices;
 
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,7 @@ public class CheckoutController {
     private final CTHDServices cthdServices;
     private final EnrollmentRepository enrollmentRepository;
     private final CourseServices courseServices;
+    private final EmailServices emailServices;
     
     @PostMapping("/checkout/{sumCart}")
     public ResponseEntity<String> checkout(Authentication authentication, @PathVariable String sumCart, @RequestBody List<String> selectedItems){
@@ -82,8 +84,13 @@ public class CheckoutController {
 
         //create enrollment
         //deletecart
-
-        return ResponseEntity.ok("success");
+            String title = "Xác nhận mua hàng từ F9";
+            String body = "F9 - UNIVERSITY (chân thành cảm ơn bạn đã lựa chọn F9 là nơi học tập, bổ sung tri thức, nâng cao tầm hiểu biết)";
+            boolean isSend = emailServices.sendOTPEmail(user.getEmail(), title, body);
+            if (isSend){
+                return ResponseEntity.ok("success");
+            }
+            return ResponseEntity.badRequest().body("fail");
     }
 
     @GetMapping("/teacher/hocvien/{courseId}")

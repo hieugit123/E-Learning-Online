@@ -3,7 +3,6 @@ package com.phanlop.khoahoc;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.validator.constraints.UUID;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -126,7 +125,7 @@ public class KhoahocApplication implements CommandLineRunner{
 		User student2 = new User();
 		student2.setUserId(6L);
 		student2.setFullName("Cong Minh");
-		student2.setEmail("congminh@gmail.com");
+		student2.setEmail("mxuan6699@gmail.com");
 		student2.setPassword(passwordEncoder.encode("123456"));
 		student2.getListRoles().add(role2);
 		role2.getListUsers().add(student2);
@@ -292,6 +291,59 @@ public class KhoahocApplication implements CommandLineRunner{
 			lesson3.setCourse(cslt);
 			lessonRepository.save(lesson3);
 
+			Course laptrinhc1 = new Course();
+			laptrinhc1.setCourseOwner(giaovien1);
+			laptrinhc1.setCourseAvt("https://files.fullstack.edu.vn/f8-prod/courses/21/63e1bcbaed1dd.png");
+			laptrinhc1.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
+			laptrinhc1.setCourseName("Lập trình c cơ bản, nâng cao thứ "+ i);
+			laptrinhc1.setDepartment(cntt);
+                        laptrinhc1.setStateGuiAdmin(1);
+                        laptrinhc1.setState(1);
+						laptrinhc1.setGia(450000);
+			courseRepository.save(laptrinhc1);
+
+			Lesson lessonc11 = new Lesson();
+			lessonc11.setLessonTitle("1. Tổng quan về khóa học Lập trình C++");
+			lessonc11.setLessonSort(1);
+			lessonc11.setLessonVideo("https://www.youtube.com/embed/WS05AU6YYm4");
+			lessonc11.setLessonContent("""
+                    Ngôn ngữ lập trình C++ là một ngôn ngữ lập trình hướng đối tượng(OOP – Object-oriented programming) được phát triển bởi Bjarne Stroustrup. C++ là ngôn ngữ lập trình được phát triển trên nên tảng của ngôn ngữ lập trình C. Do đó, C++ có song song cả 2 phong cách(style) lập trình hướng cấu trúc giống C và có thêm phong cách hướng đối tượng. Trong nhiều trường hợp, C++ sử dụng kết hợp cả 2 style trên. Do đó, nó được xem là một ngôn ngữ “lai tạo”.
+                    
+                    Ngôn ngữ C++ là một ngôn ngữ lập trình cấp trung. Bởi vì nó có các tính chất của cả ngôn ngữ lập trình bậc thấp(Pascal, C…) và ngôn ngữ lập trình bậc cao(C#, Java, Python…).
+                    
+                    Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp\
+                    """);
+			lessonc11.setCourse(laptrinhc1);
+			lessonc11.setXemTruoc(1);
+			lessonRepository.save(lessonc11);
+
+			Lesson lessonc22 = new Lesson();
+			lessonc22.setLessonTitle("2. Biến trong C++");
+                        lessonc22.setLessonSort(2);
+			lessonc22.setLessonVideo("https://www.youtube.com/embed/i3nJyEt42Y8");
+			lessonc22.setLessonContent("""
+                    Ngôn ngữ lập trình C++ là một ngôn ngữ lập trình hướng đối tượng(OOP – Object-oriented programming) được phát triển bởi Bjarne Stroustrup. C++ là ngôn ngữ lập trình được phát triển trên nên tảng của ngôn ngữ lập trình C. Do đó, C++ có song song cả 2 phong cách(style) lập trình hướng cấu trúc giống C và có thêm phong cách hướng đối tượng. Trong nhiều trường hợp, C++ sử dụng kết hợp cả 2 style trên. Do đó, nó được xem là một ngôn ngữ “lai tạo”.
+                    
+                    Ngôn ngữ C++ là một ngôn ngữ lập trình cấp trung. Bởi vì nó có các tính chất của cả ngôn ngữ lập trình bậc thấp(Pascal, C…) và ngôn ngữ lập trình bậc cao(C#, Java, Python…).
+                    
+                    Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp\
+                    """);
+			lessonc22.setCourse(laptrinhc1);
+			lessonRepository.save(lessonc22);
+
+			Lesson lessonc33 = new Lesson();
+			lessonc33.setLessonTitle("3. Vòng lặp For trong C++");
+			lessonc33.setLessonSort(3);
+			lessonc33.setLessonVideo("https://www.youtube.com/embed/aL59MpOFMe0");
+			lessonc33.setLessonContent("""
+                    Ngôn ngữ lập trình C++ là một ngôn ngữ lập trình hướng đối tượng(OOP – Object-oriented programming) được phát triển bởi Bjarne Stroustrup. C++ là ngôn ngữ lập trình được phát triển trên nên tảng của ngôn ngữ lập trình C. Do đó, C++ có song song cả 2 phong cách(style) lập trình hướng cấu trúc giống C và có thêm phong cách hướng đối tượng. Trong nhiều trường hợp, C++ sử dụng kết hợp cả 2 style trên. Do đó, nó được xem là một ngôn ngữ “lai tạo”.
+                    
+                    Ngôn ngữ C++ là một ngôn ngữ lập trình cấp trung. Bởi vì nó có các tính chất của cả ngôn ngữ lập trình bậc thấp(Pascal, C…) và ngôn ngữ lập trình bậc cao(C#, Java, Python…).
+                    
+                    Ngôn ngữ lập trình C++(C plus plus) có đuôi mở rộng là .cpp\
+                    """);
+			lessonc33.setCourse(laptrinhc1);
+			lessonRepository.save(lessonc33);
 
 			Course laptrinhc = new Course();
 			laptrinhc.setCourseOwner(giaovien);
@@ -300,60 +352,60 @@ public class KhoahocApplication implements CommandLineRunner{
 			laptrinhc.setCourseName("Lập trình c cơ bản, nâng cao thứ "+ i);
 			laptrinhc.setDepartment(cntt);
                         laptrinhc.setStateGuiAdmin(0);
-                        laptrinhc.setState(1);
+                        laptrinhc.setState(0);
 						laptrinhc.setGia(450000);
 			courseRepository.save(laptrinhc);
 
-                        DanhGia danhgia1 = new DanhGia();
-                        danhgia1.setUser(student);
-                        danhgia1.setCourse(laptrinhc);
-                        danhgia1.setContentDanhgia("Khóa học khá bổ ích. Cảm ơn tác giả!");
-                        danhgia1.setSao(4);
-                        danhgia1.setTenUser(student.getFullName());
-                        danhgiaRepository.save(danhgia1);
-                        laptrinhc.getDanhgias().add(danhgia1);
-                        courseRepository.save(laptrinhc);
+                        // DanhGia danhgia1 = new DanhGia();
+                        // danhgia1.setUser(student);
+                        // danhgia1.setCourse(laptrinhc);
+                        // danhgia1.setContentDanhgia("Khóa học khá bổ ích. Cảm ơn tác giả!");
+                        // danhgia1.setSao(4);
+                        // danhgia1.setTenUser(student.getFullName());
+                        // danhgiaRepository.save(danhgia1);
+                        // laptrinhc.getDanhgias().add(danhgia1);
+                        // courseRepository.save(laptrinhc);
 
-						DanhGia danhgia11 = new DanhGia();
-                        danhgia11.setUser(student1);
-                        danhgia11.setCourse(laptrinhc);
-                        danhgia11.setContentDanhgia("Khóa học khá bổ ích. Cảm ơn tác giả!");
-                        danhgia11.setSao(4);
-                        danhgia11.setTenUser(student1.getFullName());
-                        danhgiaRepository.save(danhgia11);
-                        laptrinhc.getDanhgias().add(danhgia11);
-                        courseRepository.save(laptrinhc);
+						// DanhGia danhgia11 = new DanhGia();
+                        // danhgia11.setUser(student1);
+                        // danhgia11.setCourse(laptrinhc);
+                        // danhgia11.setContentDanhgia("Khóa học khá bổ ích. Cảm ơn tác giả!");
+                        // danhgia11.setSao(4);
+                        // danhgia11.setTenUser(student1.getFullName());
+                        // danhgiaRepository.save(danhgia11);
+                        // laptrinhc.getDanhgias().add(danhgia11);
+                        // courseRepository.save(laptrinhc);
                         
                         
-			Enrollment.EnrollmentId enrollmentId2 = new Enrollment.EnrollmentId();
-			enrollmentId2.setUserId(guest.getUserId());
-			enrollmentId2.setCourseId(laptrinhc.getCourseID());
-			Enrollment enrollment2 = new Enrollment();
-			enrollment2.setId(enrollmentId2);
-			enrollment2.setUser(guest);
-			enrollment2.setAccessType(AccessType.ACCEPT);
-			enrollment2.setCourse(laptrinhc);
-			enrollmentRepository.save(enrollment2);
+			// Enrollment.EnrollmentId enrollmentId2 = new Enrollment.EnrollmentId();
+			// enrollmentId2.setUserId(guest.getUserId());
+			// enrollmentId2.setCourseId(laptrinhc.getCourseID());
+			// Enrollment enrollment2 = new Enrollment();
+			// enrollment2.setId(enrollmentId2);
+			// enrollment2.setUser(guest);
+			// enrollment2.setAccessType(AccessType.ACCEPT);
+			// enrollment2.setCourse(laptrinhc);
+			// enrollmentRepository.save(enrollment2);
 
-			Enrollment.EnrollmentId enrollmentId7 = new Enrollment.EnrollmentId();
-			enrollmentId7.setUserId(student1.getUserId());
-			enrollmentId7.setCourseId(laptrinhc.getCourseID());
-			Enrollment enrollment7 = new Enrollment();
-			enrollment7.setId(enrollmentId7);
-			enrollment7.setUser(student1);
-			enrollment7.setAccessType(AccessType.ACCEPT);
-			enrollment7.setCourse(laptrinhc);
-			enrollmentRepository.save(enrollment7);
+			// Enrollment.EnrollmentId enrollmentId7 = new Enrollment.EnrollmentId();
+			// enrollmentId7.setUserId(student1.getUserId());
+			// enrollmentId7.setCourseId(laptrinhc.getCourseID());
+			// Enrollment enrollment7 = new Enrollment();
+			// enrollment7.setId(enrollmentId7);
+			// enrollment7.setUser(student1);
+			// enrollment7.setAccessType(AccessType.ACCEPT);
+			// enrollment7.setCourse(laptrinhc);
+			// enrollmentRepository.save(enrollment7);
 
-			Enrollment.EnrollmentId enrollmentId77 = new Enrollment.EnrollmentId();
-			enrollmentId77.setUserId(student.getUserId());
-			enrollmentId77.setCourseId(laptrinhc.getCourseID());
-			Enrollment enrollment77 = new Enrollment();
-			enrollment77.setId(enrollmentId77);
-			enrollment77.setUser(student);
-			enrollment77.setAccessType(AccessType.ACCEPT);
-			enrollment77.setCourse(laptrinhc);
-			enrollmentRepository.save(enrollment77);
+			// Enrollment.EnrollmentId enrollmentId77 = new Enrollment.EnrollmentId();
+			// enrollmentId77.setUserId(student.getUserId());
+			// enrollmentId77.setCourseId(laptrinhc.getCourseID());
+			// Enrollment enrollment77 = new Enrollment();
+			// enrollment77.setId(enrollmentId77);
+			// enrollment77.setUser(student);
+			// enrollment77.setAccessType(AccessType.ACCEPT);
+			// enrollment77.setCourse(laptrinhc);
+			// enrollmentRepository.save(enrollment77);
 
 			Lesson lessonc1 = new Lesson();
 			lessonc1.setLessonTitle("1. Tổng quan về khóa học Lập trình C++");
@@ -593,12 +645,12 @@ public class KhoahocApplication implements CommandLineRunner{
 			cthd.setHoantien(0);
 			cthdRepository.save(cthd);
 
-			CTHoaDon cthd1 = new CTHoaDon();
-			cthd1.setHoadon(hd);
-			cthd1.setCourse(laptrinhc);
-			cthd1.setGia(500000);
-			cthd1.setHoantien(0);
-			cthdRepository.save(cthd1);
+			// CTHoaDon cthd1 = new CTHoaDon();
+			// cthd1.setHoadon(hd);
+			// cthd1.setCourse(laptrinhc);
+			// cthd1.setGia(500000);
+			// cthd1.setHoantien(0);
+			// cthdRepository.save(cthd1);
 
 			CTHoaDon cthd2 = new CTHoaDon();
 			cthd2.setHoadon(hd);
@@ -615,7 +667,7 @@ public class KhoahocApplication implements CommandLineRunner{
 			cthdRepository.save(cthd3);
 			List<CTHoaDon> list = new ArrayList<>();
 			list.add(cthd);
-			list.add(cthd1);
+			// list.add(cthd1);
 			list.add(cthd2);
 			list.add(cthd3);
 			hd.setListCTHD(list);
@@ -634,12 +686,12 @@ public class KhoahocApplication implements CommandLineRunner{
 			cthd4.setHoantien(0);
 			cthdRepository.save(cthd4);
 
-			CTHoaDon cthd5 = new CTHoaDon();
-			cthd5.setHoadon(hd1);
-			cthd5.setCourse(laptrinhc);
-			cthd5.setGia(500000);
-			cthd5.setHoantien(0);
-			cthdRepository.save(cthd5);
+			// CTHoaDon cthd5 = new CTHoaDon();
+			// cthd5.setHoadon(hd1);
+			// cthd5.setCourse(laptrinhc);
+			// cthd5.setGia(500000);
+			// cthd5.setHoantien(0);
+			// cthdRepository.save(cthd5);
 
 			CTHoaDon cthd6 = new CTHoaDon();
 			cthd6.setHoadon(hd1);
@@ -649,7 +701,7 @@ public class KhoahocApplication implements CommandLineRunner{
 			cthdRepository.save(cthd6);
 			List<CTHoaDon> list1 = new ArrayList<>();
 			list1.add(cthd4);
-			list1.add(cthd5);
+			// list1.add(cthd5);
 			list1.add(cthd6);
 			hd1.setListCTHD(list1);
 			hoaDonRepository.save(hd1);
@@ -667,16 +719,16 @@ public class KhoahocApplication implements CommandLineRunner{
 			cthd7.setHoantien(0);
 			cthdRepository.save(cthd7);
 
-			CTHoaDon cthd8 = new CTHoaDon();
-			cthd8.setHoadon(hd2);
-			cthd8.setCourse(laptrinhc);
-			cthd8.setGia(500000);
-			cthd8.setHoantien(0);
-			cthdRepository.save(cthd8);
+			// CTHoaDon cthd8 = new CTHoaDon();
+			// cthd8.setHoadon(hd2);
+			// cthd8.setCourse(laptrinhc);
+			// cthd8.setGia(500000);
+			// cthd8.setHoantien(0);
+			// cthdRepository.save(cthd8);
 
 			List<CTHoaDon> list2 = new ArrayList<>();
 			list2.add(cthd7);
-			list2.add(cthd8);
+			// list2.add(cthd8);
 			hd2.setListCTHD(list2);
 			hoaDonRepository.save(hd2);
 
