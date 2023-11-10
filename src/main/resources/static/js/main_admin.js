@@ -57,7 +57,6 @@ $('#formCreateCourse').submit(function(event) {
 
 $('#formEditAccount').submit(function(event) {
     event.preventDefault();
-    alert("da vao");
     var passOld = $("#input-old-password").val();
     var passNew = $("#input-new-password").val();
     var passNewConfirm = $("#input-confirm-password").val();
@@ -75,7 +74,7 @@ $('#formEditAccount').submit(function(event) {
             console.log(response);
             Swal.fire({
                 icon: 'success',
-                title: 'Khóa học đã được thêm',
+                title: 'Đã thay đổi thành công',
                 showConfirmButton: false,
                 timer: 1500
             }).then(()=>{
@@ -83,7 +82,7 @@ $('#formEditAccount').submit(function(event) {
             })
         },
         error: function(xhr, status, error) {
-            Swal.fire('Có lỗi khi thêm!', '', 'error');
+            Swal.fire('Có lỗi khi sửa!', '', 'error');
         }
     });
 });

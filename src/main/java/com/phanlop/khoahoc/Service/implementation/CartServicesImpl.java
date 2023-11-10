@@ -33,7 +33,8 @@ public class CartServicesImpl implements CartServices{
     @Override
     public void deleteCart(Course course, User user) {
         // TODO Auto-generated method stub
-        cartRepository.deleteByUserAndCourse(user, course);
+        if(!isInCart(course, user))
+            cartRepository.deleteByUserAndCourse(user, course);
     }
     
 }

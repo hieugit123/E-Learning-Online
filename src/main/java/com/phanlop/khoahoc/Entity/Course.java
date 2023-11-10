@@ -57,6 +57,19 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();
 
+    public float tbDanhGia(){
+        int tb = 0;
+        int lenght = danhgias.size();
+        float tbdanhgia;
+        if(!danhgias.isEmpty()){
+            for(int i=0; i<lenght; i++){
+            tb = tb + danhgias.get(i).getSao();
+        }
+        tbdanhgia = (float) tb/lenght;
+        } else
+        tbdanhgia = 0;
+        return tbdanhgia;
+    }
     // Tạo table chapter document
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // @JoinTable(name = "course_document", // Tên table muốn tạo

@@ -94,7 +94,7 @@ public class KhoahocApplication implements CommandLineRunner{
 		User guest = new User();
 		guest.setUserId(2L);
 		guest.setFullName("Guest");
-		guest.setEmail("hocvien1@gmail.com");
+		guest.setEmail("hieum7239@gmail.com");
 		guest.setPassword(passwordEncoder.encode("123456"));
 		guest.getListRoles().add(role2);
 		role2.getListUsers().add(guest);
@@ -150,6 +150,7 @@ public class KhoahocApplication implements CommandLineRunner{
 		giaovien.setEmail("giaovien@gmail.com");
 		giaovien.setPassword(passwordEncoder.encode("123456"));
 		giaovien.getListRoles().add(role3);
+		// giaovien.setMota("Das Thema HTTP Session Replication ist im Kubernetes Umfeld wichtig, da Kubernetes Pods flüchtig sind. Das bedeutet, dass sie jederzeit heruntergefahren werden können, z.B. bei einem Rolling Update. Dieses Problem wird durch die Persistenz der HTTP Session bei Anwendungen gelöst, die einen State haben, also z.B. eine Benutzerinteraktion über ein UI erlauben.");
 		role3.getListUsers().add(giaovien);
 		userRepository.save(giaovien);
 		roleRepository.save(role3);

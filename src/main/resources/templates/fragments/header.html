@@ -124,7 +124,11 @@
                                         <div class="cartItem" th:each="course : ${listCourseInCart}">
                                             <a th:href="@{/detail1111/{id}(id=${course.courseID})}">
                                                 <img th:src="${course.courseAvt}" class="img-cartItem">
-                                                <span th:text="${course.courseName}" class="text-cartItem" style="width: 145px; display: block;"></span>
+                                                <div>
+                                                    <span th:text="${course.courseName}" class="text-cartItem" style="width: 145px; display: block;"></span>
+                                                    <span th:text="${course.courseOwner.fullName}"></span>
+                                                    <h6 th:text="${course.gia}"></h6>
+                                                </div>
                                             </a>
                                             <button id="btnDeleteCartItem" th:attr="onclick=|deleteCartItem('${course.courseID}')|">Xóa</button>
                                         </div>

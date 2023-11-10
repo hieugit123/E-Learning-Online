@@ -19,12 +19,14 @@ import com.phanlop.khoahoc.Config.CustomUserDetails;
 import com.phanlop.khoahoc.DTO.UserDTO;
 import com.phanlop.khoahoc.Entity.AccessType;
 import com.phanlop.khoahoc.Entity.Course;
+import com.phanlop.khoahoc.Entity.DanhGia;
 import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
 import com.phanlop.khoahoc.Service.CartServices;
 import com.phanlop.khoahoc.Service.CourseServices;
+import com.phanlop.khoahoc.Service.DanhGiaServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.LessonServices;
 import com.phanlop.khoahoc.Service.UserServices;
@@ -40,6 +42,37 @@ public class HomeController {
     private final UserServices userServices;
     private final EnrollmentServices enrollmentServices;
     private final CartServices cartServices;
+    private final DanhGiaServices danhgiaServices;
+
+    //MỚI
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN')")
+    @GetMapping("/teacher/detail1111/{courseId}")
+    public String getCourseDetail(@PathVariable String courseId, Model model, Authentication authentication) {
+        Course myCourse = courseService.getCourseById(UUID.fromString(courseId));
+        model.addAttribute("course", myCourse);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());
+        List<Lesson> lessons = new ArrayList<>(myCourse.getListLessons().stream().toList());
+        lessons.sort(Comparator.comparing(Lesson::getLessonSort));
+        model.addAttribute("lessons", lessons);
+        model.addAttribute("user", user);
+        return "course_intro";
+    }
+
+    //MỚI
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN')")
+    @GetMapping("/teacher/detail3333/{courseId}")
+    public String getCourseDetail33(@PathVariable String courseId, Model model, Authentication authentication) {
+        Course myCourse = courseService.getCourseById(UUID.fromString(courseId));
+        model.addAttribute("course", myCourse);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());
+        List<Lesson> lessons = new ArrayList<>(myCourse.getListLessons().stream().toList());
+        lessons.sort(Comparator.comparing(Lesson::getLessonSort));
+        model.addAttribute("lessons", lessons);
+        model.addAttribute("user", user);
+        return "course_intro_teacher";
+    }
 
     //MỚI
     @GetMapping("/dkyGiangVien")
@@ -57,20 +90,31 @@ public class HomeController {
         User user = userServices.getUserByUserName(userDetails.getUsername());
         List<Enrollment> list = user.getEnrollments();
         List<Course> listCourse = new ArrayList<>();
+        List<Course> listCourse1 = courseService.filterNoOwnedByUser(user);
         for(Enrollment e : list){
             listCourse.add(e.getCourse());
         }
         model.addAttribute("listCourse", listCourse);
+        model.addAttribute("listCourse1", listCourse1);
         return "course_quatrinh";
     }
 
     //MỚI
     @GetMapping("/course/quatrinhhoc/{idCourse}")
-    public String getQuaTrinh(Model model, @PathVariable UUID idCourse){
+    public String getQuaTrinh(Model model, @PathVariable UUID idCourse, Authentication authentication){
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());        
         Course myCourse = courseService.getCourseById(idCourse);
+        User gv = myCourse.getCourseOwner();
+        DanhGia dg = danhgiaServices.findDGByUserAndCourse(myCourse, user);
+        List<DanhGia> listDanhGia = myCourse.getDanhgias();
         List<Lesson> lessons = new ArrayList<>(myCourse.getListLessons().stream().toList());
+        model.addAttribute("danhgias", listDanhGia);
         lessons.sort(Comparator.comparing(Lesson::getLessonSort));
         model.addAttribute("lessons", lessons);
+        model.addAttribute("myDG", dg);
+        model.addAttribute("myCourse", myCourse);
+        model.addAttribute("giaovien", gv);
         return "course_hoctap";
     }
 
@@ -347,11 +391,10 @@ public class HomeController {
 //            return "chapter_watch";
 //     }
 
-    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN', 'ROLE_STUDENT')")
-    @GetMapping("/account_info")
-    public String accountInfo() {
-        // Do something to get account info
-        return "account_info";
-    }
-   
+    // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN', 'ROLE_STUDENT')")
+    // @GetMapping("/account_info")
+    // public String accountInfo() {
+    //     // Do something to get account info
+    //     return "account_info";
+    // }
 }

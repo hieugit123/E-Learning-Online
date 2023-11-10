@@ -61,9 +61,11 @@
                     <th:block th:if="${course.state} == 1">
                         <a th:href="@{/detail2222/{id}(id=${course.courseID})}" class="course-item">
                             <img th:src="${course.courseAvt}" class="img-fluid">
-                            <div class="sao">
-                                <span th:text="${course.danhgias.size()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                                <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                            <div class="sao" style="display: flex
+                            ;">
+                                <span class="tbsao" th:text="${course.tbDanhGia()}"></span><div class="saoShow"></div>
+                                <!-- <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                                </i><i class="bi bi-star-half star1"></i><i class="bi bi-star star2"></i> -->
                             </div>
                             <p th:text="${course.courseOwner.fullName}"></p>
                             <h4 th:text="${course.gia + '₫'}"></h4>
@@ -86,9 +88,11 @@
                         <th:block th:if="${course.state} == 1">
                             <a th:href="@{/detail1111/{id}(id=${course.courseID})}" class="course-item">
                                 <img th:src="${course.courseAvt}" class="img-fluid">
-                                <div class="sao">
-                                    <span th:text="${course.danhgias.size()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                                <div class="sao" style="display: flex
+                                ;">
+                                    <span class="tbsao" th:text="${course.tbDanhGia()}"></span><div class="saoShow"></div>
+                                    <!-- <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                                    </i><i class="bi bi-star-half star1"></i><i class="bi bi-star star2"></i> -->
                                 </div>
                                 <p th:text="${course.courseOwner.fullName}"></p>
                                 <h4 th:text="${course.gia + '₫'}"></h4>
@@ -102,6 +106,7 @@
     </div>
 </div>
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/newJs.js}"></script>
 <div th:replace="~{fragments/footer}"></div>
 </body>
 </html>

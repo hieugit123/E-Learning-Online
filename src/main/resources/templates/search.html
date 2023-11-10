@@ -84,7 +84,7 @@
                 <a th:href="@{/detail1111/{id}(id=${course.courseID})}" class="course-item">
                     <img th:src="${course.courseAvt}" class="img-fluid">
                     <div class="sao">
-                        <span th:text="${course.danhgias.size()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                        <span th:text="${course.tbDanhGia()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
                         <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
                     </div>
                     <p th:text="${course.courseOwner.fullName}"></p>

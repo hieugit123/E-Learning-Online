@@ -4,16 +4,15 @@
  */
 package com.phanlop.khoahoc.Repository;
 
-import com.phanlop.khoahoc.Entity.Course;
-import com.phanlop.khoahoc.Entity.DanhGia;
-import com.phanlop.khoahoc.Entity.User;
-
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
+import com.phanlop.khoahoc.Entity.Course;
+import com.phanlop.khoahoc.Entity.DanhGia;
+import com.phanlop.khoahoc.Entity.User;
 
 
 
@@ -23,4 +22,6 @@ import org.springframework.data.repository.query.Param;
  */
 public interface DanhGiaRepository extends JpaRepository<DanhGia, Long>{
     List<DanhGia> getDanhGiaByCourseCourseID(UUID course);
+    @Query("SELECT dg FROM DanhGia dg WHERE dg.course = :course AND dg.user = :user")
+    List<DanhGia> getDanhGiaByCourseCourseIdAndUserUserId(Course course, User user);
 }
