@@ -41,7 +41,7 @@
                     document.querySelector("#sumCart").textContent = tong + " ₫";
         }
         function thanhToan(){
-            $("#loadingModal").modal('show');
+            // $("#loadingModal").modal('show');
             const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
             const selectedItems = [];
 
@@ -51,24 +51,25 @@
 
             var sumCart = document.querySelector("#sumCart").textContent.split(" ")[0];
             $.ajax({
-                url: `/checkout/${sumCart}`,
+                url: '/checkout/saveSession',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(selectedItems),
                 success: function(response) {
                     // handle success response
                     console.log(response);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Đã thanh toán thành công!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(()=>{
-                        setTimeout(function(){
-                            $("#loadingModal").modal('hide');
-                            window.location.href = "http://localhost:8081/student";
-                        }, 2000);
-                    })
+                    window.location.href = `http://localhost:8081/checkout/submitOrder/${sumCart}`;
+                    // Swal.fire({
+                    //     icon: 'success',
+                    //     title: 'Đã thanh toán thành công!',
+                    //     showConfirmButton: false,
+                    //     timer: 1500
+                    // }).then(()=>{
+                    //     setTimeout(function(){
+                    //         $("#loadingModal").modal('hide');
+                            
+                    //     }, 2000);
+                    // })
                 },
                 error: function(xhr, status, error) {
                     $("#loadingModal").modal('hide');

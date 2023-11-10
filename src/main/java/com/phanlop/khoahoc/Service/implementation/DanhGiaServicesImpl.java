@@ -6,8 +6,10 @@ package com.phanlop.khoahoc.Service.implementation;
 
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.DanhGia;
+import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Repository.DanhGiaRepository;
 import com.phanlop.khoahoc.Service.DanhGiaServices;
+
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,6 +50,21 @@ public class DanhGiaServicesImpl implements DanhGiaServices{
         } else {
             return 0; // Trường hợp không có đánh giá, trả về 0.0
         }
+    }
+
+    @Override
+    public DanhGia findDGByUserAndCourse(Course course, User user) {
+        // TODO Auto-generated method stub
+        List<DanhGia> dg = danhgiaRepository.getDanhGiaByCourseCourseIdAndUserUserId(course, user);  
+        if(dg.isEmpty())
+            return null;     
+        return dg.get(0);
+    }
+
+    @Override
+    public void saveDanhGia(DanhGia dg) {
+        // TODO Auto-generated method stub
+        danhgiaRepository.save(dg);
     }
   
 }

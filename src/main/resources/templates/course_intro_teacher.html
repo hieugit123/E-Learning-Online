@@ -120,11 +120,11 @@
         </div>
     </div>
 
-    <!--    Modal thêm chapter -->
+    <!--    Modal thêm lesson -->
     <div class="modal fade" id="addChapterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form id="formAddChapter">
+                <form id="formAddLesson">
                     <input type="hidden" class="d-none" th:value="${course.courseID}" name="courseId" id="courseId">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">Thêm nội dung</h1>
@@ -132,21 +132,21 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="chapterTitle" class="form-label">Tên bài học</label>
-                            <input type="text" class="form-control" id="chapterTitle" placeholder="">
+                            <label for="lessonTitle" class="form-label">Tên bài học</label>
+                            <input type="text" class="form-control" id="lessonTitle" placeholder="">
                         </div>
                         <div class="mb-3">
-                            <label for="chapterVideo" class="form-label">Video của bài học</label>
-                            <input type="file" class="form-control" id="chapterVideo" placeholder="">
+                            <label for="lessonVideo" class="form-label">Video của bài học</label>
+                            <input type="file" class="form-control" id="lessonVideo" placeholder="">
                             <input type="text" class="form-control mt-2" id="youtubeUrl" placeholder="Hoặc link youtube">
                         </div>
                         <div class="mb-3">
-                            <label for="chapterContent" class="form-label">Nội dung khóa học</label>
-                            <textarea class="form-control" id="chapterContent" rows="3"></textarea>
+                            <label for="lessonContent" class="form-label">Nội dung khóa học</label>
+                            <textarea class="form-control" id="lessonContent" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" id="btnAddChapter">Thêm bài học</button>
+                        <button type="submit" class="btn btn-success" id="btnAddLesson">Thêm bài học</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                 </form>

@@ -8,14 +8,14 @@ $("#img").on('change', function(event){
     reader.readAsDataURL(file);
 })
 
-$('#formAddChapter').submit(function(event) {
+$('#formAddLesson').submit(function(event) {
     event.preventDefault();
     let formData = new FormData();
-    let file = $("#chapterVideo")[0].files[0];
+    let file = $("#lessonVideo")[0].files[0];
     if (file)
-        formData.append("chapterVideoMulti", file);
-    formData.append("chapterTitle", $("#chapterTitle").val())
-    formData.append("chapterContent", $("#chapterContent").val())
+        formData.append("lessonVideoMulti", file);
+    formData.append("lessonTitle", $("#lessonTitle").val())
+    formData.append("lessonContent", $("#lessonContent").val())
     formData.append("youtubeUrl", $("#youtubeUrl").val())
     formData.append("courseId", $("#courseId").val());
     $.ajax({
@@ -31,7 +31,7 @@ $('#formAddChapter').submit(function(event) {
             console.log(response);
             Swal.fire({
                 icon: 'success',
-                title: 'Khóa học đã được thêm',
+                title: 'Bài học đã được thêm',
                 showConfirmButton: false,
                 timer: 1500
             }).then(()=>{

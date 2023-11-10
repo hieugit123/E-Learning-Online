@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +42,7 @@ import com.phanlop.khoahoc.Service.FileServices;
 import com.phanlop.khoahoc.Repository.FileRepository;
 import com.phanlop.khoahoc.Utils.ObjectMapperUtils;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -54,6 +56,16 @@ public class CourseController {
    private final FileServices fileServices;
     private final EnrollmentServices enrollmentServices;
    private final FileRepository fileRepository;
+
+
+    //MỚI
+    @PostMapping("sendAdmin/{courseId}")
+    public ResponseEntity<String> setSended(@PathVariable UUID courseId){
+        Course course = courseServices.getCourseById(courseId);
+        course.setStateGuiAdmin(1);
+        courseServices.saveCourse(course);
+        return ResponseEntity.ok("success");
+    }
 
     @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
     @GetMapping("/search")
@@ -118,16 +130,16 @@ public class CourseController {
             Course course = courseServices.getCourseById(courseDTO.getCourseID());
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             User user = userServices.getUserByUserName(userDetails.getUsername());
-//            File file = fileServices.addFile(courseDTO.getCourseAvt());
+           File file = fileServices.addFile(courseDTO.getCourseAvt());
             Department department = departmentRepository.findById(courseDTO.getDepartmentId()).orElse(null);
             if (department  != null && course != null){
                 course.setDepartment(department);
                 course.setCourseOwner(user);
                 course.setCourseName(courseDTO.getCourseName());
                 course.setCourseDes(courseDTO.getCourseDes());
-//                if (file != null){
-//                    course.setCourseAvt(file.getFileLink());
-//                }
+               if (file != null){
+                   course.setCourseAvt(file.getFileLink());
+               }
                 courseServices.saveCourse(course);
                 return ResponseEntity.ok(ObjectMapperUtils.map(course, CourseDTO.class));
             }
@@ -155,10 +167,9 @@ public class CourseController {
     }
 
     //SỬA
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @PostMapping("/lesson/add")
-    public ResponseEntity<LessonDTO> addLesson(@ModelAttribute CreateLessonDTO lessonDTO){
-//        File file = fileServices.addFile(lessonDTO.getLessonVideoMulti());
+    public ResponseEntity<LessonDTO> addChapter(@ModelAttribute CreateLessonDTO lessonDTO){
+        File file = fileServices.addFile(lessonDTO.getLessonVideoMulti());
         Course course = courseServices.getCourseById(lessonDTO.getCourseId());
         if (course == null)
             return ResponseEntity.badRequest().build();
@@ -166,11 +177,11 @@ public class CourseController {
         Lesson lesson = ObjectMapperUtils.map(lessonDTO, Lesson.class);
         lesson.setCourse(course);
         lesson.setLessonSort(lessonServices.getMaxSortOfCourse(course) + 1);
-//        if (file != null){
-//            lesson.setLessonVideo(file.getFileLink());
-//        } else {
+        if (file != null){
+            lesson.setLessonVideo(file.getFileLink());
+        } else {
             lesson.setLessonVideo(lessonDTO.getYoutubeUrl());
-//        }
+        }
         LessonDTO dto = ObjectMapperUtils.map(lessonServices.saveLesson(lesson), LessonDTO.class);
         return ResponseEntity.ok(dto);
     }
@@ -233,6 +244,9 @@ public class CourseController {
         return ResponseEntity.badRequest().body("Khóa học yêu cầu không tồn tại!");
     }
     
+
+    
+
     //SỬA
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
 //    @PostMapping("/file/add/{courseId}")

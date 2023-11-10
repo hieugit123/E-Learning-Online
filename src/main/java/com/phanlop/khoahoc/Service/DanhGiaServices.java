@@ -8,16 +8,17 @@ package com.phanlop.khoahoc.Service;
  *
  * @author mxuan
  */
-import com.phanlop.khoahoc.Entity.DanhGia;
-import com.phanlop.khoahoc.Entity.User;
-import com.phanlop.khoahoc.Entity.Course;
-import org.springframework.data.domain.Page;
-
 import java.util.List;
 import java.util.UUID;
+
+import com.phanlop.khoahoc.Entity.Course;
+import com.phanlop.khoahoc.Entity.DanhGia;
+import com.phanlop.khoahoc.Entity.User;
 
 public interface DanhGiaServices {
     List<DanhGia> getAllDanhGia(Course course);
     Long getSoLuongDanhGia();
     int calculateAvarageRating(UUID course);
+    DanhGia findDGByUserAndCourse(Course course, User user);
+    void saveDanhGia(DanhGia dg);
 }

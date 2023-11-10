@@ -23,7 +23,44 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.all.min.js"></script>
     <script th:src="@{/js/newJs.js}"></script>
+    <script>
+        function addDanhGia(courseId) {
+                    var soSao = $("#soSaoInput").val();
+                    var motaDG = $("#motaDG").val();
+                    // var url = window.location.href;
+                    // var parts = url.split("/");
+                    // var id = parts.pop();
+                    // alert(id);
+                    
+                    $.ajax({
+                        url: '/danhgia/add',
+                        type: 'POST',
+                        data: {
+                            soSaoInput: soSao,  // Sửa tên biến này thành 'soSao' thay vì 'soSaoInput'
+                            motaDG: motaDG,
+                            courseId: courseId
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đã thay đổi thành công',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(()=>{
+                                location.reload();
+                            })
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire('Có lỗi khi sửa!', '', 'error');
+                        }
+                    });
+        }
+
+    </script>
     <style>
+        .saoSet {
+            color: gold;
+        }
         .content_left {
             width: 70%;
             margin-left: 20px;
@@ -49,7 +86,7 @@
     <div class="content_left">
         <div class="content_video">
             <div class="video-course">
-                <iframe width="95%" height="425" th:src="${lessons.get(0).getLessonVideo()}" frameborder="0" allowfullscreen></iframe>
+                <iframe id="srcVideo" width="95%" height="425" th:src="${lessons.get(0).getLessonVideo()}" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
         <div class="content_mota">
@@ -90,8 +127,14 @@
                 JEE Entwickler, die die Funktionsweise von Session Replikation in einem nicht JEE Umfeld verstehen möchten
                 Java Entwickler mit Schwerpunkt auf Cloud Anwendungen, insb. Kubernetes</span>
                 <!-- <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#danhgiaModal">  <span th:text="${course.danhgias.size()}"></span>Xếp hạng</span> -->
-            <h2>Báo cáo khóa học</h2>
-            <h2>Yêu cầu hoàn tiền</h2>
+                <div style="width: 900px; height: 2px; background-color: rgb(105, 109, 105); margin-top: 20px;"></div>
+                <div class="informationGV" style="display: flex; margin: 20px 0 20px 0;">
+                    <span style="font-size: 25px; display: block; margin-right: 50px;">Giảng viên</span>
+                    <div>
+                        <h6 th:text="${giaovien.fullName}"></h6>
+                        <h6 th:text="${giaovien.email}"></h6>
+                    </div>
+                </div>
         </div>
     </div>
     <!-- 30% -->
@@ -99,14 +142,16 @@
         <div class="content-list">
             <h1>Nội dung khóa học</h1>
             <div class="listItem" th:each="lesson : ${lessons}">
-                <input type="checkbox" name="checkItem">
-                <div class="content-listItem">
-                    <span th:text="${lesson.lessonTitle}"></span>
-                    <div class="time-video">
-                        <i class="bi bi-list-task" style="font-size: 20px"></i>
-                        <span>4 phút</span>
+                <button th:attr="onclick=|changeVideo('${lesson.getLessonVideo()}')|" style="width: 300px; margin-top: 20px;">
+                    <input type="checkbox" name="checkItem">
+                    <div class="content-listItem">
+                        <span th:text="${lesson.lessonTitle}"></span>
+                        <div class="time-video">
+                            <i class="bi bi-list-task" style="font-size: 20px"></i>
+                            <span>4 phút</span>
+                        </div>
                     </div>
-                </div>
+                </button>
             </div>
         </div>
     </div>
@@ -124,11 +169,313 @@
         </div>
     </div>
 </div> -->
+<div class="formDG" style="margin-left: 100px;" th:if="${myDG} == null">
+    <h2>Đánh giá của bạn</h2>
+    <form id="formDanhGia">
+        <h4>Vì sao đánh giá của bạn lại ở mức này?</h4>
+        <div>
+            <i class="bi bi-star star2 saoFree sao1" style="font-size: 25px;"></i>
+            <i class="bi bi-star star2 saoFree sao2" style="font-size: 25px;"></i>
+            <i class="bi bi-star star2 saoFree sao3" style="font-size: 25px;"></i>
+            <i class="bi bi-star star2 saoFree sao4" style="font-size: 25px;"></i>
+            <i class="bi bi-star star2 saoFree sao5" style="font-size: 25px;"></i>
+        </div>
+        <input type="hidden" id="soSaoInput" value="0">
+        <textarea id="motaDG" cols="30" rows="10" placeholder="Hãy cho chúng tôi biết trải nghiệm cá nhân của riêng bạn khi tham gia khóa học này. Khóa học có phù hợp với bạn không?"></textarea>
+        <button type="button" th:attr="onclick=|addDanhGia('${myCourse.courseID}')|">Lưu</button> 
+    </form>
+</div>
+<h2 style="margin: 20px;">
+    <i class="bi bi-star-fill star" style="color: gold;"></i>
+    <span th:text="${danhgias.size() + ' Xếp hạng'}"></span>
+</h2>
+<div class="danhGia" style="margin-left: 100px;">
+    
+    <div class="danhGia-item" th:each="danhgia : ${danhgias}" style="display: flex; flex-direction: column; width: 520px; margin-bottom: 20px;">
+        <div class="DG-item-title" style="display: flex; width: 100%; justify-content: space-between;">
+            <div style="display: flex;">
+                <img th:src="${danhgia.user.avatar}" style="width: 25px; height: 25px">
+                <div class="DG-item-title-between" style="margin-left: 20px;">
+                    <h6 th:text="${danhgia.user.fullName}"></h6>
+                    <div style="display: flex;">
+                        <div class="sao" style="margin-right: 20px;">
+                            <input type="hidden" class="soSaoDG" th:value="${danhgia.sao}">
+                            <div class="showSaoTheoUser"></div>
+                        </div>
+                        <span th:text="${danhgia.createdAt}"></span>
+                    </div>
+                </div>
+            </div>
+            <i class="bi bi-caret-down-fill"></i>
+        </div>
+        <span class="DG-item-content" th:text="${danhgia.contentDanhgia}" style="display: block; margin-top: 10px;"></span>
+        <div class="DG-item-nxet">
+
+        </div>
+    </div>
+</div>
 <div th:replace="~{fragments/footer}"></div>
 <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 <script th:src="@{/js/header.js}"></script>
+<script>
+    // Lấy danh sách tất cả các ngôi sao
+    const stars = document.querySelectorAll(".saoFree");
+    // Biến để theo dõi trạng thái khi đang thực hiện sự kiện "click"
+    let isClicking = false;
+    let number = 0;
+    let soSaoInput = document.getElementById("soSaoInput");
+    // Lặp qua từng ngôi sao và gán sự kiện hover
+    stars.forEach((star) => {
+    star.addEventListener("mouseenter", () => {
+        if(!isClicking){
+            if (star.classList.contains("sao1")) {            
+            star.classList.remove("bi-star");
+            star.classList.add("bi-star-fill");
+            if(number == 2){
+                var sao2 = document.querySelector(".sao2");
+                sao2.classList.remove("bi-star-fill");
+                sao2.classList.add("bi-star");
+            } else if(number == 3){
+                var sao2 = document.querySelector(".sao2");
+                sao2.classList.remove("bi-star-fill");
+                sao2.classList.add("bi-star");
+                var sao3 = document.querySelector(".sao3");
+                sao3.classList.remove("bi-star-fill");
+                sao3.classList.add("bi-star");
+            } else if(number == 4){
+                var sao2 = document.querySelector(".sao2");
+                sao2.classList.remove("bi-star-fill");
+                sao2.classList.add("bi-star");
+                var sao3 = document.querySelector(".sao3");
+                sao3.classList.remove("bi-star-fill");
+                sao3.classList.add("bi-star");
+                var sao4 = document.querySelector(".sao4");
+                sao4.classList.remove("bi-star-fill");
+                sao4.classList.add("bi-star");
+            } else if(number == 5){
+                var sao2 = document.querySelector(".sao2");
+                sao2.classList.remove("bi-star-fill");
+                sao2.classList.add("bi-star");
+                var sao3 = document.querySelector(".sao3");
+                sao3.classList.remove("bi-star-fill");
+                sao3.classList.add("bi-star");
+                var sao4 = document.querySelector(".sao4");
+                sao4.classList.remove("bi-star-fill");
+                sao4.classList.add("bi-star");
+                var sao5 = document.querySelector(".sao5");
+                sao5.classList.remove("bi-star-fill");
+                sao5.classList.add("bi-star");
+            }
+        } else if (star.classList.contains("sao2")){
+            var sao1 = document.querySelector(".sao1");
+            sao1.classList.remove("bi-star");
+            sao1.classList.add("bi-star-fill");
+            star.classList.remove("bi-star");
+            star.classList.add("bi-star-fill");
+
+            if(number == 3){
+                var sao3 = document.querySelector(".sao3");
+                sao3.classList.remove("bi-star-fill");
+                sao3.classList.add("bi-star");
+            } else if(number == 4){
+                var sao3 = document.querySelector(".sao3");
+                sao3.classList.remove("bi-star-fill");
+                sao3.classList.add("bi-star");
+                var sao4 = document.querySelector(".sao4");
+                sao4.classList.remove("bi-star-fill");
+                sao4.classList.add("bi-star");
+            } else if(number == 5){
+                var sao3 = document.querySelector(".sao3");
+                sao3.classList.remove("bi-star-fill");
+                sao3.classList.add("bi-star");
+                var sao4 = document.querySelector(".sao4");
+                sao4.classList.remove("bi-star-fill");
+                sao4.classList.add("bi-star");
+                var sao5 = document.querySelector(".sao5");
+                sao5.classList.remove("bi-star-fill");
+                sao5.classList.add("bi-star");
+            }
+        } else if (star.classList.contains("sao3")){
+            var sao1 = document.querySelector(".sao1");
+            var sao2 = document.querySelector(".sao2");
+            sao1.classList.remove("bi-star");
+            sao1.classList.add("bi-star-fill");
+            sao2.classList.remove("bi-star");
+            sao2.classList.add("bi-star-fill");
+            star.classList.remove("bi-star");
+            star.classList.add("bi-star-fill");
+            if(number == 4){
+                var sao4 = document.querySelector(".sao4");
+                sao4.classList.remove("bi-star-fill");
+                sao4.classList.add("bi-star");
+            } else if(number == 5){
+                var sao4 = document.querySelector(".sao4");
+                sao4.classList.remove("bi-star-fill");
+                sao4.classList.add("bi-star");
+                var sao5 = document.querySelector(".sao5");
+                sao5.classList.remove("bi-star-fill");
+                sao5.classList.add("bi-star");
+            }
+        } else if (star.classList.contains("sao4")){
+            var sao1 = document.querySelector(".sao1");
+            var sao2 = document.querySelector(".sao2");
+            var sao3 = document.querySelector(".sao3");
+            sao1.classList.remove("bi-star");
+            sao1.classList.add("bi-star-fill");
+            sao2.classList.remove("bi-star");
+            sao2.classList.add("bi-star-fill");
+            sao3.classList.remove("bi-star");
+            sao3.classList.add("bi-star-fill");
+            star.classList.remove("bi-star");
+            star.classList.add("bi-star-fill");
+            if(number == 5)
+            {
+                var sao5 = document.querySelector(".sao5");
+                sao5.classList.remove("bi-star-fill");
+                sao5.classList.add("bi-star");
+            }
+        } else if (star.classList.contains("sao5")){
+            var sao1 = document.querySelector(".sao1");
+            var sao2 = document.querySelector(".sao2");
+            var sao3 = document.querySelector(".sao3");
+            var sao4 = document.querySelector(".sao4");
+            sao1.classList.remove("bi-star");
+            sao1.classList.add("bi-star-fill");
+            sao2.classList.remove("bi-star");
+            sao2.classList.add("bi-star-fill");
+            sao3.classList.remove("bi-star");
+            sao3.classList.add("bi-star-fill");
+            sao4.classList.remove("bi-star");
+            sao4.classList.add("bi-star-fill");
+            star.classList.remove("bi-star");
+            star.classList.add("bi-star-fill");
+        }
+        number = 0;
+        }
+    });
+
+    star.addEventListener("mouseleave", () => {
+        if(!isClicking){
+            if (star.classList.contains("sao1")) {            
+            star.classList.remove("bi-star-fill");
+            star.classList.add("bi-star");
+        } else if (star.classList.contains("sao2")){
+            var sao1 = document.querySelector(".sao1");
+            sao1.classList.remove("bi-star-fill");
+            sao1.classList.add("bi-star");
+            star.classList.remove("bi-star-fill");
+            star.classList.add("bi-star");
+        }   else if (star.classList.contains("sao3")){
+            var sao1 = document.querySelector(".sao1");
+            var sao2 = document.querySelector(".sao2");
+            sao1.classList.remove("bi-star-fill");
+            sao1.classList.add("bi-star");
+            sao2.classList.remove("bi-star-fill");
+            sao2.classList.add("bi-star");
+            star.classList.remove("bi-star-fill");
+            star.classList.add("bi-star");
+        } else if (star.classList.contains("sao4")){
+            var sao1 = document.querySelector(".sao1");
+            var sao2 = document.querySelector(".sao2");
+            var sao3 = document.querySelector(".sao3");
+            sao1.classList.remove("bi-star-fill");
+            sao1.classList.add("bi-star");
+            sao2.classList.remove("bi-star-fill");
+            sao2.classList.add("bi-star");
+            sao3.classList.remove("bi-star-fill");
+            sao3.classList.add("bi-star");
+            star.classList.remove("bi-star-fill");
+            star.classList.add("bi-star");
+        } else if (star.classList.contains("sao5")){
+            var sao1 = document.querySelector(".sao1");
+            var sao2 = document.querySelector(".sao2");
+            var sao3 = document.querySelector(".sao3");
+            var sao4 = document.querySelector(".sao4");
+            sao1.classList.remove("bi-star-fill");
+            sao1.classList.add("bi-star");
+            sao2.classList.remove("bi-star-fill");
+            sao2.classList.add("bi-star");
+            sao3.classList.remove("bi-star-fill");
+            sao3.classList.add("bi-star");
+            sao4.classList.remove("bi-star-fill");
+            sao4.classList.add("bi-star");
+            star.classList.remove("bi-star-fill");
+            star.classList.add("bi-star");
+        }
+        }
+        number = 0;
+    });
+    star.addEventListener("click", () => {
+        // Đánh dấu là đang thực hiện sự kiện "click"
+        isClicking = true;
+        // Thực hiện các hành động "click" tùy ý
+        // ...
+        if (star.classList.contains("sao1"))
+        {
+            number = 1;
+            soSaoInput.value = 1;
+        }   
+        else if (star.classList.contains("sao2"))
+        {
+            number = 2;
+            soSaoInput.value = 2;
+        } 
+        else if (star.classList.contains("sao3"))
+        {
+            number = 3;
+            soSaoInput.value = 3;
+        } 
+        else if (star.classList.contains("sao4"))
+        {
+            number = 4;
+            soSaoInput.value = 4;
+        } 
+        else if (star.classList.contains("sao5"))
+        {
+            number = 5;
+            soSaoInput.value = 5;
+        } 
+        // Đặt thời gian để sau khi click xong, sự kiện "click" đã kết thúc
+        setTimeout(() => {
+            isClicking = false;
+        }, 500); // Giả sử sự kiện "click" sẽ kết thúc sau 10 milliseconds
+    });
+
+    });
+
+   
+
+    function changeVideo(srcLesson){
+        var video = document.querySelector("#srcVideo");
+        video.src = srcLesson;
+    }
+
+    $(document).ready(function(){
+        var arrSao = document.querySelectorAll(".soSaoDG");
+        var saoClass = document.querySelectorAll(".showSaoTheoUser");
+        var size = arrSao.length;
+        for(var i = 0; i < size; i++){
+            var soSao = parseInt(arrSao[i].value);
+            var saoHTML = '';
+            if(soSao == 1)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+            else if(soSao == 2)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+            else if (soSao == 3)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+            else if (soSao == 4)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i>`;
+            else if (soSao == 5)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>`;
+            else
+                saoHTML = `<i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+
+            saoClass[i].innerHTML = saoHTML; // Gán chuỗi HTML cho hình ngôi sao
+        }
+    });
+</script>
 </body>
 </html>
