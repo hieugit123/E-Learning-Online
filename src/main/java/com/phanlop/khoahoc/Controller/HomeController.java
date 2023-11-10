@@ -184,24 +184,25 @@ public class HomeController {
         return "main_teacher";
     }
     
-    // @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    // @GetMapping("/admin")
-    // public String getHomeAdminPage(@RequestParam(defaultValue = "0") int khoa,
-    //                           @RequestParam(defaultValue = "1") int page,
-    //                           @RequestParam(defaultValue = "12") int pageSize,
-    //                           Authentication authentication,
-    //                           Model model) {
-    //     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-    //     User user = userServices.getUserByUserName(userDetails.getUsername());
-    //     page = page - 1;
-    //     Page<Course> courses = courseService.filterByUserAndDepartmentAdmin(khoa, user, page, pageSize);
-    //     model.addAttribute("courses", courses.getContent());
-    //     model.addAttribute("departments", departmentRepository.findAll());
-    //     model.addAttribute("khoaId", khoa);
-    //     model.addAttribute("totalPages", courses.getTotalPages());
-    //     model.addAttribute("currentPage", page + 1);
-    //     return "main_admin";
-    // }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/admin")
+    public String getHomeAdminPage(@RequestParam(defaultValue = "0") int khoa,
+                              @RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "12") int pageSize,
+                              Authentication authentication,
+                              Model model) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());
+        page = page - 1;
+        Page<Course> courses = courseService.filterByUserAndDepartmentAdmin(khoa, user, page, pageSize);
+        model.addAttribute("flag", 0);
+        model.addAttribute("courses", courses.getContent());
+        model.addAttribute("departments", departmentRepository.findAll());
+        model.addAttribute("khoaId", khoa);
+        model.addAttribute("totalPages", courses.getTotalPages());
+        model.addAttribute("currentPage", page + 1);
+        return "admin";
+    }
 
     //SỬA
     @PreAuthorize("hasRole('ROLE_STUDENT')")

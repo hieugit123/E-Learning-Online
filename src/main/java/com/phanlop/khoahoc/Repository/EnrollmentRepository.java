@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.phanlop.khoahoc.DTO.UserCourseCountDTO;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Entity.User;

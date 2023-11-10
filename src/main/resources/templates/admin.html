@@ -13,6 +13,39 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
         <link rel="stylesheet" th:href="@{/css/admin.css}">
         <link rel="stylesheet" th:href="@{/css/header.css}">
+        <style>
+    
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+    
+            th, td {
+                border: 1px solid #ccc;
+                padding: 8px;
+            }
+    
+            th {
+                background-color: #f2f2f2;
+                position: relative;
+                cursor: pointer;
+            }
+            img{
+            width: 100px;
+            height: 100px;
+            }
+            .date-picker {
+            display: flex;
+        }
+
+        .date-picker input {
+            margin-right: 10px;
+        }
+
+        .date-picker button {
+            padding: 5px 10px;
+        }
+        </style>
     </head>
     <body>
         <div th:replace="~{fragments/header :: logined-header}"></div>
@@ -20,7 +53,105 @@
             <div th:replace="~{fragments/navbar_admin}"></div>
 
             <div class="content">
-                <div class="course-wrapper px-5 py-4">
+                <div class="course-wrapper px-5 py-4" th:if="${flag==4}">
+                    <table id="course-table">
+                           <thead >
+                               <tr>
+                                    <th>User id</th>
+                                   <th>User Name</th>
+                                   <th>Modify Date</th>
+                                   <th>Action</th>
+                               </tr>
+                           </thead>
+                           <tbody>
+                               <tr th:each="User : ${users}">
+                                   <td th:text="${User.userId}"></td>
+                                   <td th:text="${User.fullName}"></td>
+                                   <td th:text="${User.modifiedDate}"></td>
+                                   <td><a href="/account_info">Fix</a>/<a>Deleted</a></td>
+                               </tr>
+                           </tbody>
+                   </table>
+           </div>
+                <div class="course-wrapper px-5 py-4" th:if="${flag==3}">
+                    <form action="/admin/thongkengay" method="get">
+                        <div class="date-picker">
+                            <input type="date" name="startDate" required>
+                            <input type="date" name="endDate" required>
+                            <button type="submit">Lọc</button>
+                        </div>
+                    </form>
+                    <div th:if="${courses.size()==0}">
+                        <h3>NO VALUE FOUND</h3>
+                    </div>
+                    <h1 class="title">Có thêm : <span th:text="${tonguser}"></span> User mới</h1>
+                    <h1 class="title">Tổng doanh thu: <span th:text="${tongdoanhthu}"></span>VNĐ</h1>
+                    <table id="course-table">
+                        <thead>
+                            <tr>
+                                <th>IMG</th>
+                                <th>Course Name</th>
+                                <th >Course Revenue(VNĐ)</th>
+                                <th >Course Buytime</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="course : ${courses}">
+                                <td><img th:src="${course.avatar}"></td>
+                                <td th:text="${course.courseName}"></td>
+                                <td th:text="${course.courseRevenue}"></td>
+                                <td th:text="${course.courseBuyCount}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                       
+                    
+            
+                </div>
+                <div class="course-wrapper px-5 py-4" th:if="${flag==2}">
+                     <table id="course-table">
+                            <thead >
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Buy time</th>
+                                    <th>Spend</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="User : ${user}">
+                                    <td th:text="${User.fullName}"></td>
+                                    <td th:text="${User.haveBuy}"></td>
+                                    <td th:text="${User.spend}"></td>
+                                </tr>
+                            </tbody>
+                    </table>
+            </div>
+                <div class="course-wrapper px-5 py-4" th:if="${flag==1}">
+                        <h3>Total revenue: <span th:text="${sum}">VNĐ</span></h3>
+                        <h3>number of student: <span th:text="${hocviennumber}"></span></h3>
+                        <h3>number of teacher: <span th:text="${giangviennumber}"></span></h3>
+                        <h2>Top 10 most buy course arcording to system revenue</h2>
+                         <table id="course-table">
+                                <thead >
+                                    <tr>
+                                        <th>Course Name</th>
+                                        <th>Course Revenue(VNĐ)</th>
+                                        <th>Course Buytime</th>
+                                        <th>System revenue(VNĐ)</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="course : ${coursetop10}">
+                                        <td th:text="${course.courseName}"></td>
+                                        <td th:text="${course.revenue}"></td>
+                                        <td th:text="${course.buyCount}"></td>
+                                        <td th:text="${course.systemRevenue}"></td>                                    </tr>
+                                </tbody>
+                        </table>
+                </div>
+                <div class="course-wrapper px-5 py-4" th:if="${flag==0}">
                     <div class="course-manager-section bg-white">
                         <div class="row">
                             <div class="col">

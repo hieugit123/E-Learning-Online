@@ -1,5 +1,6 @@
 package com.phanlop.khoahoc.Service;
 
+import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface UserServices {
     List<User> searchStudents(String keywords);
     List<User> getTeacherByUserEnrollment(User user);
     User getUserByCourseId(UUID courseid);
+    List<User> findUserByRole(Role role);
 }

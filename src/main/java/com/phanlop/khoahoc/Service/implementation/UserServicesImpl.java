@@ -92,4 +92,9 @@ public class UserServicesImpl implements UserServices {
         return user;
     }
 
+    @Override
+    public List<User> findUserByRole(Role role) {
+        return userRepository.findUserByRole(role);
+    }
+
 }

@@ -1,3 +1,15 @@
+<head>
+  <script>
+function toggleOptions() {
+    var options = document.getElementById("options");
+    if (options.style.display === "none") {
+        options.style.display = "block";
+    } else {
+        options.style.display = "none";
+    }
+}
+  </script>
+</head>
 <div class="slide-nav">
   <ul class="nav-links">
     <li>
@@ -18,5 +30,16 @@
     <li>
       <a href="/admin/assignment"><i class="bi bi-list-task"></i> Bài tập</a>
     </li>
-  </ul>
+      <li>
+          <a href="#"  onclick="toggleOptions()">Thống kê</a>
+          <ul id="options" style="display: none; color: white">
+              <a href="/admin/thongketongquat"><li>Thống kê tổng quát</li></a>
+              <a  href="/admin/thongketop5"><li>Thống kê Top 5 Khách hàng</li></a>
+              <a  href="/admin/thongkengay"><li>Thống kê doanh thu từ ngày đến ngày</li></a>
+          </ul>
+      </li>
+      <li>
+        <a href="/admin/qluser"><i class="bi bi-list-task"></i> Quản lý User</a>
+      </li>
+
 </div>
