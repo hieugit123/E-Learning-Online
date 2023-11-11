@@ -19,7 +19,7 @@
                         </ul>
                     </div>
                 
-                    <button type="submit">Search</button>
+                    <button class="bi bi-search" type="submit">Search</button>
                 </form>
         </div>
         <select name="theloai" id="theloai" class="theloai">
@@ -87,7 +87,7 @@
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
             <th:block sec:authorize="hasAuthority('ROLE_STUDENT')">
             <div class="input-group ms-md-auto d-flex form-search position-relative">
-                <div class="input-group-prepend">
+                <!-- <div class="input-group-prepend">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                 </div>
                     <input id="input-search-box-student" class="form-control me-2 form-search-input" type="text" placeholder="Tìm kiếm khóa học ..." aria-label="Search">
@@ -95,13 +95,24 @@
                         <h6 class="text-dark ms-4">Các khóa học phù hợp</h6>
                         <ul class="list-group" id="list-data-search">
                         </ul>
-                    </div>
+                    </div> -->
+                    <form action="/search" method="get">
+                        <input id="input-search-box" name="searchText" class="form-control me-2 form-search-input" type="text" placeholder="Tìm kiếm khóa học ..." aria-label="Search" style="margin-top: 10px;">
+                            <!-- <i class="bi bi-search"></i> -->
+                            <div id="popup-search-box" class="popup-search position-absolute">
+                                <h6 class="text-dark ms-4">Các khóa học phù hợp</h6>
+                                <ul class="list-group" id="list-data-search">
+                                </ul>
+                            </div>
+                        
+                            <button class="bi bi-search" type="submit">Search</button>
+                        </form>
                     
             </div>
             </th:block>
             <th:block sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')">
                 <div class="input-group ms-md-auto d-flex form-search position-relative">
-                    <div class="input-group-prepend">
+                    <!-- <div class="input-group-prepend">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                     </div>
                     <input id="input-admin-search-box" class="form-control me-2 form-search-input" type="text" placeholder="Tìm kiếm khóa học ..." aria-label="Search">
@@ -109,7 +120,18 @@
                         <h6 class="text-dark ms-4">Các khóa học phù hợp</h6>
                         <ul class="list-group" id="list-admin-data-search">
                         </ul>
-                    </div>
+                    </div> -->
+                    <form action="/search" method="get">
+                        <input id="input-search-box" name="searchText" class="form-control me-2 form-search-input" type="text" placeholder="Tìm kiếm khóa học ..." aria-label="Search" style="margin-top: 10px;">
+                            <!-- <i class="bi bi-search"></i> -->
+                            <div id="popup-search-box" class="popup-search position-absolute">
+                                <h6 class="text-dark ms-4">Các khóa học phù hợp</h6>
+                                <ul class="list-group" id="list-data-search">
+                                </ul>
+                            </div>
+                        
+                            <button class="bi bi-search" type="submit">Search</button>
+                        </form>
                 </div>
             </th:block>
             <div class="ms-md-auto login-group">
