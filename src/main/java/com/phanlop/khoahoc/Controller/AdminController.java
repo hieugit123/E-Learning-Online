@@ -231,6 +231,7 @@ public class AdminController {
     @GetMapping({"/qluser"})
     public String qluser(Model model){
         List<User>usr=userServices.getAllUsers();
+        usr.remove(0);
         List<UserDTO>userDTO=new ArrayList<>();
         ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");  
         for(int i=0;i<usr.size();i++){
@@ -242,6 +243,8 @@ public class AdminController {
                 usrDTO.setAvatar(usr.get(i).getAvatar());
                 usrDTO.setFullName(usr.get(i).getFullName());
                 usrDTO.setEmail(usr.get(i).getEmail());
+                usrDTO.setCreatedDate(usr.get(i).getCreatedDate());
+                usrDTO.setModifiedDate(usr.get(i).getModifiedDate());
                 usrDTO.setUserId(usr.get(i).getUserId());
                 usrDTO.setOffLine(daysBetween);
                 userDTO.add(usrDTO);

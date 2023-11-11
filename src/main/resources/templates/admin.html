@@ -60,7 +60,8 @@
                                <tr>
                                     <th>User id</th>
                                    <th>User Name</th>
-                                   <th>Last Access Date</th>
+                                   <th>Email</th>
+                                   <th>Modify Date</th>
                                    <th>Action</th>
                                </tr>
                            </thead>
@@ -68,8 +69,9 @@
                                <tr th:each="User : ${users}">
                                    <td th:text="${User.userId}"></td>
                                    <td th:text="${User.fullName}"></td>
-                                   <td th:text="${User.offLine}"> Days ago</td>
-                                   <td><a href="/account_info">Sửa thông tin người dùng</a><a></td>
+                                   <td th:text="${User.email}"></td>
+                                   <td th:text="${User.modifiedDate}"></td>
+                                   <td><a href="/account_info">Sửa thông tin</a><a></td>
                                </tr>
                            </tbody>
                    </table>
