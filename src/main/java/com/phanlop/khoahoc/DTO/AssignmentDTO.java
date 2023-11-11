@@ -1,16 +1,11 @@
 package com.phanlop.khoahoc.DTO;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
-import java.util.Set;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
