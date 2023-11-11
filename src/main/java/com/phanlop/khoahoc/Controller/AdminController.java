@@ -30,7 +30,6 @@ import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.UserServices;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.var;
 
 @Controller
 @RequestMapping("/admin")
@@ -130,8 +129,7 @@ public class AdminController {
     @GetMapping({"/thongketop5"})
     public String thongketop5(@RequestParam(value = "startDate", required = false) Date startDate,
                         @RequestParam(value = "endDate", required = false) Date endDate,Model model){
-         
-        List<Course> courses=courseServices.getAllCourses();
+        
         List<Enrollment> enrollments=enrollmentServices.getAll();
         List<User> users=userServices.getAllUsers();
         List<UserCourseCountDTO> userstatistic=new ArrayList<>();
