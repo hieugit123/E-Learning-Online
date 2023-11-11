@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.phanlop.khoahoc.DTO.AdminThongkeDTO;
 import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
 import com.phanlop.khoahoc.DTO.UserCourseCountDTO;
+import com.phanlop.khoahoc.DTO.UserDTO;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Entity.Role;
@@ -177,11 +179,21 @@ public class AdminController {
         ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");  
         List<ThongkeCourseDTO> coursefix=new ArrayList<>();
         List<User>usr=userServices.getAllUsers();
+        List<UserDTO>userDTO=new ArrayList<>();
         for(int i=0;i<usr.size();i++){
             LocalDate local=null;
             local=LocalDate.ofInstant(usr.get(i).getModifiedDate(),zoneId2);
             if(local.isAfter(startLocal)&& local.isBefore(endLocal)){
-                continue;
+                LocalDate currentDate = LocalDate.now(); 
+                long daysBetween = ChronoUnit.DAYS.between(local, currentDate);
+                UserDTO usrDTO=new UserDTO();
+                usrDTO.setAvatar(usr.get(i).getAvatar());
+                usrDTO.setFullName(usr.get(i).getFullName());
+                usrDTO.setEmail(usr.get(i).getEmail());
+                usrDTO.setUserId(usr.get(i).getUserId());
+                usrDTO.setOffLine(daysBetween);
+                userDTO.add(usrDTO);
+                
             }
             else{
                 usr.remove(i);
@@ -220,8 +232,24 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping({"/qluser"})
     public String qluser(Model model){
-        List<User> users=userServices.getAllUsers();
-        model.addAttribute("users", users);
+        List<User>usr=userServices.getAllUsers();
+        List<UserDTO>userDTO=new ArrayList<>();
+        ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");  
+        for(int i=0;i<usr.size();i++){
+            LocalDate local=null;
+            local=LocalDate.ofInstant(usr.get(i).getModifiedDate(),zoneId2);
+                LocalDate currentDate = LocalDate.now(); 
+                long daysBetween = ChronoUnit.DAYS.between(local, currentDate);
+                UserDTO usrDTO=new UserDTO();
+                usrDTO.setAvatar(usr.get(i).getAvatar());
+                usrDTO.setFullName(usr.get(i).getFullName());
+                usrDTO.setEmail(usr.get(i).getEmail());
+                usrDTO.setUserId(usr.get(i).getUserId());
+                usrDTO.setOffLine(daysBetween);
+                userDTO.add(usrDTO);
+             
+        }
+        model.addAttribute("users", userDTO);
         model.addAttribute("flag", 4);
         
         return "admin";
