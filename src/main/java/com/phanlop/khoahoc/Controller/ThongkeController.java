@@ -4,7 +4,6 @@ import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
 import com.phanlop.khoahoc.Entity.*;
 
 import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.phanlop.khoahoc.Service.ChatlogServices;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.UserServices;
@@ -81,7 +79,6 @@ public class ThongkeController {
         LocalDate endLocal=LocalDate.parse(endString,DateTimeFormatter.ISO_LOCAL_DATE);
 
 
-        List<Course> teacherCourseHaveBeenBuy=new ArrayList<>();
         ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");  
         int sum=0;
         List<ThongkeCourseDTO> coursefix=new ArrayList<>();
@@ -116,7 +113,7 @@ public class ThongkeController {
     }
     @GetMapping("/thongke1")
     public String thongke1(@RequestParam("teacherid") long teacherid,Model model){
-        User user=userServices.getUserById(teacherid);
+        
         
         int flag=1;
         int tongdoanhthu=0;

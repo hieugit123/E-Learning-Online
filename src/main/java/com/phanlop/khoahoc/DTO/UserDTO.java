@@ -29,4 +29,5 @@ public class UserDTO {
     private Instant createdDate;
     private Instant modifiedDate;
     private String mota;
+    private long offLine;
 }
