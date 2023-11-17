@@ -38,9 +38,9 @@ public class AccountController {
         return "account_info";
     }
     @GetMapping("/account_infofix")
-    public String accountInfoFixForAdmin(@RequestParam String userName,Model model) {
+    public String accountInfoFixForAdmin(@RequestParam Long userId,Model model) {
         // Do something to get account info
-        User user1 = userServices.getUserByUserName(userName);
+        User user1 = userServices.getUserById(userId);
         model.addAttribute("user", user1);
         return "account_info";
     }
@@ -75,9 +75,13 @@ public class AccountController {
     //Chưa xong
     @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN', 'ROLE_STUDENT')")
     @PostMapping("/account_info2")
-    public ModelAndView editAccountInfo(@RequestParam String fullName, @RequestParam String email, @RequestParam(name = "avatarFile", required = false) MultipartFile avatarFile, @RequestParam(required = false, defaultValue = "") String mota, Authentication authentication, Model model) {
+    public ModelAndView editAccountInfo(@RequestParam Long userId,@RequestParam String fullName, @RequestParam String email, @RequestParam(name = "avatarFile", required = false) MultipartFile avatarFile, @RequestParam(required = false, defaultValue = "") String mota, Authentication authentication, Model model) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userServices.getUserByUserName(userDetails.getUsername());
+        //Cái này của Nam
+        if(user.getUserId()!=userId){
+            user=userServices.getUserById(userId);
+        }
         System.out.println("email: " + email);
         System.out.println("mota: " + mota);
         if (user != null) {
