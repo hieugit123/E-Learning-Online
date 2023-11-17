@@ -62,9 +62,6 @@ public class CheckoutController {
         int sum = Integer.parseInt(sumCart);
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String vnpayUrl = vnPayServices.createOrder(sum, baseUrl);
-        System.out.println("con cac tao met r");
-        session.setAttribute("maHD", vnPayServices.getMaHD());
-        session.setAttribute(vnPayServices.getMaHD(), false);
         System.out.println(vnpayUrl);
         return "redirect:" + vnpayUrl;
     }
@@ -131,10 +128,6 @@ public class CheckoutController {
                 //     return ResponseEntity.ok("success");
                 // }
                 // return ResponseEntity.badRequest().body("fail");
-
-                //set lai session
-                String maHD = (String) session.getAttribute("maHD");
-                session.setAttribute(maHD, false);
         }
 
         return paymentStatus == 1 ? "ordersuccess" : "orderfail";

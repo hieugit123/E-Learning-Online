@@ -96,6 +96,8 @@ public class HomeController {
         }
         model.addAttribute("listCourse", listCourse);
         model.addAttribute("listCourse1", listCourse1);
+        List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        model.addAttribute("listCourseInCart", listCourseInCart);
         return "course_quatrinh";
     }
 
@@ -134,7 +136,9 @@ public class HomeController {
     }
 
     @GetMapping("/checkout/{idCourse}")
-    public String checkOutCourse(@PathVariable UUID idCourse, Model model){
+    public String checkOutCourse(@PathVariable UUID idCourse, Model model, Authentication authentication){
+        if (authentication == null || !authentication.isAuthenticated())
+            return "redirect:/login";
         Course course = courseService.getCourseById(idCourse);
         List<Course> list = new ArrayList<>();
         list.add(course);

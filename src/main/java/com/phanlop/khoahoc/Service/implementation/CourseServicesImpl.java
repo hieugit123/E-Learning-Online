@@ -148,6 +148,17 @@ public class CourseServicesImpl implements CourseServices {
         }
         return returnList;
     }   
+
+    @Override
+    public List<Course> findCourseChoDuyet() {
+        List<Course> courses = courseRepository.findAll();
+        List<Course> returnList = new ArrayList<>();
+        for (Course course : courses){
+            if (course.getStateGuiAdmin() == 1 && course.getState() == 0)
+                returnList.add(course);
+        }
+        return returnList;
+    }
     @Override
     public List<Course> sortCoursesByGia(String priceOrder) {
         if (priceOrder.equals("asc")) {

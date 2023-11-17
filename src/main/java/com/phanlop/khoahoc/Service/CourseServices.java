@@ -32,4 +32,5 @@ public interface CourseServices {
     List<Course> findCoursesbyTeacherId(User user);
     List<Course> findCourseByUserId(User user);
     List<Course> findCourseOfTeacher(User user);
+    List<Course> findCourseChoDuyet();
 }

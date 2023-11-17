@@ -146,7 +146,12 @@
                     </th:block>
 
                     <button type="button" class="btn btn-danger dropdown-toggle header-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" style="width: 25px; height: 25px">
+                        <th:block th:if="${user == null}">
+                            <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" style="width: 25px; height: 25px">
+                        </th:block>
+                        <th:block th:if="${user != null}">
+                            <img th:src="${user.avatar}" style="width: 25px; height: 25px; border-radius: 14px;">
+                        </th:block>
                         <div class="header-username text-dark mx-2" sec:authentication="name"></div>
                         
                     </button>

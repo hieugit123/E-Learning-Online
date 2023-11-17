@@ -8,11 +8,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,6 +23,7 @@ import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
 import com.phanlop.khoahoc.DTO.UserCourseCountDTO;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.Enrollment;
+import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Service.CourseServices;
@@ -28,7 +31,7 @@ import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.UserServices;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.var;
+// import lombok.experimental.var;
 
 @Controller
 @RequestMapping("/admin")
@@ -65,6 +68,39 @@ public class AdminController {
     @GetMapping({"/assignment"})
     public String getAssignmentPage(){
         return "admin_assignment";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
+    @GetMapping("/courseChoDuyet")
+    public String getCourseChoDuyet(Model model){       
+        List<Course> courses = courseServices.findCourseChoDuyet();
+        model.addAttribute("courses", courses);
+        model.addAttribute("flag", 5);
+        return "admin";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/duyetCourse/{courseId}")
+    public String duyetCourse(@PathVariable UUID courseId, Model model){
+        Course c = courseServices.getCourseById(courseId);
+        c.setState(1);
+        courseServices.saveCourse(c);
+        List<Course> courses = courseServices.findCourseChoDuyet();
+        model.addAttribute("courses", courses);
+        model.addAttribute("flag", 5);
+        return "admin";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/courseChoDuyetDetail/{id}")
+    public String getChitiet(@PathVariable UUID id, Model model){
+        Course course = courseServices.getCourseById(id);
+        model.addAttribute("course", course);
+        model.addAttribute("flag", 6);
+        List<Lesson> lessons = new ArrayList<>(course.getListLessons().stream().toList());
+        lessons.sort(Comparator.comparing(Lesson::getLessonSort));
+        model.addAttribute("lessons", lessons);
+        return "admin";
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping({"/thongketongquat"})

@@ -23,11 +23,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class VNPayServicesImpl implements VNPayServices {
-    String maHD = "";
-    @Override
-    public String getMaHD(){
-        return maHD;
-    }
     @Override
     public String createOrder(int total, String urlReturn) {
         // TODO Auto-generated method stub
@@ -35,7 +30,6 @@ public class VNPayServicesImpl implements VNPayServices {
         String vnp_Command = "pay";
         String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
         System.out.println(vnp_TxnRef);
-        maHD = vnp_TxnRef;
         String vnp_IpAddr = "127.0.0.1";
         String vnp_TmnCode = VNPayConfig.vnp_TmnCode;
         String orderType = "order";

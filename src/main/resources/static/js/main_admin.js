@@ -55,37 +55,37 @@ $('#formCreateCourse').submit(function(event) {
     });
 });
 
-$('#formEditAccount').submit(function(event) {
-    event.preventDefault();
-    var passOld = $("#input-old-password").val();
-    var passNew = $("#input-new-password").val();
-    var passNewConfirm = $("#input-confirm-password").val();
+// $('#formEditAccount').submit(function(event) {
+//     event.preventDefault();
+//     var passOld = $("#input-old-password").val();
+//     var passNew = $("#input-new-password").val();
+//     var passNewConfirm = $("#input-confirm-password").val();
     
-      $.ajax({
-        url: '/account_info1',
-        type: 'POST',
-        data: {
-            passOld: passOld,
-            passNew: passNew,
-            passNewConfirm: passNewConfirm
-        },
-        success: function(response) {
-            // handle success response
-            console.log(response);
-            Swal.fire({
-                icon: 'success',
-                title: 'Đã thay đổi thành công',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(()=>{
-                location.reload();
-            })
-        },
-        error: function(xhr, status, error) {
-            Swal.fire('Có lỗi khi sửa!', '', 'error');
-        }
-    });
-});
+//       $.ajax({
+//         url: '/account_info1',
+//         type: 'POST',
+//         data: {
+//             passOld: passOld,
+//             passNew: passNew,
+//             passNewConfirm: passNewConfirm
+//         },
+//         success: function(response) {
+//             // handle success response
+//             console.log(response);
+//             Swal.fire({
+//                 icon: 'success',
+//                 title: 'Đã thay đổi thành công',
+//                 showConfirmButton: false,
+//                 timer: 1500
+//             }).then(()=>{
+//                 location.reload();
+//             })
+//         },
+//         error: function(xhr, status, error) {
+//             Swal.fire('Có lỗi khi sửa!', '', 'error');
+//         }
+//     });
+// });
 
 $('#formAddCourse').submit(function(event) {
     event.preventDefault();
