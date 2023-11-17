@@ -49,10 +49,14 @@ public class AccountController {
     //Chưa xong
     @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN', 'ROLE_STUDENT')")
     @PostMapping("/account_info1")
-    public ModelAndView editAccount(@RequestParam String passOld, @RequestParam String passNew, @RequestParam String passNewConfirm, Authentication authentication, Model model){
+    public ModelAndView editAccount(@RequestParam Long userId,@RequestParam String passOld, @RequestParam String passNew, @RequestParam String passNewConfirm, Authentication authentication, Model model){
        
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userServices.getUserByUserName(userDetails.getUsername());
+         //Cái này của Nam
+        if(user.getUserId()!=userId){
+            user=userServices.getUserById(userId);
+        }
         // Kiểm tra mật khẩu hiện tại
         if (passwordEncoder.matches(passOld, user.getPassword())) {
             // Mật khẩu hiện tại hợp lệ, thực hiện thay đổi mật khẩu
