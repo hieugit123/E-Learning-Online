@@ -37,6 +37,13 @@ public class AccountController {
         model.addAttribute("user", user1);
         return "account_info";
     }
+    @GetMapping("/account_infofix")
+    public String accountInfoFixForAdmin(@RequestParam String userName,Model model) {
+        // Do something to get account info
+        User user1 = userServices.getUserByUserName(userName);
+        model.addAttribute("user", user1);
+        return "account_info";
+    }
 
 
     //Chưa xong
