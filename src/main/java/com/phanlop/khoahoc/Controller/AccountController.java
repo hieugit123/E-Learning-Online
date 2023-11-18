@@ -35,22 +35,30 @@ public class AccountController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user1 = userServices.getUserByUserName(userDetails.getUsername());
         model.addAttribute("user", user1);
+        model.addAttribute("user1", user1);
         return "account_info";
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/account_infofix")
-    public String accountInfoFixForAdmin(@RequestParam Long userId,Model model) {
+    public String accountInfoFixForAdmin(@RequestParam Long userId, Authentication authentication,Model model) {
         // Do something to get account info
         User user1 = userServices.getUserById(userId);
-        model.addAttribute("user", user1);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user2= userServices.getUserByUserName(userDetails.getUsername());
+        model.addAttribute("user", user2);
+        model.addAttribute("user1", user1);
         return "account_info";
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/account_delete")
-    public String accountdelete(@RequestParam Long userId,Model model) {
+    public String accountdelete(@RequestParam Long userId, Authentication authentication,Model model) {
         // Do something to get account info
         User user1 = userServices.getUserById(userId);
         model.addAttribute("user", user1);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user2= userServices.getUserByUserName(userDetails.getUsername());
+        model.addAttribute("user", user2);
+        model.addAttribute("user1", user1);
         return "account_delete";
     }
 

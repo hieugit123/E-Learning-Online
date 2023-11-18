@@ -84,7 +84,9 @@
                                    <th>User Name</th>
                                    <th>Email</th>
                                    <th>Modify Date</th>
+                                   <th>Describe</th>
                                    <th>Action</th>
+                                   
                                </tr>
                            </thead>
                            <tbody>
@@ -93,6 +95,13 @@
                                    <td th:text="${User.fullName}"></td>
                                    <td th:text="${User.email}"></td>
                                    <td th:text="${User.modifiedDate}"></td>
+                                   <div th:if="${User.mota!=NULL}">
+                                        <td th:text="${User.mota!=NULL}"></td>
+                                   </div>
+                                   <div th:if="${User.mota==NULL}">
+                                        <td>  Không có mô tả</td>
+                                    </div>
+                                  
                                    <td><a th:href="@{/account_infofix(userId=${User.userId})}">Sửa thông tin</a>/
                                     <a th:href="@{/account_delete(userId=${User.userId})}">Xóa account</a></td>
                                     
