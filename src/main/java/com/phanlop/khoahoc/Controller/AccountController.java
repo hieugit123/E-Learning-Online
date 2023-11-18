@@ -37,6 +37,7 @@ public class AccountController {
         model.addAttribute("user", user1);
         return "account_info";
     }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/account_infofix")
     public String accountInfoFixForAdmin(@RequestParam Long userId,Model model) {
         // Do something to get account info
