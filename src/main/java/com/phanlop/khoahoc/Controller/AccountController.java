@@ -44,7 +44,14 @@ public class AccountController {
         model.addAttribute("user", user1);
         return "account_info";
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/account_delete")
+    public String accountdelete(@RequestParam Long userId,Model model) {
+        // Do something to get account info
+        User user1 = userServices.getUserById(userId);
+        model.addAttribute("user", user1);
+        return "account_delete";
+    }
 
     //Chưa xong
     @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN', 'ROLE_STUDENT')")

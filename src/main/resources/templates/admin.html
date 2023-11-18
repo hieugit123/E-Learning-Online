@@ -93,7 +93,9 @@
                                    <td th:text="${User.fullName}"></td>
                                    <td th:text="${User.email}"></td>
                                    <td th:text="${User.modifiedDate}"></td>
-                                   <td><a th:href="@{/account_infofix(userId=${User.userId})}">Sửa thông tin</a><a></td>
+                                   <td><a th:href="@{/account_infofix(userId=${User.userId})}">Sửa thông tin</a>/
+                                    <a th:href="@{/account_delete(userId=${User.userId})}">Xóa account</a></td>
+                                    
                                </tr>
                            </tbody>
                    </table>
