@@ -42,6 +42,7 @@
                 <div class="col-md-12 mt-4">
                     <div id="edit-form" class="collapse">
                         <form method="POST" th:action="@{/account_info2}" enctype="multipart/form-data">
+                            <input type="hidden" name="userId" th:value="${user.userId}">
                             <div class="mb-3">
                                 <label for="input-name" class="form-label">Họ và tên</label>
                                 <input type="text" class="form-control" name="fullName" th:value="${user.fullName}" id="input-name">
@@ -66,6 +67,7 @@
                     </div>
                     <div id="change-form" class="collapse">
                         <form id="formEditAccount" th:action="@{/account_info1}" method="post">
+                            <input type="hidden" name="userId" th:value="${user.userId}">
                             <div class="mb-3">
                                 <label for="input-old-password" class="form-label">Mật khẩu cũ</label>
                                 <input type="password" class="form-control" id="input-old-password" name="passOld">
