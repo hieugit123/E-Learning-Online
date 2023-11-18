@@ -42,13 +42,14 @@
                 <div class="col-md-12 mt-4">
                     <div id="edit-form" class="collapse">
                         <form method="POST" th:action="@{/account_info2}" enctype="multipart/form-data">
+                            <input type="hidden" name="userId" th:value="${user1.userId}">
                             <div class="mb-3">
                                 <label for="input-name" class="form-label">Họ và tên</label>
-                                <input type="text" class="form-control" name="fullName" th:value="${user.fullName}" id="input-name">
+                                <input type="text" class="form-control" name="fullName" th:value="${user1.fullName}" id="input-name">
                             </div>
                             <div class="mb-3">
                                 <label for="input-email" class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" th:value="${user.email}" id="input-email">
+                                <input type="email" class="form-control" name="email" th:value="${user1.email}" id="input-email">
                             </div>
                             <div class="mb-3">
                                 <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" class="rounded-circle" alt="-image" width="120px" height="120px">
@@ -58,7 +59,13 @@
                             <th:block sec:authorize="hasAuthority('ROLE_TEACHER')">
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="form2Example27">Mô tả trình độ:</label>
-                                    <textarea class="form-control form-control-lg" cols="30" name="mota" rows="10" id="form2Example27" placeholder="Bao gồm trình độ học vấn, trình độ ngoại ngữ, các thứ tiếng khác nhau? Lĩnh vực giảng dạy? Đã giảng dạy ở đâu hay chưa? Bằng cấp về lĩnh vực mà mình giảng dạy?" th:value="${user.mota}"></textarea>
+                                    <textarea class="form-control form-control-lg" cols="30" name="mota" rows="10" id="form2Example27" placeholder="Bao gồm trình độ học vấn, trình độ ngoại ngữ, các thứ tiếng khác nhau? Lĩnh vực giảng dạy? Đã giảng dạy ở đâu hay chưa? Bằng cấp về lĩnh vực mà mình giảng dạy?" th:value="${user1.mota}"></textarea>
+                                </div>
+                            </th:block>
+                            <th:block sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form2Example27">Mô tả trình độ:</label>
+                                    <textarea class="form-control form-control-lg" cols="30" name="mota" rows="10" id="form2Example27" placeholder="Bao gồm trình độ học vấn, trình độ ngoại ngữ, các thứ tiếng khác nhau? Lĩnh vực giảng dạy? Đã giảng dạy ở đâu hay chưa? Bằng cấp về lĩnh vực mà mình giảng dạy?" th:value="${user1.mota}"></textarea>
                                 </div>
                             </th:block>
                             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
@@ -66,6 +73,7 @@
                     </div>
                     <div id="change-form" class="collapse">
                         <form id="formEditAccount" th:action="@{/account_info1}" method="post">
+                            <input type="hidden" name="userId" th:value="${user1.userId}">
                             <div class="mb-3">
                                 <label for="input-old-password" class="form-label">Mật khẩu cũ</label>
                                 <input type="password" class="form-control" id="input-old-password" name="passOld">

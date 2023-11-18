@@ -284,6 +284,7 @@ public class AdminController {
                 usrDTO.setModifiedDate(usr.get(i).getModifiedDate());
                 usrDTO.setUserId(usr.get(i).getUserId());
                 usrDTO.setOffLine(daysBetween);
+                usrDTO.setMota(usr.get(i).getMota());
                 userDTO.add(usrDTO);
              
         }

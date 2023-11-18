@@ -35,7 +35,6 @@ public class AccountController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user1 = userServices.getUserByUserName(userDetails.getUsername());
         model.addAttribute("user", user1);
-        model.addAttribute("user1", user1);
         return "account_info";
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -47,7 +46,7 @@ public class AccountController {
         User user2= userServices.getUserByUserName(userDetails.getUsername());
         model.addAttribute("user", user2);
         model.addAttribute("user1", user1);
-        return "account_info";
+        return "account_info_admin";
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/account_delete")
