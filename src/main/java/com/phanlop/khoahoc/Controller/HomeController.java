@@ -295,6 +295,7 @@ public class HomeController {
         User user = userServices.getUserByUserName(userDetails.getUsername());
         page = page - 1;
         Page<Course> courses = courseService.filterByUserAndDepartmentAdmin(khoa, user, page, pageSize);
+        model.addAttribute("user", user);
         model.addAttribute("flag", 0);
         model.addAttribute("courses", courses.getContent());
         model.addAttribute("departments", departmentRepository.findAll());

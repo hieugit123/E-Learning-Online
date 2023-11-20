@@ -18,6 +18,7 @@ import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.phanlop.khoahoc.Config.CustomUserDetails;
 import com.phanlop.khoahoc.DTO.AdminThongkeDTO;
 import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
 import com.phanlop.khoahoc.DTO.UserCourseCountDTO;
@@ -127,7 +129,7 @@ public class AdminController {
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping({"/thongketongquat"})
-    public String thongketong(Model model){
+    public String thongketong(Model model, Authentication authentication){
          
         List<Course> courses=courseServices.getAllCourses();
         Role role = new Role();
@@ -176,6 +178,9 @@ public class AdminController {
         while(coursetop10.size()>10){
             coursetop10.remove(coursetop10.size()-1);
         }
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user1 = userServices.getUserByUserName(userDetails.getUsername());
+        model.addAttribute("user", user1);
         model.addAttribute("hocviennumber", hvsize);
         model.addAttribute("giangviennumber", gvsize);
         model.addAttribute("coursetop10", coursetop10);
@@ -186,7 +191,7 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping({"/thongketop5"})
     public String thongketop5(@RequestParam(value = "startDate", required = false) Date startDate,
-                        @RequestParam(value = "endDate", required = false) Date endDate,Model model){
+                        @RequestParam(value = "endDate", required = false) Date endDate,Model model, Authentication authentication){
         
         List<Enrollment> enrollments=enrollmentServices.getAll();
         List<User> users=userServices.getAllUsers();
@@ -210,7 +215,10 @@ public class AdminController {
         for(int i=userstatistic.size()-1;i>=5;i--){
             userstatistic.remove(i);
         }
-        model.addAttribute("user", userstatistic);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user1 = userServices.getUserByUserName(userDetails.getUsername());
+        model.addAttribute("user", user1);
+        model.addAttribute("userstatistic", userstatistic);
         model.addAttribute("flag", 2);
         
         return "admin";
@@ -284,8 +292,8 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping({"/thongkengay"})
     public String thongkengay(@RequestParam(value="startDate",required=false) Date startDate,
-                        @RequestParam(value ="endDate",required = false) Date endDate,Model model){
-
+                        @RequestParam(value ="endDate",required = false) Date endDate,Model model, Authentication authentication){
+        
         String staString=String.valueOf(startDate);
         String endString=String.valueOf(endDate);
         if(staString=="null"||endString=="null"){
@@ -335,6 +343,9 @@ public class AdminController {
             }
         }
         Collections.sort(coursefix, Comparator.comparingDouble(ThongkeCourseDTO::getGia).reversed());
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user1 = userServices.getUserByUserName(userDetails.getUsername());
+        model.addAttribute("user", user1);
         model.addAttribute("tonguser", usr.size());
         model.addAttribute("flag", 3);
         model.addAttribute("tongdoanhthu", sum);
@@ -343,7 +354,7 @@ public class AdminController {
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping({"/qluser"})
-    public String qluser(Model model){
+    public String qluser(Model model, Authentication authentication){
         List<User>usr=userServices.getAllUsers();
         usr.remove(0);
         List<UserDTO>userDTO=new ArrayList<>();
@@ -361,9 +372,13 @@ public class AdminController {
                 usrDTO.setModifiedDate(usr.get(i).getModifiedDate());
                 usrDTO.setUserId(usr.get(i).getUserId());
                 usrDTO.setOffLine(daysBetween);
+                usrDTO.setMota(usr.get(i).getMota());
                 userDTO.add(usrDTO);
              
         }
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user1 = userServices.getUserByUserName(userDetails.getUsername());
+        model.addAttribute("user", user1);
         model.addAttribute("users", userDTO);
         model.addAttribute("flag", 4);
         
