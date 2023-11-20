@@ -1,7 +1,11 @@
 package com.phanlop.khoahoc.Controller;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +25,7 @@ import com.phanlop.khoahoc.Entity.AccessType;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.DanhGia;
 import com.phanlop.khoahoc.Entity.Enrollment;
+import com.phanlop.khoahoc.Entity.HoaDon;
 import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
@@ -28,9 +33,12 @@ import com.phanlop.khoahoc.Service.CartServices;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.DanhGiaServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
+import com.phanlop.khoahoc.Service.HoaDonServices;
 import com.phanlop.khoahoc.Service.LessonServices;
 import com.phanlop.khoahoc.Service.UserServices;
 
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -43,6 +51,50 @@ public class HomeController {
     private final EnrollmentServices enrollmentServices;
     private final CartServices cartServices;
     private final DanhGiaServices danhgiaServices;
+    private final HoaDonServices hdServices;
+
+    @GetMapping("/hoadon/excel/{idHD}")
+    public void exportToExcel1(@PathVariable Long idHD ,HttpServletResponse response, HttpSession session) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+         
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=HoaDon_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+        HoaDon hd = hdServices.findHDById(idHD);
+        UserExcelExpoter excelExporter = new UserExcelExpoter(hd);
+         
+        excelExporter.export1(response);
+    } 
+
+    @GetMapping("/users/export/excel")
+    public void exportToExcel(HttpServletResponse response, HttpSession session) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+         
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=HoaDons_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+        List<String> listId = (List<String>) session.getAttribute("listHD");
+        List<HoaDon> listHD = new ArrayList<>();
+        if(listId == null)
+            listHD = hdServices.getAll();
+        else {
+            int lenght = listId.size();
+            for(int i=0; i<lenght; i++){
+                Long id = Long.parseLong(listId.get(i));
+                HoaDon hd = hdServices.findHDById(id);
+                listHD.add(hd);
+            }
+            session.setAttribute("listHD", null);
+        }
+         
+        UserExcelExpoter excelExporter = new UserExcelExpoter(listHD);
+         
+        excelExporter.export(response);
+    } 
 
     //MỚI
     @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN')")

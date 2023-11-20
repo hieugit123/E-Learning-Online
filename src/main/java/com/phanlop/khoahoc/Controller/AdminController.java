@@ -1,6 +1,10 @@
 package com.phanlop.khoahoc.Controller;
 
-import java.sql.Date;
+import java.io.IOException;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -11,11 +15,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,15 +31,20 @@ import com.phanlop.khoahoc.DTO.AdminThongkeDTO;
 import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
 import com.phanlop.khoahoc.DTO.UserCourseCountDTO;
 import com.phanlop.khoahoc.DTO.UserDTO;
+import com.phanlop.khoahoc.Entity.CTHoaDon;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.Enrollment;
+import com.phanlop.khoahoc.Entity.HoaDon;
 import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
+import com.phanlop.khoahoc.Service.HoaDonServices;
+import com.phanlop.khoahoc.Service.RoleServices;
 import com.phanlop.khoahoc.Service.UserServices;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 // import lombok.experimental.var;
 
@@ -42,6 +55,8 @@ public class AdminController {
     private final UserServices userServices;
     private final CourseServices courseServices;
     private final EnrollmentServices enrollmentServices;
+    private final HoaDonServices hoaDonServices;
+    private final RoleServices roleServices;
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @GetMapping({"/course","/"})
     public String getCoursePage(){
@@ -78,6 +93,12 @@ public class AdminController {
         List<Course> courses = courseServices.findCourseChoDuyet();
         model.addAttribute("courses", courses);
         model.addAttribute("flag", 5);
+        return "admin";
+    }
+
+    @PostMapping("/xuatHD")
+    public String xuatHD(@RequestBody List<String> selectedItems){
+
         return "admin";
     }
 
@@ -194,11 +215,77 @@ public class AdminController {
         
         return "admin";
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/locHDtheongay")
+    public String locHD(@RequestParam(value="startDate",required=false) Date startDate,
+                        @RequestParam(value ="endDate",required = false) Date endDate,Model model){
+        
+        String staString=String.valueOf(startDate);
+        String endString=String.valueOf(endDate);
+        List<HoaDon> dshd = new ArrayList<>();
+        if(staString=="null"||endString=="null"){
+            staString="2023-11-09";
+            endString="2023-11-11";
+            dshd = hoaDonServices.getAll();
+        } else {
+            LocalDate startLocal=LocalDate.parse(staString, DateTimeFormatter.ISO_LOCAL_DATE);
+            LocalDate endLocal=LocalDate.parse(endString,DateTimeFormatter.ISO_LOCAL_DATE);
+            ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");
+            List<HoaDon> listHD = hoaDonServices.getAll();
+            for(HoaDon hd : listHD){
+                LocalDate local=null;
+                local=LocalDate.ofInstant(hd.getNgayMua(),zoneId2);
+                if(local.isAfter(startLocal)&& local.isBefore(endLocal)){
+                    dshd.add(hd);
+                }
+            }
+        }
+        
+        model.addAttribute("dshd", dshd);
+        model.addAttribute("flag", 10);
+        Role role = roleServices.findRoleByName("ROLE_TEACHER");
+        List<User> listUser = userServices.findUserByRole(role);
+        int[] arr = new int[listUser.size()];
+        int tong = 0;
+        int dem = 0;
+        for(User user : listUser){
+            for(HoaDon hd : dshd){
+                List<CTHoaDon> ListCthd = hd.getListCTHD();
+                for(CTHoaDon cthd : ListCthd){
+                    if(cthd.getCourse().getCourseOwner().getEmail().equals(user.getEmail())){
+                        tong = tong + cthd.getGia();
+                    }
+                }
+                }
+                arr[dem] = tong;
+                tong = 0;
+                dem = dem + 1;
+        }
+
+        model.addAttribute("listUser", listUser);
+        model.addAttribute("arrDT", arr);
+        return "admin";
+    }
+
+
+    @GetMapping("/locHDtheoDate")
+    public String locHDtheoDate(@RequestParam("inDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Instant inDate, Model model) {
+        // Gọi service hoặc repository để lấy danh sách hóa đơn trong ngày
+        List<HoaDon> danhSachHoaDon = hoaDonServices.layDanhSachHoaDonTheoNgay(inDate);
+
+        // Đặt danh sách hóa đơn vào model
+        model.addAttribute("dshd", danhSachHoaDon);
+        model.addAttribute("flag", 10);
+        // Chuyển hướng hoặc trả về view tùy thuộc vào logic của bạn
+        return "admin"; // Thay "yourViewName" bằng tên của trang bạn muốn hiển thị
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping({"/thongkengay"})
     public String thongkengay(@RequestParam(value="startDate",required=false) Date startDate,
                         @RequestParam(value ="endDate",required = false) Date endDate,Model model){
-        
+
         String staString=String.valueOf(startDate);
         String endString=String.valueOf(endDate);
         if(staString=="null"||endString=="null"){
@@ -208,27 +295,17 @@ public class AdminController {
         LocalDate startLocal=LocalDate.parse(staString, DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate endLocal=LocalDate.parse(endString,DateTimeFormatter.ISO_LOCAL_DATE);
         List<Course> courses=courseServices.getAllCourses();
-        
+
         int sum=0;
         List<Enrollment> enrollments=enrollmentServices.getAll();
         ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");  
         List<ThongkeCourseDTO> coursefix=new ArrayList<>();
         List<User>usr=userServices.getAllUsers();
-        List<UserDTO>userDTO=new ArrayList<>();
         for(int i=0;i<usr.size();i++){
             LocalDate local=null;
             local=LocalDate.ofInstant(usr.get(i).getModifiedDate(),zoneId2);
             if(local.isAfter(startLocal)&& local.isBefore(endLocal)){
-                LocalDate currentDate = LocalDate.now(); 
-                long daysBetween = ChronoUnit.DAYS.between(local, currentDate);
-                UserDTO usrDTO=new UserDTO();
-                usrDTO.setAvatar(usr.get(i).getAvatar());
-                usrDTO.setFullName(usr.get(i).getFullName());
-                usrDTO.setEmail(usr.get(i).getEmail());
-                usrDTO.setUserId(usr.get(i).getUserId());
-                usrDTO.setOffLine(daysBetween);
-                userDTO.add(usrDTO);
-                
+                continue;
             }
             else{
                 usr.remove(i);
@@ -292,4 +369,37 @@ public class AdminController {
         
         return "admin";
     }
+
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+//    @GetMapping({"/hoadon"})
+//    public String getDsHD(Model model){
+//        List<HoaDon> dshd = hoaDonServices.getAll();
+//        model.addAttribute("dshd", dshd);
+//        model.addAttribute("flag", 10);
+//        Role role = roleServices.findRoleByName("ROLE_TEACHER");
+//        List<User> listUser = userServices.findUserByRole(role);
+//        int[] arr = new int[listUser.size()];
+//        int tong = 0;
+//        int dem = 0;
+//        for(User user : listUser){
+//            for(HoaDon hd : dshd){
+//                List<CTHoaDon> ListCthd = hd.getListCTHD();
+//                for(CTHoaDon cthd : ListCthd){
+//                    if(cthd.getCourse().getCourseOwner().getEmail().equals(user.getEmail())){
+//                        tong = tong + cthd.getGia();
+//                    }
+//                }
+//             }
+//             arr[dem] = tong;
+//             tong = 0;
+//             dem = dem + 1;
+//        }
+
+//        model.addAttribute("listUser", listUser);
+//        model.addAttribute("arrDT", arr);
+//        return "admin";
+//    }
+
+
+    
 }

@@ -636,13 +636,13 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			HoaDon hd = new HoaDon();
 			hd.setUser(guest);
-			hd.setTongTien(1500000);
+			hd.setTongTien(999000);
 			hoaDonRepository.save(hd);
 
 			CTHoaDon cthd = new CTHoaDon();
 			cthd.setHoadon(hd);
 			cthd.setCourse(cslt);
-			cthd.setGia(500000);
+			cthd.setGia(499000);
 			cthd.setHoantien(0);
 			cthdRepository.save(cthd);
 
@@ -663,7 +663,7 @@ public class KhoahocApplication implements CommandLineRunner{
 			CTHoaDon cthd3 = new CTHoaDon();
 			cthd3.setHoadon(hd);
 			cthd3.setCourse(dientu);
-			cthd3.setGia(500000);
+			cthd3.setGia(0);
 			cthd3.setHoantien(0);
 			cthdRepository.save(cthd3);
 			List<CTHoaDon> list = new ArrayList<>();
@@ -677,13 +677,13 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			HoaDon hd1 = new HoaDon();
 			hd1.setUser(student);
-			hd1.setTongTien(1500000);
+			hd1.setTongTien(499000);
 			hoaDonRepository.save(hd1);
 
 			CTHoaDon cthd4 = new CTHoaDon();
 			cthd4.setHoadon(hd1);
 			cthd4.setCourse(cslt);
-			cthd4.setGia(500000);
+			cthd4.setGia(499000);
 			cthd4.setHoantien(0);
 			cthdRepository.save(cthd4);
 
@@ -697,7 +697,7 @@ public class KhoahocApplication implements CommandLineRunner{
 			CTHoaDon cthd6 = new CTHoaDon();
 			cthd6.setHoadon(hd1);
 			cthd6.setCourse(dientu);
-			cthd6.setGia(500000);
+			cthd6.setGia(0);
 			cthd6.setHoantien(0);
 			cthdRepository.save(cthd6);
 			List<CTHoaDon> list1 = new ArrayList<>();
@@ -710,13 +710,13 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			HoaDon hd2 = new HoaDon();
 			hd2.setUser(student1);
-			hd2.setTongTien(1500000);
+			hd2.setTongTien(499000);
 			hoaDonRepository.save(hd2);
 
 			CTHoaDon cthd7 = new CTHoaDon();
 			cthd7.setHoadon(hd2);
 			cthd7.setCourse(cslt);
-			cthd7.setGia(500000);
+			cthd7.setGia(499000);
 			cthd7.setHoantien(0);
 			cthdRepository.save(cthd7);
 
@@ -736,13 +736,13 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			HoaDon hd3 = new HoaDon();
 			hd3.setUser(student2);
-			hd3.setTongTien(1500000);
+			hd3.setTongTien(0);
 			hoaDonRepository.save(hd3);
 
 			CTHoaDon cthd9 = new CTHoaDon();
 			cthd9.setHoadon(hd3);
 			cthd9.setCourse(dientu);
-			cthd9.setGia(500000);
+			cthd9.setGia(0);
 			cthd9.setHoantien(0);
 			cthdRepository.save(cthd9);
 			List<CTHoaDon> list3 = new ArrayList<>();
@@ -753,7 +753,7 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			HoaDon hd4 = new HoaDon();
 			hd4.setUser(student3);
-			hd4.setTongTien(1500000);
+			hd4.setTongTien(500000);
 			hoaDonRepository.save(hd4);
 
 			CTHoaDon cthd10 = new CTHoaDon();
@@ -766,7 +766,7 @@ public class KhoahocApplication implements CommandLineRunner{
 			CTHoaDon cthd11 = new CTHoaDon();
 			cthd11.setHoadon(hd4);
 			cthd11.setCourse(dientu);
-			cthd11.setGia(500000);
+			cthd11.setGia(0);
 			cthd11.setHoantien(0);
 			cthdRepository.save(cthd11);
 			List<CTHoaDon> list4 = new ArrayList<>();

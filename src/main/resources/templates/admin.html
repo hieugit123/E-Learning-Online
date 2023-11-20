@@ -47,6 +47,40 @@
         }
         </style>
         <script>
+            function inHoaDon(idHD) {
+                window.location.href = `http://localhost:8081/hoadon/excel/${idHD}`;
+            }
+
+            function xuatTatCa() {
+                var arr = document.querySelectorAll(".hdID");
+                const selectedItems = [];
+
+                arr.forEach(function(checkbox) {
+                    selectedItems.push(checkbox.value);
+                    console.log(checkbox.value);
+                });
+
+                $.ajax({
+                    url: '/saveDSHD',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(selectedItems),
+                    success: function(response) {
+                        // handle success response
+                        window.location.href = `http://localhost:8081/users/export/excel`;
+                        // Swal.fire({
+                        //     icon: 'success',
+                        //     title: 'Đã xuất thành công!',
+                        //     showConfirmButton: false,
+                        //     timer: 1500
+                        // })
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire('Có lỗi khi xuất!', '', 'error');
+                    }
+                });
+            }
+
             function duyetCourse(courseId){
                 $.ajax({
                     url: `/admin/duyetCourse/${courseId}`,
@@ -257,6 +291,74 @@
                         </div>
                     </div>
                 </div>
+                <div class="course-wrapper px-5 py-4" th:if="${flag==10}">
+                    <label for="form2">Lọc theo ngày</label>
+                    <form action="/admin/locHDtheoDate" method="get" id="form2">
+                        <div class="date-picker">
+                            <input type="date" name="inDate" required>
+                            <button type="submit">Lọc</button>
+                        </div>
+                    </form>
+
+                        <label for="form1">Lọc theo ngày bắt đầu - kết thúc</label>
+                        <form action="/admin/locHDtheongay" method="get" id="form1">
+                            <div class="date-picker">
+                                <input type="date" name="startDate" required>
+                                <input type="date" name="endDate" required>
+                                <button type="submit">Lọc</button>
+                            </div>
+                        </form>
+                        <table id="course-table">
+                                <thead >
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Ngày mua</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Khách hàng</th>
+                                        <th>Xem chi tiết</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="hd : ${dshd}">
+                                        <td>
+                                            <span th:text="${hd.HoaDonId}"></span>
+                                            <input type="hidden" name="hdID" id="" class="hdID" th:value="${hd.HoaDonId}">
+                                        </td>
+                                        <td th:text="${hd.ngayMua}"></td>
+                                        <td th:text="${hd.tongTien + ' VND'}"></td>
+                                        <td th:text="${hd.user.fullName}"></td>
+                                        <td><button>Chi tiết</button></td>
+                                        <td>
+                                            <button th:attr="onclick=|inHoaDon('${hd.HoaDonId}')|">In hóa đơn</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                    <!-- <h2 style="margin: 20px 0 10px 0;">Chi trả lương cho teacher</h2> -->
+
+                    <!-- <table id="course-table">
+                        <thead >
+                            <tr>
+                                <th>ID GV</th>
+                                <th>Tên GV</th>
+                                <th>Tiền lương</th>  
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user, status : ${listUser}">
+                                <td th:text="${user.userId}"></td>
+                                <td th:text="${user.fullName}"></td>
+                                <td th:text="${arrDT[status.index]}"></td>
+                                <td>Chi trả</td>
+                            </tr>
+                        </tbody>                        
+                                              
+                    </table> -->
+                    <button onclick="xuatTatCa()">Xuất Danh Sách Này</button>
+                    <button><a href="/users/export/excel">Xuất tất cả</a></button>
+                </div>
                 <div class="course-wrapper px-5 py-4" th:if="${flag==0}">
                     <div class="course-manager-section bg-white">
                         <div class="row">
@@ -302,6 +404,50 @@
                         <div id="course-container">
 
                         </div>
+
+
+                         <!-- Modal thêm chi tiết hóa đơn-->
+                         <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5">Thêm khóa học</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form id="add-course-form" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="" class="form-label">Tên khóa học</label>
+                                                <input type="text" name="courseName" id="courseName" class="form-control" placeholder="" aria-describedby="helpId">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="" class="form-label">Avatar khóa học</label>
+                                                <input type="file" name="courseAvt" id="courseAvt" class="form-control" placeholder="" aria-describedby="helpId" accept="image/png, image/gif, image/jpeg">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="" class="form-label">Mô tả</label>
+                                                <input type="text" name="courseDes" id="courseDes" class="form-control" placeholder="" aria-describedby="helpId">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="" class="form-label">Chọn khoa</label>
+                                                <select class="form-select" id="departmentId" name="departmentId">
+
+                                                </select>
+                                            </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Thêm</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <!-- Modal thêm khóa học-->
                         <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

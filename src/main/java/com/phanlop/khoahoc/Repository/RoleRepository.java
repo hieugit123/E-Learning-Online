@@ -1,8 +1,9 @@
 package com.phanlop.khoahoc.Repository;
 
-import com.phanlop.khoahoc.Entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoleRepository extends JpaRepository<Role, Long> {
+import com.phanlop.khoahoc.Entity.Role;
+
+public interface RoleRepository extends JpaRepository<Role, Integer> {
     Role findByRoleName(String roleName);
 }
