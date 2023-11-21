@@ -1,14 +1,21 @@
 package com.phanlop.khoahoc.Controller;
 
 import java.io.IOException;
-import java.util.Date;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.Period;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.zone.ZoneRulesException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -278,12 +285,37 @@ public class AdminController {
 
 
     @GetMapping("/locHDtheoDate")
-    public String locHDtheoDate(@RequestParam("inDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Instant inDate, Model model) {
+    public String locHDtheoDate(@RequestParam("inDate") Date inDate, Model model) {
         // Gọi service hoặc repository để lấy danh sách hóa đơn trong ngày
-        List<HoaDon> danhSachHoaDon = hoaDonServices.layDanhSachHoaDonTheoNgay(inDate);
+         String inDateStr=String.valueOf(inDate);
+         LocalDate inDateLocal=LocalDate.parse(inDateStr, DateTimeFormatter.ISO_LOCAL_DATE);
+        ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");  
+        //LocalDate startOfDay = inDateLocal.atStartOfDay().toLocalDate();
+        //LocalDate endOfDay = startOfDay.plusDays(1).atTime(LocalTime.MAX).minus(Duration.ofSeconds(1)).toLocalDate();
+        // LocalDateTime localDateTime = inDateLocal.atStartOfDay();
+        
+        // ZoneOffset zoneOffset = null;
+        // try {
+        //     zoneOffset = zoneId2.getRules().getOffset(localDateTime);
+        // } catch (ZoneRulesException e) {
+        //     // Xử lý ngoại lệ nếu không tìm thấy quy tắc múi giờ
+        //     e.printStackTrace();
+        // }
+        // OffsetDateTime oft=OffsetDateTime.of(localDateTime, zoneOffset);
+        // Instant instant = oft.toInstant();
 
+        List<HoaDon> danhSachHoaDon = hoaDonServices.getAll();
+        List<HoaDon> hdtemp=new ArrayList<>();
+        LocalDate local=null;
+        for (HoaDon hDon : danhSachHoaDon) {
+            local=LocalDate.ofInstant(hDon.getNgayMua(), zoneId2);
+            if(local.isEqual(inDateLocal)){
+                hdtemp.add(hDon);
+            }
+        }
+        
         // Đặt danh sách hóa đơn vào model
-        model.addAttribute("dshd", danhSachHoaDon);
+        model.addAttribute("dshd", hdtemp);
         model.addAttribute("flag", 10);
         // Chuyển hướng hoặc trả về view tùy thuộc vào logic của bạn
         return "admin"; // Thay "yourViewName" bằng tên của trang bạn muốn hiển thị
