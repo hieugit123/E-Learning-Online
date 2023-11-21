@@ -370,6 +370,15 @@
                     <button onclick="xuatTatCa()">Xuất Danh Sách Này</button>
                     <button><a href="/users/export/excel">Xuất tất cả</a></button>
                 </div>
+                <div class="course-wrapper px-5 py-4" th:if="${flag==144}">
+                    <img th:src="${course.courseAvt}"></td><br>
+                    Tên Course: <h5 th:text="${course.courseName}"></h5><br>
+                    Giá Course: <h5 th:text="${course.gia}"></h5>VND<br>
+                    Mô tả course: <h5 th:text="${course.courseDes}"></h5><br>
+                    Người tạo course: <h5 th:text="${owner.fullName}"></h5><br>
+                    Ngày tạo: <h5 th:text="${course.createDate}"></h5><br>
+                    Số lượng học viên: <h5 th:text="${enrollments.size()}"></h5>
+                </div>
                 <div class="course-wrapper px-5 py-4" th:if="${flag==0}">
                     <div class="course-manager-section bg-white">
                         <div class="row">
@@ -408,12 +417,15 @@
                                             <td th:text="${course.gia}"></td>
                                             <td th:text="${course.createDate}"></td>
                                             <td>
-                                                <a>/Thông tin chi tiết</a>
+                                                <a th:href="@{/admin/chitietcourse(courseId=${course.courseID})}">Thông tin chi tiết</a>
+                                                <a th:href="@{/admin/forcexoacource(courseId=${course.courseID})}"  onclick="return confirm('Bạn có chắc muốn xóa khóa học?')">/Xóa course</a>
+                                                
                                             </td>
                                         </div>
                                     </tr>
                                 </tbody>
                         </table>
+                        
 
                          <!-- Modal thêm chi tiết hóa đơn-->
                          <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -1,29 +1,16 @@
 package com.phanlop.khoahoc.Controller;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.Period;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.zone.ZoneRulesException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -41,19 +28,21 @@ import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
 import com.phanlop.khoahoc.DTO.UserCourseCountDTO;
 import com.phanlop.khoahoc.DTO.UserDTO;
 import com.phanlop.khoahoc.Entity.CTHoaDon;
+import com.phanlop.khoahoc.Entity.Cart;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Entity.HoaDon;
 import com.phanlop.khoahoc.Entity.Lesson;
 import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
+import com.phanlop.khoahoc.Repository.CTHDRepository;
+import com.phanlop.khoahoc.Repository.CartRepository;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.HoaDonServices;
 import com.phanlop.khoahoc.Service.RoleServices;
 import com.phanlop.khoahoc.Service.UserServices;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 // import lombok.experimental.var;
 
@@ -66,6 +55,9 @@ public class AdminController {
     private final EnrollmentServices enrollmentServices;
     private final HoaDonServices hoaDonServices;
     private final RoleServices roleServices;
+    
+    private final CartRepository cartRepository;
+    private final CTHDRepository cthdRepository;
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @GetMapping({"/course","/"})
     public String getCoursePage(Model model){
@@ -75,11 +67,43 @@ public class AdminController {
         return "admin";
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping({"/chitietcourse"})
-    public String chitietcourse(@RequestParam UUID courseId,Model model){
-        List<Course> courses = courseServices.getCourseById(courseId);
+    @GetMapping("/forcexoacource")
+    public String forcexoacource(@RequestParam UUID courseId,Model model){
+        Course course = courseServices.getCourseById(courseId);
+        List<Enrollment> enrollments=enrollmentServices.getEnrollmentsByCourse(course);
+        for (Enrollment enrollment : enrollments) {
+            if(enrollment.getCourse().getCourseID()==course.getCourseID()){
+                enrollmentServices.deleteEnrollment(enrollment);
+            }
+        }
+        List<CTHoaDon> ctHoaDons=cthdRepository.findAll();
+        for (CTHoaDon ctHoaDon : ctHoaDons) {
+            if(ctHoaDon.getCourse().getCourseID()==course.getCourseID()){
+                cthdRepository.delete(ctHoaDon);
+            }
+        }
+        List<Cart> carts=cartRepository.findAll();
+        for (Cart cart : carts) {
+            if(cart.getCourse().getCourseID()==course.getCourseID()){
+                cartRepository.delete(cart);
+            }
+        }
+        courseServices.deleteCourse(courseId);
+        List<Course> courses = courseServices.getAllCourses();
         model.addAttribute("courses", courses);
         model.addAttribute("flag", 0);
+        return "admin";
+    }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/chitietcourse")
+    public String chitietcourse(@RequestParam UUID courseId,Model model){
+        Course course = courseServices.getCourseById(courseId);
+        User user=course.getCourseOwner();
+        List<Enrollment> enrollments=enrollmentServices.getEnrollmentsByCourse(course);
+        model.addAttribute("course", course);
+        model.addAttribute("enrollments", enrollments);
+        model.addAttribute("owner", user);
+        model.addAttribute("flag", 144);
         return "admin";
     }
     
@@ -146,6 +170,7 @@ public class AdminController {
         model.addAttribute("lessons", lessons);
         return "admin";
     }
+    
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping({"/thongketongquat"})
     public String thongketong(Model model, Authentication authentication){
