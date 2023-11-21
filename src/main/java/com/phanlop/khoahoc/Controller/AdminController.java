@@ -68,9 +68,21 @@ public class AdminController {
     private final RoleServices roleServices;
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @GetMapping({"/course","/"})
-    public String getCoursePage(){
+    public String getCoursePage(Model model){
+        List<Course> courses = courseServices.getAllCourses();
+        model.addAttribute("courses", courses);
+        model.addAttribute("flag", 0);
         return "admin";
     }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping({"/chitietcourse"})
+    public String chitietcourse(@RequestParam UUID courseId,Model model){
+        List<Course> courses = courseServices.getCourseById(courseId);
+        model.addAttribute("courses", courses);
+        model.addAttribute("flag", 0);
+        return "admin";
+    }
+    
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @GetMapping({"/chapter"})

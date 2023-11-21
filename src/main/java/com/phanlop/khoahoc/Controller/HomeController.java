@@ -297,7 +297,8 @@ public class HomeController {
         Page<Course> courses = courseService.filterByUserAndDepartmentAdmin(khoa, user, page, pageSize);
         model.addAttribute("user", user);
         model.addAttribute("flag", 0);
-        model.addAttribute("courses", courses.getContent());
+        //Nam fix here
+        model.addAttribute("courses", courseService.getAllCourses());
         model.addAttribute("departments", departmentRepository.findAll());
         model.addAttribute("khoaId", khoa);
         model.addAttribute("totalPages", courses.getTotalPages());

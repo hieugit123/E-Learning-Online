@@ -388,34 +388,32 @@
                                 <input type="text" class="form-control" placeholder="Tìm kiếm khóa học" id="course-search">
                             </div>
                         </div>
-
-                        <div class="row course-header">
-                            <div class="col-1">
-                                Avatar
-                            </div>
-                            <div class="col-3">
-                                Mã khóa học
-                            </div>
-                            <div class="col-2">
-                                Tên khóa học
-                            </div>
-                            <div class="col-2">
-                                Mô tả
-                            </div>
-                            <div class="col-1">
-                                Ngày tạo
-                            </div>
-                            <div class="col-2">
-                                Khoa
-                            </div>
-                            <div class="col-1">
-                                Thao tác
-                            </div>
-                        </div>
-                        <div id="course-container">
-
-                        </div>
-
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>IMG</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Create day</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <tr th:each="course : ${courses}">
+                                        <div th:if="${course.state==1}">
+                                            <td th:text="${course.courseID}"></td>
+                                            <td><img th:src="${course.courseAvt}"></td>
+                                            <td th:text="${course.courseName}"></td>
+                                            <td th:text="${course.gia}"></td>
+                                            <td th:text="${course.createDate}"></td>
+                                            <td>
+                                                <a>/Thông tin chi tiết</a>
+                                            </td>
+                                        </div>
+                                    </tr>
+                                </tbody>
+                        </table>
 
                          <!-- Modal thêm chi tiết hóa đơn-->
                          <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
