@@ -47,6 +47,10 @@
         }
         </style>
         <script>
+            function chiTraChoGV(idChiTra){
+                window.location.href = `http://localhost:8081/admin/chiTraGV/${idChiTra}`;
+            }
+
             function inHoaDon(idHD) {
                 window.location.href = `http://localhost:8081/hoadon/excel/${idHD}`;
             }
@@ -346,29 +350,61 @@
                                     </tr>
                                 </tbody>
                         </table>
-                    <!-- <h2 style="margin: 20px 0 10px 0;">Chi trả lương cho teacher</h2> -->
+                    <button onclick="xuatTatCa()">Xuất Danh Sách Này</button>
+                    <button><a href="/users/export/excel">Xuất tất cả</a></button>
+                </div>
 
-                    <!-- <table id="course-table">
+                <div class="course-wrapper px-5 py-4" th:if="${flag==11}">
+                    <h2 style="margin: 20px 0 10px 0;">Chi trả lương cho teacher</h2>
+                    <select>
+                        <option value="1">Tháng 1</option>
+                        <option value="2">Tháng 2</option>
+                        <option value="3">Tháng 3</option>
+                        <option value="4">Tháng 4</option>
+                        <option value="5">Tháng 5</option>
+                        <option value="6">Tháng 6</option>
+                        <option value="7">Tháng 7</option>
+                        <option value="8">Tháng 8</option>
+                        <option value="9">Tháng 9</option>
+                        <option value="10">Tháng 10</option>
+                        <option value="11">Tháng 11</option>
+                        <option value="12">Tháng 12</option>
+                    </select>
+
+                    <table id="course-table">
                         <thead >
                             <tr>
-                                <th>ID GV</th>
+                                <th>ID</th>
                                 <th>Tên GV</th>
-                                <th>Tiền lương</th>  
+                                <th>Email</th>
+                                <th>Tổng doanh thu</th>
+                                <th>Tháng</th>
+                                <th>% Share</th>
+                                <th>Tiền lương nhận</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="user, status : ${listUser}">
-                                <td th:text="${user.userId}"></td>
-                                <td th:text="${user.fullName}"></td>
-                                <td th:text="${arrDT[status.index]}"></td>
-                                <td>Chi trả</td>
+                            <tr th:each="chitra : ${listChiTra}">
+                                <td th:text="${chitra.Id}"></td>
+                                <td th:text="${chitra.teacher.fullName}"></td>
+                                <td th:text="${chitra.teacher.email}"></td>
+                                <td th:text="${chitra.tongDoanhThu}"></td>
+                                <td th:text="${chitra.thang}"></td>
+                                <td th:text="${chitra.tyLeShare}"></td>
+                                <td th:text="${chitra.soTienChuyen}"></td>
+                                <td>
+                                    <h4 th:if="${chitra.state == 1}">Đã chi trả</h4>
+                                    <button th:if="${chitra.state == 0}" th:attr="onclick=|chiTraChoGV('${chitra.Id}')|">Chi trả</button>
+                                </td>
+                                <td>
+                                    <button>Chi tiết</button>
+                                </td>
                             </tr>
                         </tbody>                        
                                               
-                    </table> -->
-                    <button onclick="xuatTatCa()">Xuất Danh Sách Này</button>
-                    <button><a href="/users/export/excel">Xuất tất cả</a></button>
+                    </table>
                 </div>
                 <div class="course-wrapper px-5 py-4" th:if="${flag==144}">
                     <img th:src="${course.courseAvt}"></td><br>
@@ -379,6 +415,7 @@
                     Ngày tạo: <h5 th:text="${course.createDate}"></h5><br>
                     Số lượng học viên: <h5 th:text="${enrollments.size()}"></h5>
                 </div>
+
                 <div class="course-wrapper px-5 py-4" th:if="${flag==0}">
                     <div class="course-manager-section bg-white">
                         <div class="row">

@@ -32,6 +32,8 @@ import com.phanlop.khoahoc.Utils.ObjectMapperUtils;
 
 import org.springframework.ui.Model;
 
+import com.phanlop.khoahoc.Entity.ChiTraGV;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -39,6 +41,7 @@ import com.phanlop.khoahoc.Service.CartServices;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EmailServices;
 import com.phanlop.khoahoc.Service.HoaDonServices;
+import com.phanlop.khoahoc.Service.ChiTraServices;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,6 +58,7 @@ public class CheckoutController {
     private final CourseServices courseServices;
     private final EmailServices emailServices;
     private final VNPayServices vnPayServices;
+    private final ChiTraServices chiTraServices;
     
     //THANH TOAN VNPAY
     @GetMapping("/submitOrder/{sumCart}")
@@ -79,9 +83,17 @@ public class CheckoutController {
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("paymentTime", paymentTime);
         model.addAttribute("transactionId", transactionId);
+        
+        boolean check = (boolean) session.getAttribute("isChiTra");
+        if(check)
+            model.addAttribute("flag", 2);
+        else
+            model.addAttribute("flag", 1);
+
 
         if(paymentStatus == 1){
-            List<String> listId = (List<String>) session.getAttribute("listSpPayment");
+            if(!check){
+                List<String> listId = (List<String>) session.getAttribute("listSpPayment");
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             User user = userServices.getUserByUserName(userDetails.getUsername());
             int sum = 500;
@@ -128,7 +140,20 @@ public class CheckoutController {
                 //     return ResponseEntity.ok("success");
                 // }
                 // return ResponseEntity.badRequest().body("fail");
+            } else {
+                Long idChiTra = (Long) session.getAttribute("idChiTra");
+                CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+                User admin = userServices.getUserByUserName(userDetails.getUsername());
+                ChiTraGV chitra = chiTraServices.findByID(idChiTra);
+                chitra.setAdmin(admin);
+                chitra.setState(1);
+                chiTraServices.save(chitra);
+                session.setAttribute("isChiTra", false);
+                
+            }
         }
+
+        
 
         return paymentStatus == 1 ? "ordersuccess" : "orderfail";
     }

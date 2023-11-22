@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,7 @@ import lombok.AllArgsConstructor;
 @SpringBootApplication
 @EnableJpaAuditing // Cái này để lưu ngày createDate với modifiedDate - đừng quan tâm
 @AllArgsConstructor
+@EnableScheduling
 public class KhoahocApplication implements CommandLineRunner{
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
@@ -303,6 +305,16 @@ public class KhoahocApplication implements CommandLineRunner{
 						laptrinhc1.setGia(450000);
 			courseRepository.save(laptrinhc1);
 
+			Enrollment.EnrollmentId enrollmentId25 = new Enrollment.EnrollmentId();
+			enrollmentId25.setUserId(student1.getUserId());
+			enrollmentId25.setCourseId(laptrinhc1.getCourseID());
+			Enrollment enrollment25 = new Enrollment();
+			enrollment25.setId(enrollmentId25);
+			enrollment25.setUser(student1);
+			enrollment25.setAccessType(AccessType.ACCEPT);
+			enrollment25.setCourse(laptrinhc1);
+			enrollmentRepository.save(enrollment25);
+
 			Lesson lessonc11 = new Lesson();
 			lessonc11.setLessonTitle("1. Tổng quan về khóa học Lập trình C++");
 			lessonc11.setLessonSort(1);
@@ -356,57 +368,6 @@ public class KhoahocApplication implements CommandLineRunner{
                         laptrinhc.setState(0);
 						laptrinhc.setGia(450000);
 			courseRepository.save(laptrinhc);
-
-                        // DanhGia danhgia1 = new DanhGia();
-                        // danhgia1.setUser(student);
-                        // danhgia1.setCourse(laptrinhc);
-                        // danhgia1.setContentDanhgia("Khóa học khá bổ ích. Cảm ơn tác giả!");
-                        // danhgia1.setSao(4);
-                        // danhgia1.setTenUser(student.getFullName());
-                        // danhgiaRepository.save(danhgia1);
-                        // laptrinhc.getDanhgias().add(danhgia1);
-                        // courseRepository.save(laptrinhc);
-
-						// DanhGia danhgia11 = new DanhGia();
-                        // danhgia11.setUser(student1);
-                        // danhgia11.setCourse(laptrinhc);
-                        // danhgia11.setContentDanhgia("Khóa học khá bổ ích. Cảm ơn tác giả!");
-                        // danhgia11.setSao(4);
-                        // danhgia11.setTenUser(student1.getFullName());
-                        // danhgiaRepository.save(danhgia11);
-                        // laptrinhc.getDanhgias().add(danhgia11);
-                        // courseRepository.save(laptrinhc);
-                        
-                        
-			// Enrollment.EnrollmentId enrollmentId2 = new Enrollment.EnrollmentId();
-			// enrollmentId2.setUserId(guest.getUserId());
-			// enrollmentId2.setCourseId(laptrinhc.getCourseID());
-			// Enrollment enrollment2 = new Enrollment();
-			// enrollment2.setId(enrollmentId2);
-			// enrollment2.setUser(guest);
-			// enrollment2.setAccessType(AccessType.ACCEPT);
-			// enrollment2.setCourse(laptrinhc);
-			// enrollmentRepository.save(enrollment2);
-
-			// Enrollment.EnrollmentId enrollmentId7 = new Enrollment.EnrollmentId();
-			// enrollmentId7.setUserId(student1.getUserId());
-			// enrollmentId7.setCourseId(laptrinhc.getCourseID());
-			// Enrollment enrollment7 = new Enrollment();
-			// enrollment7.setId(enrollmentId7);
-			// enrollment7.setUser(student1);
-			// enrollment7.setAccessType(AccessType.ACCEPT);
-			// enrollment7.setCourse(laptrinhc);
-			// enrollmentRepository.save(enrollment7);
-
-			// Enrollment.EnrollmentId enrollmentId77 = new Enrollment.EnrollmentId();
-			// enrollmentId77.setUserId(student.getUserId());
-			// enrollmentId77.setCourseId(laptrinhc.getCourseID());
-			// Enrollment enrollment77 = new Enrollment();
-			// enrollment77.setId(enrollmentId77);
-			// enrollment77.setUser(student);
-			// enrollment77.setAccessType(AccessType.ACCEPT);
-			// enrollment77.setCourse(laptrinhc);
-			// enrollmentRepository.save(enrollment77);
 
 			Lesson lessonc1 = new Lesson();
 			lessonc1.setLessonTitle("1. Tổng quan về khóa học Lập trình C++");
@@ -525,8 +486,9 @@ public class KhoahocApplication implements CommandLineRunner{
 			dientu.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			dientu.setCourseName("Điện tử và điện tử số "+i);
 			dientu.setDepartment(dtvt);
-                        dientu.setStateGuiAdmin(1);
-                        dientu.setState(1);
+			dientu.setGia(475000);
+            dientu.setStateGuiAdmin(1);
+            dientu.setState(1);
 			courseRepository.save(dientu);
                         
                         DanhGia danhgia3 = new DanhGia();
@@ -636,34 +598,27 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			HoaDon hd = new HoaDon();
 			hd.setUser(guest);
-			hd.setTongTien(999000);
+			hd.setTongTien(cslt.getGia()+winform.getGia()+dientu.getGia());
 			hoaDonRepository.save(hd);
 
 			CTHoaDon cthd = new CTHoaDon();
 			cthd.setHoadon(hd);
 			cthd.setCourse(cslt);
-			cthd.setGia(499000);
+			cthd.setGia(cslt.getGia());
 			cthd.setHoantien(0);
 			cthdRepository.save(cthd);
-
-			// CTHoaDon cthd1 = new CTHoaDon();
-			// cthd1.setHoadon(hd);
-			// cthd1.setCourse(laptrinhc);
-			// cthd1.setGia(500000);
-			// cthd1.setHoantien(0);
-			// cthdRepository.save(cthd1);
 
 			CTHoaDon cthd2 = new CTHoaDon();
 			cthd2.setHoadon(hd);
 			cthd2.setCourse(winform);
-			cthd2.setGia(500000);
+			cthd2.setGia(winform.getGia());
 			cthd2.setHoantien(0);
 			cthdRepository.save(cthd2);
 
 			CTHoaDon cthd3 = new CTHoaDon();
 			cthd3.setHoadon(hd);
 			cthd3.setCourse(dientu);
-			cthd3.setGia(0);
+			cthd3.setGia(dientu.getGia());
 			cthd3.setHoantien(0);
 			cthdRepository.save(cthd3);
 			List<CTHoaDon> list = new ArrayList<>();
@@ -677,13 +632,13 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			HoaDon hd1 = new HoaDon();
 			hd1.setUser(student);
-			hd1.setTongTien(499000);
+			hd1.setTongTien(dientu.getGia()+cslt.getGia());
 			hoaDonRepository.save(hd1);
 
 			CTHoaDon cthd4 = new CTHoaDon();
 			cthd4.setHoadon(hd1);
 			cthd4.setCourse(cslt);
-			cthd4.setGia(499000);
+			cthd4.setGia(cslt.getGia());
 			cthd4.setHoantien(0);
 			cthdRepository.save(cthd4);
 
@@ -697,7 +652,7 @@ public class KhoahocApplication implements CommandLineRunner{
 			CTHoaDon cthd6 = new CTHoaDon();
 			cthd6.setHoadon(hd1);
 			cthd6.setCourse(dientu);
-			cthd6.setGia(0);
+			cthd6.setGia(dientu.getGia());
 			cthd6.setHoantien(0);
 			cthdRepository.save(cthd6);
 			List<CTHoaDon> list1 = new ArrayList<>();
@@ -710,39 +665,39 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			HoaDon hd2 = new HoaDon();
 			hd2.setUser(student1);
-			hd2.setTongTien(499000);
+			hd2.setTongTien(cslt.getGia());
 			hoaDonRepository.save(hd2);
 
 			CTHoaDon cthd7 = new CTHoaDon();
 			cthd7.setHoadon(hd2);
 			cthd7.setCourse(cslt);
-			cthd7.setGia(499000);
+			cthd7.setGia(cslt.getGia() + laptrinhc1.getGia());
 			cthd7.setHoantien(0);
 			cthdRepository.save(cthd7);
 
-			// CTHoaDon cthd8 = new CTHoaDon();
-			// cthd8.setHoadon(hd2);
-			// cthd8.setCourse(laptrinhc);
-			// cthd8.setGia(500000);
-			// cthd8.setHoantien(0);
-			// cthdRepository.save(cthd8);
+			CTHoaDon cthd8 = new CTHoaDon();
+			cthd8.setHoadon(hd2);
+			cthd8.setCourse(laptrinhc1);
+			cthd8.setGia(laptrinhc1.getGia());
+			cthd8.setHoantien(0);
+			cthdRepository.save(cthd8);
 
 			List<CTHoaDon> list2 = new ArrayList<>();
 			list2.add(cthd7);
-			// list2.add(cthd8);
+			list2.add(cthd8);
 			hd2.setListCTHD(list2);
 			hoaDonRepository.save(hd2);
 
 
 			HoaDon hd3 = new HoaDon();
 			hd3.setUser(student2);
-			hd3.setTongTien(0);
+			hd3.setTongTien(dientu.getGia());
 			hoaDonRepository.save(hd3);
 
 			CTHoaDon cthd9 = new CTHoaDon();
 			cthd9.setHoadon(hd3);
 			cthd9.setCourse(dientu);
-			cthd9.setGia(0);
+			cthd9.setGia(dientu.getGia());
 			cthd9.setHoantien(0);
 			cthdRepository.save(cthd9);
 			List<CTHoaDon> list3 = new ArrayList<>();
@@ -753,20 +708,20 @@ public class KhoahocApplication implements CommandLineRunner{
 
 			HoaDon hd4 = new HoaDon();
 			hd4.setUser(student3);
-			hd4.setTongTien(500000);
+			hd4.setTongTien(winform.getGia()+dientu.getGia());
 			hoaDonRepository.save(hd4);
 
 			CTHoaDon cthd10 = new CTHoaDon();
 			cthd10.setHoadon(hd4);
 			cthd10.setCourse(winform);
-			cthd10.setGia(500000);
+			cthd10.setGia(winform.getGia());
 			cthd10.setHoantien(0);
 			cthdRepository.save(cthd10);
 
 			CTHoaDon cthd11 = new CTHoaDon();
 			cthd11.setHoadon(hd4);
 			cthd11.setCourse(dientu);
-			cthd11.setGia(0);
+			cthd11.setGia(dientu.getGia());
 			cthd11.setHoantien(0);
 			cthdRepository.save(cthd11);
 			List<CTHoaDon> list4 = new ArrayList<>();

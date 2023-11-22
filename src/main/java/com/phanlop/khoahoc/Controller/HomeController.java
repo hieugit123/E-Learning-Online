@@ -27,6 +27,7 @@ import com.phanlop.khoahoc.Entity.DanhGia;
 import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Entity.HoaDon;
 import com.phanlop.khoahoc.Entity.Lesson;
+import com.phanlop.khoahoc.Entity.Notify;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
 import com.phanlop.khoahoc.Service.CartServices;
@@ -35,6 +36,7 @@ import com.phanlop.khoahoc.Service.DanhGiaServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.HoaDonServices;
 import com.phanlop.khoahoc.Service.LessonServices;
+import com.phanlop.khoahoc.Service.NotifyServices;
 import com.phanlop.khoahoc.Service.UserServices;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,6 +54,7 @@ public class HomeController {
     private final CartServices cartServices;
     private final DanhGiaServices danhgiaServices;
     private final HoaDonServices hdServices;
+    private final NotifyServices notifyServices;
 
     @GetMapping("/hoadon/excel/{idHD}")
     public void exportToExcel1(@PathVariable Long idHD ,HttpServletResponse response, HttpSession session) throws IOException {
@@ -154,6 +157,7 @@ public class HomeController {
     }
 
     //MỚI
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
     @GetMapping("/course/quatrinhhoc/{idCourse}")
     public String getQuaTrinh(Model model, @PathVariable UUID idCourse, Authentication authentication){
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -173,6 +177,7 @@ public class HomeController {
     }
 
     //MỚI
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
     @GetMapping("/checkout")
     public String getPageCheckout(Authentication authentication, Model model){
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -187,10 +192,11 @@ public class HomeController {
         return "checkout";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
     @GetMapping("/checkout/{idCourse}")
-    public String checkOutCourse(@PathVariable UUID idCourse, Model model, Authentication authentication){
-        if (authentication == null || !authentication.isAuthenticated())
-            return "redirect:/login";
+    public String checkOutCourse(@PathVariable UUID idCourse, Model model){
+        // if (authentication == null || !authentication.isAuthenticated())
+        //     return "redirect:/login";
         Course course = courseService.getCourseById(idCourse);
         List<Course> list = new ArrayList<>();
         list.add(course);
@@ -218,46 +224,6 @@ public class HomeController {
         model.addAttribute("user", user);
         return "index";
     }
-
-    // @PreAuthorize("hasRole('ROLE_STUDENT')")
-    // @GetMapping("/main/student")
-    // public String getHomePage(@RequestParam(defaultValue = "0") int khoa,
-    //                           @RequestParam(defaultValue = "1") int page,
-    //                           @RequestParam(defaultValue = "12") int pageSize,
-    //                           Authentication authentication,
-    //                           Model model) {
-    //     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-    //     User user = userServices.getUserByUserName(userDetails.getUsername());
-    //     page = page - 1;
-    //     Page<Course> courses = courseService.filterByUserAndDepartment(khoa, user, page, pageSize);
-    //     model.addAttribute("courses", courses.getContent());
-    //     model.addAttribute("departments", departmentRepository.findAll());
-    //     model.addAttribute("khoaId", khoa);
-    //     model.addAttribute("totalPages", courses.getTotalPages());
-    //     model.addAttribute("currentPage", page + 1);
-
-    //     return "main";
-    // }
-    
-    // @PreAuthorize("hasRole('ROLE_STUDENT')")
-    // @GetMapping("/courseThamKhaoo")
-    // public String getHomeCoursesThamKhao(@RequestParam(defaultValue = "0") int khoa,
-    //                           @RequestParam(defaultValue = "1") int page,
-    //                           @RequestParam(defaultValue = "12") int pageSize,
-    //                           Authentication authentication,
-    //                           Model model) {
-    //     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-    //     User user = userServices.getUserByUserName(userDetails.getUsername());
-    //     page = page - 1;
-    //     Page<Course> courses = courseService.filterByUserAndDepartment1(khoa, user, page, pageSize);
-    //     model.addAttribute("courses", courses.getContent());
-    //     model.addAttribute("departments", departmentRepository.findAll());
-    //     model.addAttribute("khoaId", khoa);
-    //     model.addAttribute("totalPages", courses.getTotalPages());
-    //     model.addAttribute("currentPage", page + 1);
-
-    //     return "courseThamkhao";
-    // }
 
     @GetMapping("/dieukhoan")
     public String getDieuKhoan(){
@@ -303,6 +269,8 @@ public class HomeController {
         model.addAttribute("khoaId", khoa);
         model.addAttribute("totalPages", courses.getTotalPages());
         model.addAttribute("currentPage", page + 1);
+        List<Notify> listNotify = notifyServices.getList();
+        model.addAttribute("listNotify", listNotify);
         return "admin";
     }
 

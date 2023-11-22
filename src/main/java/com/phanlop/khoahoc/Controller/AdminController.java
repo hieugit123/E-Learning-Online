@@ -27,8 +27,10 @@ import com.phanlop.khoahoc.DTO.AdminThongkeDTO;
 import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
 import com.phanlop.khoahoc.DTO.UserCourseCountDTO;
 import com.phanlop.khoahoc.DTO.UserDTO;
+import com.phanlop.khoahoc.Entity.AccessType;
 import com.phanlop.khoahoc.Entity.CTHoaDon;
 import com.phanlop.khoahoc.Entity.Cart;
+import com.phanlop.khoahoc.Entity.ChiTraGV;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Entity.HoaDon;
@@ -37,12 +39,17 @@ import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Repository.CTHDRepository;
 import com.phanlop.khoahoc.Repository.CartRepository;
+import com.phanlop.khoahoc.Service.ChiTraServices;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.HoaDonServices;
 import com.phanlop.khoahoc.Service.RoleServices;
 import com.phanlop.khoahoc.Service.UserServices;
+import com.phanlop.khoahoc.Service.VNPayServices;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 // import lombok.experimental.var;
 
@@ -58,6 +65,8 @@ public class AdminController {
     
     private final CartRepository cartRepository;
     private final CTHDRepository cthdRepository;
+    private final VNPayServices vnPayservices;
+    private final ChiTraServices chiTraServices;
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @GetMapping({"/course","/"})
     public String getCoursePage(Model model){
@@ -141,9 +150,27 @@ public class AdminController {
         return "admin";
     }
 
-    @PostMapping("/xuatHD")
-    public String xuatHD(@RequestBody List<String> selectedItems){
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/chiTraGV/{idChiTra}")
+    public String submitChiTra(@PathVariable Long idChiTra, HttpServletRequest request, HttpSession session){
+        // int sum = Integer.parseInt(sumCart);
+        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        ChiTraGV chitra = chiTraServices.findByID(idChiTra);
+        int sotienShare = chitra.getSoTienChuyen();
+        String vnpayUrl = vnPayservices.createOrder(sotienShare, baseUrl);
+        System.out.println(vnpayUrl);
+        session.setAttribute("isChiTra", true);
+        session.setAttribute("idChiTra", idChiTra);
+        return "redirect:" + vnpayUrl;
+    }
 
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/chitraGV")
+    public String getDSCT(Model model){
+        model.addAttribute("flag", 11);
+        List<ChiTraGV> list = chiTraServices.getAll();
+        model.addAttribute("listChiTra", list);
         return "admin";
     }
 

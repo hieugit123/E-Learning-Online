@@ -39,7 +39,8 @@
                 </tr>
                 </tbody>
             </table>
-            <a href="/student" class="btn btn-primary">Về trang chủ</a>
+            <a href="/student" class="btn btn-primary" th:if="${flag != 2}">Về trang chủ</a>
+            <a href="/admin" class="btn btn-primary" th:if="${flag == 2}">Về trang chủ</a>
         </div>
     </div>
 </div>
