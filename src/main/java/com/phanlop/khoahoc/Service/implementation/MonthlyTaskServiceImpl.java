@@ -1,5 +1,7 @@
 package com.phanlop.khoahoc.Service.implementation;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,17 @@ public class MonthlyTaskServiceImpl implements MonthlyTaskService{
         List<User> listUser = userRepo.findUserByRole(role);
         int tong = 0;
         List<HoaDon> dshd = hdRepo.findAll();
-
+        LocalDate today=LocalDate.now();
+        ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");
+        int thang=today.getMonthValue();
+        for (int i=0;i<dshd.size();i++) {
+            LocalDate localDate=LocalDate.ofInstant(dshd.get(i).getNgayMua(), zoneId2);
+            int thanglocal=localDate.getMonthValue();
+            if(thanglocal!=thang){
+                dshd.remove(i);
+            }
+        }
+        
         // CÒN LỌC HÓA ĐƠN TRONG THÁNG HIỆN TẠI: Chưa làm
 
         for(User user : listUser){
@@ -63,7 +75,7 @@ public class MonthlyTaskServiceImpl implements MonthlyTaskService{
                 chitra.setTongDoanhThu(tong);
 
                 //THÁNG NÀY PHẢI ĐÚNG LÀ THÁNG HIỆN TẠI: Chưa làm
-                chitra.setThang(12);
+                chitra.setThang(thang);
 
                 chitra.setTyLeShare(85);
                 chitra.setState(0);

@@ -105,6 +105,7 @@
                     }
                 });
             }
+            
         </script>
     </head>
     <body>
@@ -356,7 +357,8 @@
 
                 <div class="course-wrapper px-5 py-4" th:if="${flag==11}">
                     <h2 style="margin: 20px 0 10px 0;">Chi trả lương cho teacher</h2>
-                    <select>
+                    <select id="month-select">
+                        <option value="all">Tất cả</option>
                         <option value="1">Tháng 1</option>
                         <option value="2">Tháng 2</option>
                         <option value="3">Tháng 3</option>
@@ -663,4 +665,25 @@
         </div>
     </body>
     <script th:src="@{/js/admin_course.js}"></script>
+    <script>
+        const monthSelect = document.getElementById('month-select');
+            const courseTable = document.getElementById('course-table');
+        
+            monthSelect.addEventListener('change', function() {
+        const selectedMonth = monthSelect.value;
+
+        const rows = courseTable.getElementsByTagName('tr');
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const monthCell = row.querySelector('td:nth-child(5)');
+            const month = monthCell.textContent;
+
+            if (selectedMonth === 'all' || month === selectedMonth) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+    </script>
 </html>
