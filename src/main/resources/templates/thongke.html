@@ -30,15 +30,17 @@
         }
 
         .sidebar {
-            width: 200px;
-            background-color: #f5f5f5;
-            padding: 20px;
+            width: 400px;
+            background-color: #4b8ddf;
+            padding: 0px;
+            height: 1100px;
         }
         
 
         .content {
             flex-grow: 1;
             padding: 20px;
+            
         }
 
         .title {
@@ -171,16 +173,16 @@
         <ul>
             <form action="/thongke" method="get">
                 <input type="hidden" name="teacherid" th:value="${teacherid}">
-                <button type="submit">Thống kê tổng doanh thu</button>
+                <button style="width: 200px;margin-right: 30px;" class="button-13" type="submit">Thống kê tổng doanh thu</button>
             </form>
             
             <form action="/thongke1" method="get">
                 <input type="hidden" name="teacherid" th:value="${teacherid}">
-                <button type="submit">Thống kê từ ngày đến ngày</button>
+                <button style="width: 200px;" class="button-13" type="submit">Thống kê từ ngày đến ngày</button>
             </form>
             <form action="/thongke2" method="get">
                 <input type="hidden" name="teacherid" th:value="${teacherid}">
-                <button type="submit">Xếp hạng doanh thu</button>
+                <button style="width: 200px;" class="button-13" type="submit">Xếp hạng doanh thu</button>
             </form>
         </ul>
     </div>
@@ -205,7 +207,7 @@
                 <input type="hidden" name="teacherid" th:value="${teacherid}">
                 <input type="date" name="startDate" required>
                 <input type="date" name="endDate" required>
-                <button type="submit">Lọc</button>
+                <button class="button-13" type="submit">Lọc</button>
             </div>
         </form>
         <h1 class="title">Tổng doanh thu: <span th:text="${tongdoanhthu}"></span>VNĐ</h1>

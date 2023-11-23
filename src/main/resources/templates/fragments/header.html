@@ -1,3 +1,37 @@
+<style>
+        .button-13 {
+        background-color: #fff;
+        border: 1px solid #d5d9d9;
+        border-radius: 8px;
+        box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+        box-sizing: border-box;
+        color: #0f1111;
+        cursor: pointer;
+        display: inline-block;
+        font-family: "Amazon Ember",sans-serif;
+        font-size: 13px;
+        line-height: 29px;
+        padding: 0 10px 0 11px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        width: 100px;
+        }
+
+        .button-13:hover {
+        background-color: #f7fafa;
+        }
+
+        .button-13:focus {
+        border-color: #008296;
+        box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+        outline: 0;
+        }
+</style>
 <nav id="nav" th:unless="${#authorization.expression('isAuthenticated()')}" th:fragment="non-login-header" class="navbar navbar-expand-md nav-bg-white py-2 position-sticky" style="top:0;left:0">
     <div class="container justify-content-start">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,8 +53,8 @@
                         </ul>
                     </div>
                 
-                    <button class="bi bi-search" type="submit">Search</button>
-                </form>
+                    <button class="button-13" type="submit">Search</button>
+            </form>
         </div>
         <select name="theloai" id="theloai" class="theloai">
             <option value="0">Thể loại</option>
@@ -105,7 +139,7 @@
                                 </ul>
                             </div>
                         
-                            <button class="bi bi-search" type="submit">Search</button>
+                            <button class="button-13" type="submit">Search</button>
                         </form>
                     
             </div>
@@ -130,7 +164,7 @@
                                 </ul>
                             </div>
                         
-                            <button class="bi bi-search" type="submit">Search</button>
+                            <button class="button-13" type="submit">Search</button>
                         </form>
                 </div>
             </th:block>
