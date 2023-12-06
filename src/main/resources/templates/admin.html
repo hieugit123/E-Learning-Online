@@ -191,7 +191,6 @@
                     <div th:if="${courses.size()==0}">
                         <h3>NO VALUE FOUND</h3>
                     </div>
-                    <h1 class="title">Có thêm : <span th:text="${tonguser}"></span> User mới</h1>
                     <h1 class="title">Tổng doanh thu: <span th:text="${tongdoanhthu}"></span>VNĐ</h1>
                     <table id="course-table">
                         <thead>
@@ -218,6 +217,7 @@
             
                 </div>
                 <div class="course-wrapper px-5 py-4" th:if="${flag==2}">
+                    <h3>Top 5 khách hàng mua nhiều khóa học nhất.</h3>
                      <table id="course-table">
                             <thead >
                                 <tr>
@@ -272,10 +272,10 @@
                 </div>
 
                 <div class="course-wrapper px-5 py-4" th:if="${flag==1}">
-                        <h3>Total revenue: <span th:text="${sum}">VNĐ</span></h3>
-                        <h3>number of student: <span th:text="${hocviennumber}"></span></h3>
-                        <h3>number of teacher: <span th:text="${giangviennumber}"></span></h3>
-                        <h2>Top 10 most buy course arcording to system revenue</h2>
+                        <h3>Tổng doanh thu(VNĐ): <span th:text="${sum}"></span></h3>
+                        <h3>Số lượng học viên: <span th:text="${hocviennumber}"></span></h3>
+                        <h3>Số lượng giảng viên: <span th:text="${giangviennumber}"></span></h3>
+                        <h2>Top 10 khóa học có doanh thu cao nhất</h2>
                          <table id="course-table">
                                 <thead >
                                     <tr>
@@ -512,19 +512,19 @@
                         <div class="row">
                             <div class="col">
                                 <h5>Quản lý khóa học</h5>
-                                <p class="text-muted">Có <span id="course-number">0</span> khóa học</p>
+                                
                             </div>
-                            <div class="col-auto me-auto">
+                            <!-- <div class="col-auto me-auto">
                                 <btn class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">Thêm khóa học</btn>
-                            </div>
+                            </div> -->
                         </div>
 
-                        <div class="row mb-4">
+                        <!-- <div class="row mb-4">
                             <div class="form-group has-search col-4">
                                 <span class="fa fa-search form-control-feedback"></span>
                                 <input type="text" class="form-control" placeholder="Tìm kiếm khóa học" id="course-search">
                             </div>
-                        </div>
+                        </div> -->
                         <table>
                             <thead>
                                 <tr>
