@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AdminThongkeDTO {
 
-
+    
     private UUID courseID;
     private String courseName;
     private int buyCount;

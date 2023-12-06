@@ -209,6 +209,7 @@
                                 <td th:text="${course.courseName}"></td>
                                 <td th:text="${course.courseRevenue}"></td>
                                 <td th:text="${course.courseBuyCount}"></td>
+                               
                             </tr>
                         </tbody>
                     </table>
@@ -223,6 +224,7 @@
                                     <th>User Name</th>
                                     <th>Buy time</th>
                                     <th>Spend</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -230,10 +232,44 @@
                                     <td th:text="${User.fullName}"></td>
                                     <td th:text="${User.haveBuy}"></td>
                                     <td th:text="${User.spend}"></td>
+                                    <td><a th:href="@{/admin/chitiettop5(userId=${User.userId})}">Thông tin chi tiết</a></td>
                                 </tr>
                             </tbody>
                     </table>
-            </div>
+                </div>
+                <div class="course-wrapper px-5 py-4" th:if="${flag==1999}">
+                    <img th:src="${user.avatar}"></td><br>
+                    Tên User: <h5 th:text="${user.fullName}"></h5><br>
+                    Email <h5 th:text="${user.email}"></h5><br>
+                    <div th:if="${user.mota!=NULL}">
+                    Mô tả course: <h5 th:text="${user.mota}"></h5><br>
+                    </div>
+                    <div th:if="${user.mota==NULL}">
+                        Mô tả course: <h5> Không có mô tả</h5><br>
+                    </div>
+                    ngày tạo: <h5 th:text="${user.createdDate}"></h5><br>
+                    Số course đã mua: <h5 th:text="${enrollments.size()}"></h5><br>
+                    <table id="course-table">
+                        <thead >
+                            <tr>
+                                <th>Tên Course</th>
+                                <th>Ngày mua</th>
+                                <th>Giá course</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="enroll : ${enrollments}">
+                                <td th:text="${enroll.getCourse().getCourseName()}"></td>
+                                <td th:text="${enroll.getDateJoined()}"></td>
+                                <td th:text="${enroll.getCourse().getGia()}"></td>
+                                <td> <a th:href="@{/admin/chitietcourse(courseId=${enroll.getCourse().getCourseID()})}">Thông tin chi tiết</a></td>
+                            </tr>
+                        </tbody>
+                </table>
+                
+                <button class="button-13" onclick="javascript:history.back()"> Quay về</button>
+                </div>
 
                 <div class="course-wrapper px-5 py-4" th:if="${flag==1}">
                         <h3>Total revenue: <span th:text="${sum}">VNĐ</span></h3>
@@ -247,7 +283,7 @@
                                         <th>Course Revenue(VNĐ)</th>
                                         <th>Course Buytime</th>
                                         <th>System revenue(VNĐ)</th>
-                                        
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -255,7 +291,9 @@
                                         <td th:text="${course.courseName}"></td>
                                         <td th:text="${course.revenue}"></td>
                                         <td th:text="${course.buyCount}"></td>
-                                        <td th:text="${course.systemRevenue}"></td>                                    </tr>
+                                        <td th:text="${course.systemRevenue}"></td>  
+                                        <td><a th:href="@{/admin/chitietcourse(courseId=${course.courseID})}">Thông tin chi tiết</a></td>
+                                    </tr>
                                 </tbody>
                         </table>
                 </div>
@@ -443,11 +481,30 @@
                 <div class="course-wrapper px-5 py-4" th:if="${flag==144}">
                     <img th:src="${course.courseAvt}"></td><br>
                     Tên Course: <h5 th:text="${course.courseName}"></h5><br>
-                    Giá Course: <h5 th:text="${course.gia}"></h5>VND<br>
+                    Giá Course(VNĐ): <h5 th:text="${course.gia}"></h5><br>
                     Mô tả course: <h5 th:text="${course.courseDes}"></h5><br>
                     Người tạo course: <h5 th:text="${owner.fullName}"></h5><br>
                     Ngày tạo: <h5 th:text="${course.createDate}"></h5><br>
                     Số lượng học viên: <h5 th:text="${enrollments.size()}"></h5>
+                    <table id="course-table">
+                        <thead >
+                            <tr>
+                                <th>Tên học viên</th>
+                                <th>Ngày mua</th>
+                                <th>Giá course</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="enroll : ${enrollments}">
+                                <td th:text="${enroll.getUser().getFullName()}"></td>
+                                <td th:text="${enroll.getDateJoined()}"></td>
+                                <td th:text="${enroll.getCourse().getGia()}"></td>
+                                <td><a th:href="@{/admin/chitiettop5(userId=${enroll.getUser().getUserId()})}">Chi tiết</a></td>
+                            </tr>
+                        </tbody>
+                </table>
+                    <button class="button-13" onclick="javascript:history.back()"> Quay về</button>
                 </div>
 
                 <div class="course-wrapper px-5 py-4" th:if="${flag==0}">

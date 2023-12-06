@@ -231,6 +231,7 @@ public class AdminController {
             }
             if(count>0){
                 AdminThongkeDTO temp=new AdminThongkeDTO();
+                
                 temp.setCourseName(course.getCourseName());
                 temp.setBuyCount(count);
                 temp.setCourseID(course.getCourseID());
@@ -277,6 +278,7 @@ public class AdminController {
                 }
             }
             UserCourseCountDTO temp=new UserCourseCountDTO();
+            temp.userId=user.getUserId();
             temp.fullName=user.getFullName();
             temp.haveBuy=count;
             temp.spend=sum;
@@ -291,6 +293,17 @@ public class AdminController {
         model.addAttribute("user", user1);
         model.addAttribute("userstatistic", userstatistic);
         model.addAttribute("flag", 2);
+        
+        return "admin";
+    }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/chitiettop5")
+    public String chiTietTop5(@RequestParam long userId,Model model){
+        User user=userServices.getUserById(userId);
+        List<Enrollment> enrolls=enrollmentServices.getEnrollmentsByUser(user);
+        model.addAttribute("enrollments", enrolls);
+        model.addAttribute("user", user);
+        model.addAttribute("flag", 1999);
         
         return "admin";
     }

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCourseCountDTO {
+    public long userId;
     public String fullName;
     public long haveBuy;
     public int spend;
