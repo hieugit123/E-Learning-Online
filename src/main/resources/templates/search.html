@@ -85,8 +85,7 @@
             <select id="priceOrder" name="priceOrder">
                 <option value="asc">Price Ascending</option>
                 <option value="desc">Price Descending</option>
-                <option value="evaluate">Most Evaluated</option>
-                <option value="recent">Recently Course</option>
+                <option value="recent">Recently create Course</option>
             </select>
             <h3>Rating</h3>
             <input type="radio" name="rating" value=0 checked> All<br>
@@ -114,7 +113,7 @@
         
         <div th:if="${not #lists.isEmpty(listCourse)}" class="course-list d-flex flex-wrap">
             <th:block th:each="course : ${listCourse}">
-                <a th:href="@{/detail1111/{id}(id=${course.courseID})}" class="course-item">
+                <a th:href="@{/detail2222/{id}(id=${course.courseID})}" class="course-item">
                     <img th:src="${course.courseAvt}" class="img-fluid">
                     <div class="sao">
                         <span th:text="${course.tbDanhGia()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>

@@ -75,6 +75,10 @@ public class SearchController {
                 } else if (courseOrder.equals("desc")) {
                     Collections.sort(filteredCourses, Comparator.comparingDouble(Course::getGia).reversed());
                 }
+                else if (courseOrder.equals("recent")) {
+                    Collections.sort(filteredCourses, Comparator.comparing(Course::getCreateDate));
+                }
+                
                 model.addAttribute("searchText", searchText);
                 model.addAttribute("listCourse", filteredCourses);
                 return "search";
