@@ -80,6 +80,7 @@
     <div class="sidebar">
         <h2>Filter</h2>
         <form action="/search/filter" method="post">
+            <input type="hidden" th:value="${searchText}" name="searchText">
             <h3>Sort By</h3>
             <select id="priceOrder" name="priceOrder">
                 <option value="asc">Price Ascending</option>

@@ -55,22 +55,28 @@ public class SearchController {
 
     @PostMapping("search/filter")
     public String FilterCourse(
-        @ModelAttribute("searchText") String searchText, 
+        @ModelAttribute("searchText") String searchText,
         @RequestParam("priceRange") Double range,
         @RequestParam("priceOrder") String courseOrder,
         @RequestParam("rating") int rating,
         Model model){
             List<Course> filteredCourses=new ArrayList<>();
             
-            if(search==""){
+            if(searchText==""){
                 filteredCourses=courseService.getAllCourses();
             }
             else{
-                filteredCourses = courseService.filterBySearch1(search);
+                filteredCourses = courseService.filterBySearch1(searchText);
             }
             List<Course> sortedCourses=new ArrayList<>();
             if(range==1 && rating==0){
-                 model.addAttribute("listCourse", filteredCourses);
+                if (courseOrder.equals("asc")) {
+                    Collections.sort(filteredCourses, Comparator.comparingDouble(Course::getGia));
+                } else if (courseOrder.equals("desc")) {
+                    Collections.sort(filteredCourses, Comparator.comparingDouble(Course::getGia).reversed());
+                }
+                model.addAttribute("searchText", searchText);
+                model.addAttribute("listCourse", filteredCourses);
                 return "search";
             }
             else if(range!=1 && rating!=0){
@@ -93,7 +99,7 @@ public class SearchController {
             else if(range==51000){
                 for (Course course : filteredCourses) {
                     double coursePrice = course.getGia();
-                    if (coursePrice >=500000 && coursePrice <1000000&& danhGiaServices.calculateAvarageRating(course.getCourseID())>=rating) {
+                    if (coursePrice >=500000 && coursePrice <1000000 && danhGiaServices.calculateAvarageRating(course.getCourseID())>=rating) {
                         sortedCourses.add(course);
                     }
                 }
@@ -157,6 +163,7 @@ public class SearchController {
         }
 
         // Đưa danh sách khóa học đã sắp xếp vào model để hiển thị lên trang search
+        model.addAttribute("searchText", searchText);
         model.addAttribute("listCourse", sortedCourses);
         return "search";
     }
