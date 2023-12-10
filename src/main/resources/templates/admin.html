@@ -174,6 +174,20 @@
             
             <div class="content">
                 <div class="course-wrapper px-5 py-4" th:if="${flag==4}">
+                    <div th:if="${showAlert}">
+                        <script th:inline="javascript">
+                            /*<![CDATA[*/
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Hiển thị thông báo khi trang đã tải
+                                alert('Bạn không thể xóa, Giảng viên có người học');
+                                
+                                // Đánh dấu là đã hiển thị thông báo
+                                /* Đây có thể là nơi để đặt logic khác, chẳng hạn như sử dụng localStorage, sessionStorage, ... */
+                                /* Để tránh hiển thị thông báo khi làm một hành động khác trên trang */
+                            });
+                            /*]]>*/
+                        </script>
+                    </div>
                     <h1 class="title">Quản lý người dùng </h1>
                     <table id="course-table">
                            <thead >
@@ -582,10 +596,25 @@
                                                 <a th:href="@{/admin/forcexoacource(courseId=${course.courseID})}"  onclick="return confirm('Bạn có chắc muốn xóa khóa học?')">/Xóa course</a>
                                                 
                                             </td>
+                                            
                                         </div>
                                     </tr>
                                 </tbody>
                         </table>
+                        <div th:if="${showAlert}">
+                            <script th:inline="javascript">
+                                /*<![CDATA[*/
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    // Hiển thị thông báo khi trang đã tải
+                                    alert('Bạn không thể xóa, khóa học có người học');
+                                    
+                                    // Đánh dấu là đã hiển thị thông báo
+                                    /* Đây có thể là nơi để đặt logic khác, chẳng hạn như sử dụng localStorage, sessionStorage, ... */
+                                    /* Để tránh hiển thị thông báo khi làm một hành động khác trên trang */
+                                });
+                                /*]]>*/
+                            </script>
+                        </div>
                         
 
                          <!-- Modal thêm chi tiết hóa đơn-->

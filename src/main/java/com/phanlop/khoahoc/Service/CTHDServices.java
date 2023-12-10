@@ -4,4 +4,6 @@ import com.phanlop.khoahoc.Entity.CTHoaDon;
 
 public interface CTHDServices {
     void saveCTHD(CTHoaDon cthd);
+    void deletecthd(CTHoaDon cthd);
+    
 }

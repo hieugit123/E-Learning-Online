@@ -39,6 +39,8 @@ import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Repository.CTHDRepository;
 import com.phanlop.khoahoc.Repository.CartRepository;
+import com.phanlop.khoahoc.Repository.HoaDonRepository;
+import com.phanlop.khoahoc.Service.CTHDServices;
 import com.phanlop.khoahoc.Service.ChiTraServices;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
@@ -67,6 +69,8 @@ public class AdminController {
     private final CTHDRepository cthdRepository;
     private final VNPayServices vnPayservices;
     private final ChiTraServices chiTraServices;
+    private final CTHDServices cthdServices;
+    private final HoaDonRepository hDonRepository;
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @GetMapping({"/course","/"})
     public String getCoursePage(Model model){
@@ -88,7 +92,12 @@ public class AdminController {
         List<CTHoaDon> ctHoaDons=cthdRepository.findAll();
         for (CTHoaDon ctHoaDon : ctHoaDons) {
             if(ctHoaDon.getCourse().getCourseID()==course.getCourseID()){
-                cthdRepository.delete(ctHoaDon);
+                List<Course> courses = courseServices.getAllCourses();
+                model.addAttribute("courses", courses);
+                model.addAttribute("flag", 0);
+                model.addAttribute("showAlert", true);
+                return "admin";
+                
             }
         }
         List<Cart> carts=cartRepository.findAll();
@@ -113,6 +122,7 @@ public class AdminController {
         model.addAttribute("enrollments", enrollments);
         model.addAttribute("owner", user);
         model.addAttribute("flag", 144);
+         model.addAttribute("isbuy", 0);
         return "admin";
     }
     

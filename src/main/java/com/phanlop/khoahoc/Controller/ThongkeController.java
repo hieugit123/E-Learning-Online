@@ -1,5 +1,6 @@
 package com.phanlop.khoahoc.Controller;
 
+import com.phanlop.khoahoc.Config.CustomUserDetails;
 import com.phanlop.khoahoc.DTO.CourseDTO;
 import com.phanlop.khoahoc.DTO.LuotMuaDTO;
 import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,8 +42,9 @@ public class ThongkeController {
     private final HoaDonServices hdServices;
     private final CTHDServices cthdServices;
     @GetMapping("/thongke")
-    public String thongkemain(@RequestParam("teacherid") long teacherid,Model model){
-        User user=userServices.getUserById(teacherid);
+    public String thongkemain(Model model ,Authentication authentication){
+         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+         User user = userServices.getUserByUserName(userDetails.getUsername());
         List<Course> courses=courseServices.findCourseOfTeacher(user);
         int sum=0;
         List<Enrollment> enrollments=enrollmentServices.getAll();
@@ -73,7 +76,7 @@ public class ThongkeController {
         model.addAttribute("flag", flag);
         model.addAttribute("courses", top3toview);
         model.addAttribute("tongdoanhthu", sum);
-        model.addAttribute("teacherid", teacherid);
+        model.addAttribute("teacherid", user.getUserId());
         return "thongke";
     }
     @GetMapping("/thongkedate")

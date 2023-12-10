@@ -25,5 +25,7 @@ public class HoaDon {
 
     @OneToMany(mappedBy = "hoadon", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CTHoaDon> listCTHD;
+    
+   
 
 }

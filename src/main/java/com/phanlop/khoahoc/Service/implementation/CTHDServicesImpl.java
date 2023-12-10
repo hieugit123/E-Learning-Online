@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.phanlop.khoahoc.Entity.CTHoaDon;
+import com.phanlop.khoahoc.Entity.Enrollment;
 import com.phanlop.khoahoc.Repository.CTHDRepository;
 import com.phanlop.khoahoc.Service.CTHDServices;
 
@@ -15,6 +16,10 @@ public class CTHDServicesImpl implements CTHDServices{
     public void saveCTHD(CTHoaDon cthd) {
         // TODO Auto-generated method stub
         cthdRepository.save(cthd);
+    }
+    @Override
+    public void deletecthd(CTHoaDon cthd) {
+        cthdRepository.delete(cthd);
     }
     
 }
