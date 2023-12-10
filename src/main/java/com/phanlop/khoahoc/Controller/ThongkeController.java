@@ -1,6 +1,9 @@
 package com.phanlop.khoahoc.Controller;
 
+import com.phanlop.khoahoc.DTO.CourseDTO;
+import com.phanlop.khoahoc.DTO.LuotMuaDTO;
 import com.phanlop.khoahoc.DTO.ThongkeCourseDTO;
+import com.phanlop.khoahoc.DTO.UserDTO;
 import com.phanlop.khoahoc.Entity.*;
 
 import java.sql.Date;
@@ -18,9 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.EnrollmentServices;
+import com.phanlop.khoahoc.Service.HoaDonServices;
 import com.phanlop.khoahoc.Service.UserServices;
+import com.phanlop.khoahoc.Utils.ObjectMapperUtils;
 
 import org.springframework.ui.Model;
+
+import com.phanlop.khoahoc.Service.CTHDServices;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -29,6 +37,8 @@ public class ThongkeController {
     private final UserServices userServices;
     private final CourseServices courseServices;
     private final EnrollmentServices enrollmentServices;
+    private final HoaDonServices hdServices;
+    private final CTHDServices cthdServices;
     @GetMapping("/thongke")
     public String thongkemain(@RequestParam("teacherid") long teacherid,Model model){
         User user=userServices.getUserById(teacherid);
@@ -93,7 +103,7 @@ public class ThongkeController {
                     }
                 }
             }
-            ThongkeCourseDTO coursedto=new ThongkeCourseDTO();
+            ThongkeCourseDTO coursedto = new ThongkeCourseDTO();
             coursedto.courseName=course.getCourseName();
             coursedto.gia=course.getGia();
             coursedto.courseid=course.getCourseID();
@@ -125,6 +135,47 @@ public class ThongkeController {
         return "thongke";
     }
 
+
+    // @GetMapping("/thongke5")
+    // public String thongke5(@RequestParam("teacherid") long teacherid,Model model){
+    //     //lay cac hoa don trong thang hien tai
+    //     List<HoaDon> dshd = hdServices.getAll();
+    //     LocalDate today=LocalDate.now();
+    //     ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");
+    //     int thang=today.getMonthValue();
+    //     for (int i=0;i<dshd.size();i++) {
+    //         LocalDate localDate=LocalDate.ofInstant(dshd.get(i).getNgayMua(), zoneId2);
+    //         int thanglocal=localDate.getMonthValue();
+    //         if(thanglocal!=thang){
+    //             dshd.remove(i);
+    //         }
+    //     }
+    //     User user=userServices.getUserById(teacherid);
+    //     List<Course> courses=courseServices.findCourseOfTeacher(user);
+    //     List<LuotMuaDTO> list = new ArrayList<>();
+
+    //     for(Course c : courses){
+    //         List<UserDTO> listUser = new ArrayList<>();
+    //         for(HoaDon hd : dshd){
+    //             List<CTHoaDon> listCTHD = hd.getListCTHD();
+    //             for(CTHoaDon cthd : listCTHD){
+    //                 if(cthd.getCourse().getCourseID().compareTo(c.getCourseID())){
+    //                     UserDTO user1 = ObjectMapperUtils.map(hd.getUser(), UserDTO.class);
+    //                     listUser.add(user1);
+    //                 }
+    //             }
+    //         }
+    //         CourseDTO course = ObjectMapperUtils.map(c, CourseDTO.class);
+    //         LuotMuaDTO luotmua = new LuotMuaDTO(course, listUser);
+    //         list.add(luotmua);
+    //     }
+
+    //     model.addAttribute("listLuotMua", list);
+        
+    //     int flag=3;
+    //     model.addAttribute("flag", flag);
+    //     return "thongke";
+    // }
 
 
 

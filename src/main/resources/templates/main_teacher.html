@@ -20,6 +20,7 @@
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
     <link rel="stylesheet" th:href="@{/css/dashboard_admin.css}">
     <link rel="stylesheet" th:href="@{/css/footerCss.css}">
+    <link rel="stylesheet" th:href="@{/css/newCss.css}">
 </head>
 <body>
 
@@ -28,10 +29,6 @@
     <div th:replace="~{fragments/menu :: left-menu}"></div>
     <div class="w-100">
         <div class="course-wrapper">
-            <form action="/chatteacher" method="get">
-                <input type="hidden" name="usid" th:value="${user.userId}">
-                <button type="submit">Chat</button>
-            </form>
             <div class="d-flex justify-content-between mb-3">
                 <div class="d-flex" style="gap: 20px">
                     <h4>Khóa học đã duyệt</h4>
@@ -74,10 +71,12 @@
                             <a th:href="@{/teacher/detail/{id}(id=${course.courseID})}">
                                 <img th:src="${course.courseAvt}" class="img-fluid">
                                 <h6 class="mt-3 text-dark" th:text="${course.courseName}"></h6>
-                                <div class="sao">
-                                    <span th:text="${course.danhgias.size()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                                <div class="sao" style="display: flex;">
+                                    <span class="tbsao" th:text="${course.tbDanhGia()}"></span><div class="saoShow"></div>
+                                    <!-- <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                                    </i><i class="bi bi-star-half star1"></i><i class="bi bi-star star2"></i> -->
                                 </div>
+                                <h4 th:text="${course.gia + '₫'}"></h4>
                                 <p class="text-small m-0 text-muted" th:text="${course.department.departmentName}"></p>
                             </a>
                         </div>
@@ -186,6 +185,7 @@
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/newJs.js}"></script>
 <script th:src="@{/js/main_admin.js}"></script>
 </body>
 </html>

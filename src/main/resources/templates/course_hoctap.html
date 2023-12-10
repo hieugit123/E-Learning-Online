@@ -58,12 +58,16 @@
 
     </script>
     <style>
+        #btnItem {
+            background-color: rgb(223, 219, 219);
+            /* background-color: #6c757d; */
+            /* color: white; */
+        }
         .saoSet {
             color: gold;
         }
         .content_left {
             width: 70%;
-            margin-left: 20px;
         }
         .content_right {
             width: 30%;
@@ -76,12 +80,33 @@
             width: 95%;
             height: 425px;
         }
+
+        .fixed-corner {
+            width: 150px;
+            height: 160px;
+            background-color: #79e7fa; /* Màu nền trắng */
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 20px;
+            z-index: 2;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(94, 214, 248, 0.1); /* Đổ bóng */
+        }
+
     </style>
 </head>
 <body>
 
 <div th:replace="~{fragments/header}"></div>
-<div class="content d-flex">
+<div class="container" style="display: flex;">
+    
+    <div class="fixed-corner">
+        <a href="/discuss" class="left-menu-item">
+            <i class="bi bi-chat-dots-fill" style="font-size: 60px;"></i>
+            <h4>Chat</h4>
+        </a>
+    </div>
     <!-- 70% -->
     <div class="content_left">
         <div class="content_video">
@@ -90,8 +115,8 @@
             </div>
         </div>
         <div class="content_mota">
-            <h2>Giới thiệu về khóa học</h2>
-            <h3>Mô tả</h3>
+            <h4 style="margin-top: 10px;">Giới thiệu về khóa học</h4>
+            <h5>Mô tả</h5>
             <span>In diesem Kurs zeige ich dir, wie du die HTTP Sessions deines Projekts in Spring Boot in einem schnellen Key/Value Speicher wie Redis persistieren kannst.
 
                 Anhand eines sehr einfachen Spring Boot Projektes, das nur ein Objekt in einer HTTP Session speichert, werden wir gemeinsam die Session Replikation aktivieren.
@@ -140,15 +165,15 @@
     <!-- 30% -->
     <div class="content_right">
         <div class="content-list">
-            <h1>Nội dung khóa học</h1>
+            <h5 style="margin-top: 20px;">Nội dung khóa học</h5>
             <div class="listItem" th:each="lesson : ${lessons}">
-                <button th:attr="onclick=|changeVideo('${lesson.getLessonVideo()}')|" style="width: 300px; margin-top: 20px;">
-                    <input type="checkbox" name="checkItem">
-                    <div class="content-listItem">
+                <button th:attr="onclick=|changeVideo('${lesson.getLessonVideo()}')|" style="width: 300px; margin-top: 20px; border: none; display: flex; align-items: center;" id="btnItem">
+                    <input type="checkbox" name="checkItem" style="margin-right: 20px;">
+                    <div class="content-listItem" style="display: flex; flex-direction: column; align-items: flex-start;">
                         <span th:text="${lesson.lessonTitle}"></span>
                         <div class="time-video">
-                            <i class="bi bi-list-task" style="font-size: 20px"></i>
-                            <span>4 phút</span>
+                            <i class="bi bi-skip-end-btn" style="font-size: 20px;"></i>
+                            <span style="font-size: 12px;">4 phút</span>
                         </div>
                     </div>
                 </button>
@@ -156,19 +181,6 @@
         </div>
     </div>
 </div>
-<!--    Modal đánh giá khóa học-->
-<!-- <div class="modal fade" id="danhgiaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div th:each="danhgia :${course.danhgias}">
-                <div class="iconAndUser"><i class="bi bi-person-circle"></i><h4 th:text="${danhgia.tenUser}"></h4></div>
-                <span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                            <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i></span>
-                <p th:text="${danhgia.contentDanhgia}"></p>
-            </div>
-        </div>
-    </div>
-</div> -->
 <div class="formDG" style="margin-left: 100px;" th:if="${myDG} == null">
     <h2>Đánh giá của bạn</h2>
     <form id="formDanhGia">
@@ -185,11 +197,11 @@
         <button type="button" th:attr="onclick=|addDanhGia('${myCourse.courseID}')|">Lưu</button> 
     </form>
 </div>
-<h2 style="margin: 20px;">
+<h4 style="margin:20px 0 20px 100px;">
     <i class="bi bi-star-fill star" style="color: gold;"></i>
     <span th:text="${danhgias.size() + ' Xếp hạng'}"></span>
-</h2>
-<div class="danhGia" style="margin-left: 100px;">
+</h4>
+<div class="danhGia" style="margin-left: 150px;">
     
     <div class="danhGia-item" th:each="danhgia : ${danhgias}" style="display: flex; flex-direction: column; width: 520px; margin-bottom: 20px;">
         <div class="DG-item-title" style="display: flex; width: 100%; justify-content: space-between;">

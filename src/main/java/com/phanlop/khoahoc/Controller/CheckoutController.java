@@ -148,6 +148,10 @@ public class CheckoutController {
                 chitra.setAdmin(admin);
                 chitra.setState(1);
                 chiTraServices.save(chitra);
+
+                String title = "Chi trả doanh thu từ F9 - Tháng " + chitra.getThang();
+                String body = "F9 - UNIVERSITY (chân thành cảm ơn bạn đã lựa chọn F9 là nơi học tập, bổ sung tri thức, nâng cao tầm hiểu biết)";
+                boolean isSend = emailServices.sendOTPEmail(chitra.getTeacher().getEmail(), title, body);
                 session.setAttribute("isChiTra", false);
                 
             }
@@ -157,65 +161,4 @@ public class CheckoutController {
 
         return paymentStatus == 1 ? "ordersuccess" : "orderfail";
     }
-
-    // @PostMapping("/{sumCart}")
-    // public ResponseEntity<String> checkout(Authentication authentication, @PathVariable String sumCart, @RequestBody List<String> selectedItems){
-    //     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-    //     User user = userServices.getUserByUserName(userDetails.getUsername());
-    //     int sum = Integer.parseInt(sumCart);
-    //     //luu hoa don
-    //     HoaDon hd = new HoaDon();
-    //     hd.setTongTien(sum);
-    //     hd.setUser(user);
-    //     hoadonServices.saveHD(hd);
-    //     //luu chi tiet hoa don
-    //     List<Course> listCourseInCart = new ArrayList<>();
-    //     int lenght = selectedItems.size();
-    //     for(int i=0; i<lenght; i++)
-    //         listCourseInCart.add(courseServices.getCourseById(UUID.fromString(selectedItems.get(i))));
-    //     // for(String s : selectedItems){
-    //     //     listCourseInCart.add(courseServices.getCourseById(UUID.fromString(e)));
-    //     // }
-    //     for(Course course : listCourseInCart){
-    //         CTHoaDon cthd = new CTHoaDon();
-    //         cthd.setHoadon(hd);
-    //         cthd.setHoantien(0);
-    //         cthd.setCourse(course);
-    //         cthd.setGia(course.getGia());
-    //         cthdServices.saveCTHD(cthd);
-    //         hd.getListCTHD().add(cthd);
-    //         hoadonServices.saveHD(hd);
-    //         Enrollment.EnrollmentId enrollmentId = new Enrollment.EnrollmentId();
-	// 		enrollmentId.setUserId(user.getUserId());
-	// 		enrollmentId.setCourseId(course.getCourseID());
-	// 		Enrollment enrollment = new Enrollment();
-	// 		enrollment.setId(enrollmentId);
-	// 		enrollment.setUser(user);
-	// 		enrollment.setAccessType(AccessType.ACCEPT);
-	// 		enrollment.setCourse(course);
-	// 		enrollmentRepository.save(enrollment);
-    //         cartServices.deleteCart(course, user);
-    //     }
-
-    //     //create enrollment
-    //     //deletecart
-    //         String title = "Xác nhận mua hàng từ F9";
-    //         String body = "F9 - UNIVERSITY (chân thành cảm ơn bạn đã lựa chọn F9 là nơi học tập, bổ sung tri thức, nâng cao tầm hiểu biết)";
-    //         boolean isSend = emailServices.sendOTPEmail(user.getEmail(), title, body);
-    //         if (isSend){
-    //             return ResponseEntity.ok("success");
-    //         }
-    //         return ResponseEntity.badRequest().body("fail");
-    // }
-
-    // @GetMapping("/teacher/hocvien/{courseId}")
-    // public List<UserDTO> getListUserEnroll(@PathVariable UUID courseId){
-    //     Course course = courseServices.getCourseById(courseId);
-    //     List<Enrollment> list = course.getEnrollments();
-    //     List<User> listUser = new ArrayList<>();
-    //     for(Enrollment e : list) {
-    //         listUser.add(e.getUser());
-    //     }
-    //     return ObjectMapperUtils.mapAll(listUser, UserDTO.class);
-    // }
 }

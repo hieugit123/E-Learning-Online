@@ -50,10 +50,10 @@ const openEditModal = (chapterId) => {
         url: `/course/lesson/get/${chapterId}`,
         method: 'GET',
         success: function (res){
-            $("#editChapterId").val(res.chapterId);
-            $("#editChapterTitle").val(res.chapterTitle);
-            $("#editYoutubeUrl").val(res.chapterVideo);
-            $("#editChapterContent").val(res.chapterContent);
+            $("#editChapterId").val(res.lessonId);
+            $("#editChapterTitle").val(res.lessonTitle);
+            $("#editYoutubeUrl").val(res.lessonVideo);
+            $("#editChapterContent").val(res.lessonContent);
         }
     });
 }
@@ -64,10 +64,10 @@ $('#formEditChapter').submit(function(event) {
     let file = $("#editChapterVideo")[0].files[0];
     if (file)
         formData.append("chapterVideoMulti", file);
-    formData.append("chapterTitle", $("#editChapterTitle").val())
-    formData.append("chapterContent", $("#editChapterContent").val())
+    formData.append("lessonTitle", $("#editChapterTitle").val())
+    formData.append("lessonContent", $("#editChapterContent").val())
     formData.append("youtubeUrl", $("#editYoutubeUrl").val())
-    formData.append("chapterId", $("#editChapterId").val());
+    formData.append("lessonId", $("#editChapterId").val());
     $.ajax({
         url: '/course/lesson/edit',
         type: 'POST',

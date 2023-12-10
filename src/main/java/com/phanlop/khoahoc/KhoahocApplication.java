@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.phanlop.khoahoc.Entity.AccessType;
 import com.phanlop.khoahoc.Entity.CTHoaDon;
 import com.phanlop.khoahoc.Entity.Cart;
-import com.phanlop.khoahoc.Entity.Chatlog;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.DanhGia;
 import com.phanlop.khoahoc.Entity.Department;
@@ -25,7 +24,6 @@ import com.phanlop.khoahoc.Entity.Role;
 import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Repository.CTHDRepository;
 import com.phanlop.khoahoc.Repository.CartRepository;
-import com.phanlop.khoahoc.Repository.ChatlogRepository;
 import com.phanlop.khoahoc.Repository.CourseRepository;
 import com.phanlop.khoahoc.Repository.DanhGiaRepository;
 import com.phanlop.khoahoc.Repository.DepartmentRepository;
@@ -53,7 +51,6 @@ public class KhoahocApplication implements CommandLineRunner{
 	private final CartRepository cartRepository;
 	private final HoaDonRepository hoaDonRepository;
 	private final CTHDRepository cthdRepository;
-	private final ChatlogRepository chatlogRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(KhoahocApplication.class, args);
@@ -142,9 +139,7 @@ public class KhoahocApplication implements CommandLineRunner{
 		student3.getListRoles().add(role2);
 		role2.getListUsers().add(student3);
 		userRepository.save(student3);
-		roleRepository.save(role2);
-
-                
+		roleRepository.save(role2);                
                 
         User giaovien = new User();
 		giaovien.setUserId(5L);
@@ -260,10 +255,10 @@ public class KhoahocApplication implements CommandLineRunner{
 			enrollmentRepository.save(enrollment15);
 
 			//create data cart
-			Cart cart1 = new Cart();
-			cart1.setCourse(cslt);
-			cart1.setUser(student2);
-			cartRepository.save(cart1);
+			// Cart cart1 = new Cart();
+			// cart1.setCourse(cslt);
+			// cart1.setUser(student2);
+			// cartRepository.save(cart1);
 
 			Lesson lesson1 = new Lesson();
 			lesson1.setLessonTitle("1. Khái niệm, kỹ thuật cần biết");
@@ -481,7 +476,7 @@ public class KhoahocApplication implements CommandLineRunner{
 			lessonRepository.save(winform3);
 
 			Course dientu = new Course();
-			dientu.setCourseAvt("https://codelearn.io/Upload/Blog/nganh-dien-tu-vien-thong-hoc-gi-63729858518.6825.jpg");
+			dientu.setCourseAvt("https://files.fullstack.edu.vn/f8-prod/blog_posts/1671/61b6368983c16.jpg");
 			dientu.setCourseOwner(giaovien);
 			dientu.setCourseDes("Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé.");
 			dientu.setCourseName("Điện tử và điện tử số "+i);
@@ -730,15 +725,6 @@ public class KhoahocApplication implements CommandLineRunner{
 			hd4.setListCTHD(list4);
 			hoaDonRepository.save(hd4);
 		}
-		//Chatlog
-		Chatlog chatLog=new Chatlog();
-		chatLog.setContent("Chao T");
-		User chatusr=userRepository.findUserByuserId((long)5);
-		chatLog.setCourseOwner(chatusr);
-		User buser=userRepository.findUserByuserId((long)2);
-		chatLog.setCourseBuyer(buser);
-		chatLog.setSendBy(0);
-		chatlogRepository.save(chatLog);
                 
 	}
 }

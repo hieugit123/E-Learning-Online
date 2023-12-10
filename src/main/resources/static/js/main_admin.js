@@ -90,6 +90,11 @@ $('#formCreateCourse').submit(function(event) {
 $('#formAddCourse').submit(function(event) {
     event.preventDefault();
     let formData = new FormData();
+    var gia = Number($("#courseGia").val());
+    if(isNaN(gia) || gia < 0){
+        Swal.fire('Giá không hợp lệ!', '', 'error');
+        return;
+    }
     formData.append("courseAvt", $("#courseAvt")[0].files[0]);
     formData.append("courseName", $("#courseName").val())
     formData.append("courseDes", $("#courseDes").val())
@@ -156,6 +161,7 @@ const openEditCourseModal = (courseId) => {
            $("#editCourseDes").val(res.courseDes);
            $("#editDepartmentId").val(res.department.departmentId);
            $("#editCourseId").val(res.courseID);
+           $("#editGia").val(res.gia);
         }
     })
 }
@@ -167,6 +173,12 @@ $("#btnEditCourse").on("click", function(event){
     if (file){
         formData.append("courseAvt", file);
     }
+    var gia = Number($("#editGia").val());
+    if(isNaN(gia) || gia < 0){
+        Swal.fire('Giá không hợp lệ!', '', 'error');
+        return;
+    }
+    formData.append("courseGia", $("#editGia").val());
     formData.append("courseName", $("#editCourseName").val());
     formData.append("courseDes", $("#editCourseDes").val());
     formData.append("departmentId", $("#editDepartmentId").val());

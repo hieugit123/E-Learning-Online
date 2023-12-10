@@ -120,73 +120,6 @@ function formattedDatetime(date) {
     return dateTimeFormatted;
 }
 
-// function updateInbox() {
-//     $.ajax({
-//         url: '/discuss/getInbox',
-//         method: 'GET',
-//         data:{
-//             id: userID,
-//         },
-//         success: function (data) {
-//             if (!data.length) return;
-//             let html = data.map(item => {
-//                 return `<div class=${"chat_list" + (String(item.courseID) === courseID ? " active-chat" : "")} id="${item.courseID}">
-//                             <a href="/discuss/${item.courseID}">
-//                             <div class="chat_people"><div class="chat_img"> <img src="${item.courseAvt}" alt="course avatar"/> </div>
-//                             <div class="chat_ib">
-//                                 <h5> ${item.courseName} <span class="chat_date">${(item.time != null)?formattedDatetime(item.time):""}</span></h5>
-//                                 <p>${item.message}</p>
-//                             </div>
-//                             </div>
-//                             </a>
-//                         </div>`
-//             }).join(" ");
-//             $('#inbox_chat').html(html);
-//         },
-//         fail: function() {
-//             console.log("ERROR")
-//         }
-//     });
-// }
-
-// function getHistoryDiscuss() {
-//     $.ajax({
-//         url: '/discuss/get',
-//         method: 'GET',
-//         data:{
-//             id: courseID,
-//         },
-//         success: function (data) {
-//             if (!data.length) return;
-//             let html = data.map(item => {
-//                 if (item.userID === userID) {
-//                     return `div class="outgoing_msg">
-//                                 <div class="sent_msg">
-//                                     <p>${item.content}</p>
-//                                     <span class="time_date">${formattedDatetime(item.time)}</span>
-//                                 </div>
-//                             </div>`;
-//                 }else {
-//                     return `<div class="incoming_msg">
-//                                 <div class="incoming_msg_img"> <img src="${item.userAvt}" alt="user avatar"> </div>
-//                                 <div class="received_msg">
-//                                     <div class="received_withd_msg">
-//                                         <span class="time_date">${discussion.userName}</span>
-//                                         <p>${time.content}</p>
-//                                         <span class="time_date">${formattedDatetime(item.time)}</span>
-//                                     </div>
-//                                 </div>
-//                             </div>`;
-//                 }
-
-//             }).join(" ");
-//             $('#msg_area').html(html);
-//         },
-//         fail: function() {
-//             console.log("ERROR")
-//         }
-//     });
-// }
 $("#input_search_bar").on('input',(function(){
     let inputValue =  $("#input_search_bar").val();
     // if (inputValue !== ""){
@@ -217,10 +150,7 @@ $("#input_search_bar").on('input',(function(){
                 console.log("fail");
             }
         });
-    // }
-    // else {
-    //     $("#popup-search-box").css("display", "none");
-    // }
+    
 }));
 
 messageForm.addEventListener('submit', sendMessage, true)

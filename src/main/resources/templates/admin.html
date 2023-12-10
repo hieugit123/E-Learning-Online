@@ -2,15 +2,18 @@
 <html>
     <head>
         <title>Trang quản lý - F8</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-            crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel = "icon" th:href="@{/img/f9.png}" type = "image/x-icon">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-        <script src="https://kit.fontawesome.com/69331f932b.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel="stylesheet" th:href="@{/css/admin.css}">
         <link rel="stylesheet" th:href="@{/css/header.css}">
         <style>
@@ -75,6 +78,30 @@
 
         .date-picker button {
             padding: 5px 10px;
+        }
+
+        #xemtruocModal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Đảm bảo modal nổi trên tất cả các phần tử */
+            width: 650px;
+            height: 530px;
+            background-color: #fff; /* Màu nền modal */
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1); /* Đổ bóng cho modal */
+            border: 2px solid rgb(140, 139, 139);
+            background-color: rgb(0, 0, 0);
+            display: none;
+        }
+
+        #xemtruocModal > div {
+            padding: 20px;
+            text-align: center;
         }
         
         </style>
@@ -329,34 +356,40 @@
                     </div>
                 </div>
                 <div class="course-wrapper px-5 py-4" th:if="${flag==6}">
+                    <div class="" id="xemtruocModal">
+                        <div class="">
+                            <div style="display: flex;">
+                                <h6 style="margin: 0 0 10px 200px; color: white;">Xem khóa học</h4>
+                                <button onclick="closeXemTruocModal()" style="width: 50px; height: 30px; background-color: white; margin-left: 150px; color: blue; border: none;"><i class="bi bi-x-square-fill"></i></button>
+                            </div>
+                            <h4 style="margin: 0 0 70px 0; color: white;" id="titleVd">1. Khái niệm, kỹ thuật cần biết</h4>
+                            <iframe th:if="${lessons != null}" id="srcVideoXemTruoc" width="550" height="300" th:src="${lessons.get(0).getLessonVideo()}" frameborder="0" allowfullscreen></iframe>
+                            <h6 style="margin-top: 10px; color: white;">Video mẫu miễn phí</h6>
+                        </div>
+                    </div>
+
                     <div class="w-100 d-flex mx-auto mt-4">
-                        <div class="container_center ms-5">
+                        <div class="container_center ms-5" style="margin-right: 15px;">
                             <h4 class="mt-2 nameCourse" th:text="${course.courseName}"></h4>
                             <h6 class="mt-3">Mô tả khóa học khóa học</h6>
                             <span th:text="${course.courseDes}"></span>
                             <h5 class="mt-4">Nội dung khóa học</h5>
                             <div class="course_list_video" style="display: flex; gap: 10px; flex-direction: column;">
                                 <div class="card" th:each="lesson : ${lessons}">
-                                    <th:block th:if="${lesson.xemTruoc} == 1">
                                         <span>
-                                            <i class="bi bi-play-fill"></i>
-                                            <span th:text="${lesson.lessonTitle}"></span>
-                                            <button style="border: none; background-color: white; color: blue;" id="btnShowXemTruoc" th:attr="onclick=|showXemTruoc('${lesson.getLessonVideo()}')|">Xem trước</button>
-                                        </span>
-                                    </th:block>
-                
-                                    <th:block th:if="${lesson.xemTruoc} != 1">
-                                        <span>
-                                            <i class="bi bi-play-fill"></i>
+                                            <div class="" style="cursor: pointer;">
+                                                <button style="border: none; background-color: white; color: blue;" id="btnShowXemTruoc" th:attr="onclick=|showXemTruoc('${lesson.getLessonVideo()}','${lesson.lessonTitle}')|">
+                                                    <i class="bi bi-play-btn me-3" style="color: blue;"></i>    
+                                                </button>
+                                            </div>
                                             <span th:text="${lesson.lessonTitle}"></span>
                                         </span>
-                                    </th:block>
                                 </div>
                             </div>
                             <h5 class="mt-4">Tài liệu tham khảo</h5>
                         </div>
-                        <div class="container_right mt-4">
-                            <div class="container_right_video">
+                        <div class="container_right mt-4" style="display: flex; flex-direction: column;">
+                            <div class="container_right_video" style="margin-bottom: 15px;">
                                 <img class="img-fluid" th:src="${course.courseAvt}" alt="" style="aspect-ratio: 16/9; border-radius: 10px; width: 100%">
                             </div>
                             <div class="course_information">
@@ -369,32 +402,32 @@
                                 <div>
                                     Tổng số: <span class="total" th:text="${#lists.size(lessons)}"></span> bài học
                                 </div>
-                                <div>
+                                <div style="margin-bottom: 15px;">
                                     Tài liệu tham khảo: 0 tài liệu
                                 </div>
-                                <button th:attr="onclick=|duyetCourse('${course.courseID}')|">Xem trước</button>
+                                <button th:attr="onclick=|duyetCourse('${course.courseID}')|" style="border: none; border-radius: 10px; background-color: #f306cc; width: 118px; height: 42px; font-size: 16px; color: white;">Duyệt course</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="course-wrapper px-5 py-4" th:if="${flag==10}">
-                    <label for="form2">Lọc theo ngày</label>
+                    <label for="form2" style="margin-bottom: 7px;">Lọc theo ngày</label>
                     <form action="/admin/locHDtheoDate" method="get" id="form2">
                         <div class="date-picker">
                             <input type="date" name="inDate" required>
-                            <button type="submit">Lọc</button>
+                            <button type="submit" style="border: none; background-color: aqua; border-radius: 5px;">Lọc</button>
                         </div>
                     </form>
 
-                        <label for="form1">Lọc theo ngày bắt đầu - kết thúc</label>
+                        <label for="form1" style="margin: 10px 0 7px 0;">Lọc theo ngày bắt đầu - kết thúc</label>
                         <form action="/admin/locHDtheongay" method="get" id="form1">
                             <div class="date-picker">
                                 <input type="date" name="startDate" required>
                                 <input type="date" name="endDate" required>
-                                <button type="submit">Lọc</button>
+                                <button type="submit" style="border: none; background-color: aqua; border-radius: 5px;">Lọc</button>
                             </div>
                         </form>
-                        <table id="course-table">
+                        <table id="course-table" style="margin: 12px 0 12px 0;">
                                 <thead >
                                     <tr>
                                         <th>ID</th>
@@ -414,20 +447,20 @@
                                         <td th:text="${hd.ngayMua}"></td>
                                         <td th:text="${hd.tongTien + ' VND'}"></td>
                                         <td th:text="${hd.user.fullName}"></td>
-                                        <td><button>Chi tiết</button></td>
+                                        <td><button style="border: none; border-radius: 3px; background-color: #0d6efd; color: white;">Chi tiết</button></td>
                                         <td>
-                                            <button th:attr="onclick=|inHoaDon('${hd.HoaDonId}')|">In hóa đơn</button>
+                                            <button th:attr="onclick=|inHoaDon('${hd.HoaDonId}')|" style="border: none; border-radius: 3px; background-color: #f80303; color: white;">In hóa đơn</button>
                                         </td>
                                     </tr>
                                 </tbody>
                         </table>
-                    <button onclick="xuatTatCa()">Xuất Danh Sách Này</button>
-                    <button><a href="/users/export/excel">Xuất tất cả</a></button>
+                    <button onclick="xuatTatCa()" style="border: none; border-radius: 7px; background-color: #f41c09; color: white; font-size: 16px; font-weight: 500; height: 40px; margin-right: 20px;">Xuất Danh Sách Này</button>
+                    <button style="border: none; border-radius: 7px; background-color: #06acf3; color: white; font-size: 16px; font-weight: 500; height: 40px;"><a href="/users/export/excel" style="color: white;">Xuất tất cả</a></button>
                 </div>
 
                 <div class="course-wrapper px-5 py-4" th:if="${flag==11}">
                     <h2 style="margin: 20px 0 10px 0;">Chi trả lương cho teacher</h2>
-                    <select id="month-select">
+                    <select id="month-select" style="margin-bottom: 15px;">
                         <option value="all">Tất cả</option>
                         <option value="1">Tháng 1</option>
                         <option value="2">Tháng 2</option>
@@ -468,10 +501,10 @@
                                 <td th:text="${chitra.soTienChuyen}"></td>
                                 <td>
                                     <h4 th:if="${chitra.state == 1}">Đã chi trả</h4>
-                                    <button th:if="${chitra.state == 0}" th:attr="onclick=|chiTraChoGV('${chitra.Id}')|">Chi trả</button>
+                                    <button th:if="${chitra.state == 0}" th:attr="onclick=|chiTraChoGV('${chitra.Id}')|" style="border: none; background-color: aqua;">Chi trả</button>
                                 </td>
                                 <td>
-                                    <button>Chi tiết</button>
+                                    <button style="background-color: white; border: none;">Chi tiết</button>
                                 </td>
                             </tr>
                         </tbody>                        
@@ -597,6 +630,7 @@
                             </div>
                         </div>
 
+                        
 
                         <!-- Modal thêm khóa học-->
                         <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -759,20 +793,34 @@
             const courseTable = document.getElementById('course-table');
         
             monthSelect.addEventListener('change', function() {
-        const selectedMonth = monthSelect.value;
+                const selectedMonth = monthSelect.value;
 
-        const rows = courseTable.getElementsByTagName('tr');
-        for (let i = 1; i < rows.length; i++) {
-            const row = rows[i];
-            const monthCell = row.querySelector('td:nth-child(5)');
-            const month = monthCell.textContent;
+                const rows = courseTable.getElementsByTagName('tr');
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    const monthCell = row.querySelector('td:nth-child(5)');
+                    const month = monthCell.textContent;
 
-            if (selectedMonth === 'all' || month === selectedMonth) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+                    if (selectedMonth === 'all' || month === selectedMonth) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+
+        function showXemTruoc(linkVd, titleVd){
+            var form = document.getElementById("xemtruocModal");
+            form.style.display = "flex";
+            var title = document.querySelector("#titleVd");
+            title.textContent = titleVd;
+            var video = document.querySelector("#srcVideoXemTruoc");
+            video.src = linkVd;
         }
-    });
+
+        function closeXemTruocModal(){
+            var form = document.getElementById("xemtruocModal");
+            form.style.display = "none";
+        }
     </script>
 </html>

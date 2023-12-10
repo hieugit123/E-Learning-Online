@@ -21,7 +21,31 @@
     <link rel="stylesheet" th:href="@{/css/course_intro.css}">
     <link rel="stylesheet" th:href="@{/css/course_intro_admin.css}">
     <link rel="stylesheet" th:href="@{/css/footerCss.css}">
+    <link rel="stylesheet" th:href="@{/css/newCss.css}">
     <style>
+        #xemtruocModal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Đảm bảo modal nổi trên tất cả các phần tử */
+            width: 650px;
+            height: 530px;
+            background-color: #fff; /* Màu nền modal */
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1); /* Đổ bóng cho modal */
+            border: 2px solid rgb(140, 139, 139);
+            background-color: rgb(0, 0, 0);
+            display: none;
+        }
+
+        #xemtruocModal > div {
+            padding: 20px;
+            text-align: center;
+        }
         .list-item{
             width: 100%;
             display: flex;
@@ -34,6 +58,20 @@
         }
     </style>
     <script>
+        function showXemTruoc(linkVd, titleVd){
+            var form = document.getElementById("xemtruocModal");
+            form.style.display = "flex";
+            var title = document.querySelector("#titleVd");
+            title.textContent = titleVd;
+            var video = document.querySelector("#srcVideoXemTruoc");
+            video.src = linkVd;
+        }
+
+        function closeXemTruocModal(){
+            var form = document.getElementById("xemtruocModal");
+            form.style.display = "none";
+        }
+
         function showHocVien(courseId) {
             $.ajax({
                 url: `/teacher/hocvien/${courseId}`,
@@ -57,7 +95,7 @@
                 },
                 error: function(xhr, status, error) {
                     var element = document.querySelector(".content-main");
-                    element.innerHTML = '<h1>Hello Mai Xuan Hieu oc cho</h1>';
+                    element.innerHTML = '<h1>No Item</h1>';
                 }
             });
         }
@@ -99,8 +137,10 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center">
-                                    <div class="">
-                                        <i class="bi bi-play-btn me-3"></i>
+                                    <div class="" style="cursor: pointer;">
+                                        <button style="border: none; background-color: white; color: blue;" id="btnShowXemTruoc" th:attr="onclick=|showXemTruoc('${lesson.getLessonVideo()}','${lesson.lessonTitle}')|">
+                                            <i class="bi bi-play-btn me-3" style="color: blue;"></i>    
+                                        </button>
                                     </div>
                                     <span class="ml-3" th:text="${lesson.lessonTitle}"></span>
                                 </div>
@@ -256,14 +296,39 @@
 <!--    Modal đánh giá khóa học-->
 <div class="modal fade" id="danhgiaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div th:each="danhgia :${course.danhgias}">
-                <div class="iconAndUser"><i class="bi bi-person-circle"></i><h4 th:text="${danhgia.tenUser}"></h4></div>
-                <span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                            <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i></span>
-                <p th:text="${danhgia.contentDanhgia}"></p>
-            </div>
+        <div class="modal-content" style="width: 800px; min-height: 460px;">
+            <th:block th:if="${course.danhgias.size() > 0}">
+                <div th:each="danhgia :${course.danhgias}" class="danhGiaTheoUser" style="margin: 10px 0 0 20px;">
+                    <div class="iconAndUser">
+                        <img th:src="${danhgia.user.avatar}" style="width: 20px; height: 20px; border-radius: 10px;">
+                        <h5 th:text="${danhgia.tenUser}" style="margin: 0 40px 0 10px;"></h5>
+                        <span th:text="${danhgia.createdAt}"></span>
+                    </div>
+                    <input type="hidden" class="soSaoDG" th:value="${danhgia.sao}">
+                    <div class="showSaoTheoUser"></div>
+                    <p th:text="${danhgia.contentDanhgia}"></p>
+                    <div style="color: black; font-size: 12px;">
+                        <span>Bạn có thấy hữu ích?</span>
+                        <i class="bi bi-hand-thumbs-up"></i>
+                        <i class="bi bi-hand-thumbs-down"></i>
+                    </div>
+                </div>
+            </th:block>
+            <th:block th:if="${!(course.danhgias.size() > 0)}">
+                <h6 style="margin: auto;">Không có đánh giá</h6>
+            </th:block>
         </div>
+    </div>
+</div>
+<div class="" id="xemtruocModal">
+    <div class="">
+        <div style="display: flex;">
+            <h6 style="margin: 0 0 10px 200px; color: white;">Xem khóa học</h4>
+            <button onclick="closeXemTruocModal()" style="width: 50px; height: 30px; background-color: white; margin-left: 150px; color: blue; border: none;"><i class="bi bi-x-square-fill"></i></button>
+        </div>
+        <h4 style="margin: 0 0 70px 0; color: white;" id="titleVd">1. Khái niệm, kỹ thuật cần biết</h4>
+        <iframe id="srcVideoXemTruoc" width="550" height="300" th:src="${lessons.get(0).getLessonVideo()}" frameborder="0" allowfullscreen></iframe>
+        <h6 style="margin-top: 10px; color: white;">Video mẫu miễn phí</h6>
     </div>
 </div>
 <div th:replace="~{fragments/footer}"></div>
@@ -273,5 +338,80 @@
 </script>
 <script th:src="@{/js/header.js}"></script>
 <script th:src="@{/js/admin_course_intro.js}"></script>
+<script>
+    $(document).ready(function(){
+        var arrSao = document.querySelectorAll(".soSaoDG");
+        var saoClass = document.querySelectorAll(".showSaoTheoUser");
+        var size = arrSao.length;
+        for(var i = 0; i < size; i++){
+            var soSao = parseInt(arrSao[i].value);
+            var saoHTML = '';
+            if(soSao == 1)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+            else if(soSao == 2)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+            else if (soSao == 3)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+            else if (soSao == 4)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i>`;
+            else if (soSao == 5)
+                saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>`;
+            else
+                saoHTML = `<i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+
+            saoClass[i].innerHTML = saoHTML; // Gán chuỗi HTML cho hình ngôi sao
+        }
+    });
+
+    $(document).ready(function() {
+        var arrSao = document.querySelectorAll(".tbsao");
+        var saoClass = document.querySelectorAll(".saoShow");
+        var size = arrSao.length;
+
+        for (var i = 0; i < size; i++) {
+            var soSao = parseFloat(arrSao[i].textContent);
+            var saoHTML = ''; // Chuỗi HTML cho hình ngôi sao
+
+            if (soSao <= 1.0) {
+                if (soSao == 1.0)
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+                else if (soSao < 0.5)
+                    saoHTML = `<i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+                else
+                    saoHTML = `<i class="bi bi-star-half star1"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+            } else if (soSao <= 2.0) {
+                if (soSao == 2.0)
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+                else if (soSao < 1.5)
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+                else
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-half star1"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+            } else if (soSao <= 3.0) {
+                if (soSao == 3.0)
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+                else if (soSao < 2.5)
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+                else
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-half star1"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+            } else if (soSao <= 4.0) {
+                if (soSao == 4.0)
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i>`;
+                else if (soSao < 3.5)
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i><i class="bi bi-star star2"></i>`;
+                else
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-half star1"></i><i class="bi bi-star star2"></i>`;
+            } else if (soSao <= 5.0) {
+                if (soSao == 5.0)
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>`;
+                else if (soSao < 4.5)
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star star2"></i>`;
+                else
+                    saoHTML = `<i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-half star1"></i>`;
+            }
+
+            saoClass[i].innerHTML = saoHTML; // Gán chuỗi HTML cho hình ngôi sao
+        }
+        });
+</script>
 </body>
 </html>

@@ -21,13 +21,46 @@
     <link rel="stylesheet" th:href="@{/css/newCss.css}">
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/footerCss.css}">
+    <style>
+        .fixed-corner {
+            width: 150px;
+            height: 160px;
+            background-color: #fff; /* Màu nền trắng */
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 20px;
+            z-index: 2;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+        }
+
+
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/header}"></div>
-<div class="container" style="margin: 0 50px 0 50px;">
+<div class="container">
     
+    <div class="fixed-corner">
+        <a href="/discuss" class="left-menu-item">
+            <i class="bi bi-chat-dots-fill" style="font-size: 60px;"></i>
+            <h4>Chat</h4>
+        </a>
+    </div>
     <div style="display: flex;">
-        <h2 style="margin: 10px 0 30px 0;">Khóa học đã đăng ký</h2>
+        <h4 style="margin: 10px 0 30px 0;">Khóa học đã đăng ký</h4>
+    </div>
+    <div style="width: 970px; height: 170px; border: 1px solid rgb(230, 227, 227); margin: 0 auto 30px auto;">
+        <i class="bi bi-alarm-fill" style="font-size: 30px; margin-left: 20px;"></i>
+        <div style="margin-left: 20px;">
+            <h5>Lên lịch thời gian học</h5>
+            <span>
+                Học một chút mỗi ngày sẽ giúp bạn tích lũy kiến thức. Nghiên 
+                cứu cho thấy rằng những học viên biến việc học thành thói quen 
+                sẽ có nhiều khả năng đạt được mục tiêu hơn. Hãy dành thời gian để 
+                học và nhận lời nhắc bằng cách sử dụng trình lên lịch học tập.</span>
+        </div>
     </div>
     <div class="w-100">
             <div th:if="${not #lists.isEmpty(listCourse)}" class="course-list d-flex flex-wrap">
@@ -49,17 +82,18 @@
             </div>
     </div>
     <div style="display: flex;">
-        <h2 style="margin: 50px 0 50px 0;">Khóa học đề xuất mới</h2>
+        <h4 style="margin: 30px 0 30px 0;">Khóa học đề xuất mới</h4>
     </div>
     <div class="w-100">
             <div th:if="${not #lists.isEmpty(listCourse1)}" class="course-list d-flex flex-wrap">
                 <th:block th:each="course : ${listCourse1}">
                     <th:block th:if="${course.state} == 1">
-                        <a th:href="@{/course/quatrinhhoc/{idCourse}(idCourse=${course.courseID})}" class="course-item">
+                        <a th:href="@{/detail1111/{idCourse}(idCourse=${course.courseID})}" class="course-item">
                             <img th:src="${course.courseAvt}" class="img-fluid">
-                            <div class="sao">
-                                <span th:text="${course.danhgias.size()}"></span><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
-                                <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                            <div class="sao" style="display: flex;">
+                                <span class="tbsao" th:text="${course.tbDanhGia()}"></span><div class="saoShow"></div>
+                                <!-- <i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i><i class="bi bi-star-fill star"></i>
+                                </i><i class="bi bi-star-half star1"></i><i class="bi bi-star star2"></i> -->
                             </div>
                             <p th:text="${course.courseOwner.fullName}"></p>
                             <h4 th:text="${course.gia + '₫'}"></h4>
@@ -72,6 +106,7 @@
     </div>
 </div>
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/newJs.js}"></script>
 <div th:replace="~{fragments/footer}"></div>
 </body>
 </html>

@@ -36,5 +36,13 @@ public class CartServicesImpl implements CartServices{
         if(!isInCart(course, user))
             cartRepository.deleteByUserAndCourse(user, course);
     }
+
+    @Override
+    public void clearCart(User user) {
+        // TODO Auto-generated method stub
+        cartRepository.deleteCartByUser(user);
+    }
+
+    
     
 }

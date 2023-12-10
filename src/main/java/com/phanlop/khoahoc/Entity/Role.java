@@ -23,7 +23,7 @@ public class Role {
                 joinColumns = @JoinColumn(name="role_id"),
                 inverseJoinColumns = @JoinColumn(name="user_id"))
     private Set<User> listUsers = new HashSet<>();
-    public void removeUserById(Long userId) {
-        listUsers.removeIf(user -> user.getUserId().equals(userId));
-    }
+//    public void removeUserById(Long userId) {
+//        listUsers.removeIf(user -> user.getUserId().equals(userId));
+//    }
 }

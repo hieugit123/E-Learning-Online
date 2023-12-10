@@ -51,6 +51,11 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments = new ArrayList<>();
     
+
+    public int getEnrollmentsSize() {
+        return enrollments != null ? enrollments.size() : 0;
+    }
+    
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<DanhGia> danhgias = new ArrayList<>();
     
@@ -70,6 +75,11 @@ public class Course {
         tbdanhgia = 0;
         return tbdanhgia;
     }
+
+    // Khóa ngoại cho Discuss
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Discuss> listDiscuss = new HashSet<>();
+
     // Tạo table chapter document
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // @JoinTable(name = "course_document", // Tên table muốn tạo

@@ -58,27 +58,45 @@
                     var src = document.querySelector(".img-fluid").getAttribute('src');
                     var name = document.querySelector(".nameCourse").textContent;
                     var html = document.querySelector(".form-cart1").innerHTML;
+                    var userCreate = document.querySelector("#userCreate").textContent;
+                    var gia = document.querySelector("#giaCourse").value;
                     var ele = document.querySelector(".cartItem");
+
                     var html1 = `<div class="cartItem">\n
-                                    <a href="/detail1111/4c6919fe-1fe9-40bf-ab20-ffa596ab3293">\n 
-                                        <img src="${src}" class="img-cartItem">\n
-                                        <span class="text-cartItem">${name}</span>\n
-                                    </a>\n 
-                                    <button id="btnDeleteCartItem" onclick="deleteCartItem('${courseId}')">Xóa</button>\n
-                                 </div>\n  `;
-                    if(ele !== null)
+                                            <a href="@{/detail1111/{${courseId}}">\n
+                                                <img src="${src}" class="img-cartItem">\n
+                                                <div>\n
+                                                    <span class="text-cartItem" style="width: 145px; display: block;">${name}</span>\n
+                                                    <span style="color: black;">${userCreate}</span>\n
+                                                    <h6 style="color: black;">${gia} ₫</h6>\n
+                                                </div>\n
+                                            </a>\n
+                                            <button id="btnDeleteCartItem" onclick="deleteCartItem('${courseId}')">Xóa</button>\n
+                                        </div>\n`;
+                    if(ele !== null){
                         var htmlInsert = html1 + html;
+                    }
                     else
                         var htmlInsert = `<div class="cartItem">\n
-                                    <a href="/detail1111/4c6919fe-1fe9-40bf-ab20-ffa596ab3293">\n 
-                                        <img src="${src}" class="img-cartItem">\n
-                                        <span class="text-cartItem">${name}</span>\n
-                                    </a>\n 
-                                    <button id="btnDeleteCartItem" onclick="deleteCartItem('${courseId}')">Xóa</button>\n
-                                 </div>\n  
-                                 <a href="/checkout"><button id="btnThanhToan">Thanh toán</button></a>\n `; 
+                                            <a href="@{/detail1111/{${courseId}}">\n
+                                                <img src="${src}" class="img-cartItem">\n
+                                                <div>\n
+                                                    <span class="text-cartItem" style="width: 145px; display: block;">${name}</span>\n
+                                                    <span style="color: black;">${userCreate}</span>\n
+                                                    <h6 style="color: black;">Tổng: ₫ ${gia}</h6>\n
+                                                </div>\n
+                                            </a>\n
+                                            <button id="btnDeleteCartItem" onclick="deleteCartItem('${courseId}')">Xóa</button>\n
+                                        </div>\n
+                                 <h6 style="color: black; font-size: 20px;">${gia} ₫</h6>\n
+                                    <a href="/checkout"><button id="btnThanhToan">Chuyển đến giỏ hàng</button></a>\n `; 
                     document.querySelector(".form-cart1").innerHTML = htmlInsert;
                     
+                    if(ele != null){
+                        var tongCart = Number(document.querySelector("#tongCart").textContent.split(" ")[2]) + Number(gia);
+                        var element = document.querySelector("#tongCart");
+                        element.textContent = `Tổng: ₫ ${tongCart}`;
+                    }
                     Swal.fire({
                         icon: 'success',
                         title: 'Khóa học đã được thêm',
@@ -99,9 +117,11 @@
             });
         }
 
-        function showXemTruoc(linkVd){
+        function showXemTruoc(linkVd, titleVd){
             var form = document.getElementById("xemtruocModal");
             form.style.display = "flex";
+            var title = document.querySelector("#titleVd");
+            title.textContent = titleVd;
             var video = document.querySelector("#srcVideoXemTruoc");
             video.src = linkVd;
         }
@@ -122,23 +142,24 @@
             <h4 class="mt-2 nameCourse" th:text="${course.courseName}"></h4>
             <h6 class="mt-3">Mô tả khóa học khóa học</h6>
             <span th:text="${course.courseDes}"></span>
+            <input type="hidden" id="giaCourse" th:value="${course.gia}">
             <h5 class="mt-4">Nội dung khóa học</h5>
             <div class="sao" style="display: flex;">
                             <span th:text="${course.tbDanhGia()}" class="tbsao"></span><div class="saoShow"></div>
-                            <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#danhgiaModal">  <span th:text="${course.danhgias.size()}"></span>Xếp hạng</span>
+                            <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#danhgiaModal">  <span th:text="${course.danhgias.size()}"></span> Xếp hạng</span>
             </div>
             <div class="course_list_video" style="display: flex; gap: 10px; flex-direction: column;">
                 <div class="card" th:each="lesson : ${lessons}">
                     <th:block th:if="${lesson.xemTruoc} == 1">
-                        <span>
+                        <span style="height: 45px; line-height: 45px;">
                             <i class="bi bi-play-fill"></i>
                             <span th:text="${lesson.lessonTitle}"></span>
-                            <button style="border: none; background-color: white; color: blue;" id="btnShowXemTruoc" th:attr="onclick=|showXemTruoc('${lesson.getLessonVideo()}')|">Xem trước</button>
+                            <button style="border: none; background-color: white; color: blue;" id="btnShowXemTruoc" th:attr="onclick=|showXemTruoc('${lesson.getLessonVideo()}','${lesson.lessonTitle}')|">Xem trước</button>
                         </span>
                     </th:block>
 
                     <th:block th:if="${lesson.xemTruoc} != 1">
-                        <span>
+                        <span style="height: 45px; line-height: 45px;">
                             <i class="bi bi-play-fill"></i>
                             <span th:text="${lesson.lessonTitle}"></span>
                         </span>
@@ -153,7 +174,7 @@
             </div>
             <div class="course_information">
                 <div>
-                    Giảng viên: <span th:text="${course.courseOwner.fullName}"></span>
+                    Giảng viên: <span th:text="${course.courseOwner.fullName}" id="userCreate"></span>
                 </div>
                 <div>
                     Khoa: <span th:text="${course.department.departmentName}"></span>
@@ -183,23 +204,37 @@
 <!--    Modal đánh giá khóa học-->
 <div class="modal fade" id="danhgiaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div th:each="danhgia :${course.danhgias}" class="danhGiaTheoUser">
-                <div class="iconAndUser"><i class="bi bi-person-circle"></i><h4 th:text="${danhgia.tenUser}"></h4></div>
-                <input type="hidden" class="soSaoDG" th:value="${danhgia.sao}">
-                <div class="showSaoTheoUser"></div>
-                <p th:text="${danhgia.contentDanhgia}"></p>
-            </div>
+        <div class="modal-content" style="width: 800px; min-height: 460px;">
+            <th:block th:if="${course.danhgias.size() > 0}">
+                <div th:each="danhgia :${course.danhgias}" class="danhGiaTheoUser" style="margin: 10px 0 0 20px;">
+                    <div class="iconAndUser">
+                        <img th:src="${danhgia.user.avatar}" style="width: 20px; height: 20px; border-radius: 10px;">
+                        <h5 th:text="${danhgia.tenUser}" style="margin: 0 40px 0 10px;"></h5>
+                        <span th:text="${danhgia.createdAt}"></span>
+                    </div>
+                    <input type="hidden" class="soSaoDG" th:value="${danhgia.sao}">
+                    <div class="showSaoTheoUser"></div>
+                    <p th:text="${danhgia.contentDanhgia}"></p>
+                    <div style="color: black; font-size: 12px;">
+                        <span>Bạn có thấy hữu ích?</span>
+                        <i class="bi bi-hand-thumbs-up"></i>
+                        <i class="bi bi-hand-thumbs-down"></i>
+                    </div>
+                </div>
+            </th:block>
+            <th:block th:if="${!(course.danhgias.size() > 0)}">
+                <h6 style="margin: auto;">Không có đánh giá</h6>
+            </th:block>
         </div>
     </div>
 </div>
 <div class="" id="xemtruocModal">
         <div class="">
             <div style="display: flex;">
-                <h6 style="margin: 0 0 10px 150px; color: white;">Xem trước khóa học</h4>
-                <button onclick="closeXemTruocModal()" style="width: 50px; height: 30px; background-color: white; margin-left: 150px; color: blue; border: none;">Đóng</button>
+                <h6 style="margin: 0 0 10px 200px; color: white;">Xem trước khóa học</h4>
+                <button onclick="closeXemTruocModal()" style="width: 50px; height: 30px; background-color: white; margin-left: 150px; color: blue; border: none;"><i class="bi bi-x-square-fill"></i></button>
             </div>
-            <h4 style="margin: 0 0 70px 0; color: white;">1. Khái niệm, kỹ thuật cần biết</h4>
+            <h4 style="margin: 0 0 70px 0; color: white;" id="titleVd">1. Khái niệm, kỹ thuật cần biết</h4>
             <iframe id="srcVideoXemTruoc" width="550" height="300" th:src="${lessons.get(0).getLessonVideo()}" frameborder="0" allowfullscreen></iframe>
             <h6 style="margin-top: 10px; color: white;">Video mẫu miễn phí</h6>
         </div>

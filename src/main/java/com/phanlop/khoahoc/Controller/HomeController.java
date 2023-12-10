@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.phanlop.khoahoc.Config.CustomUserDetails;
+import com.phanlop.khoahoc.DTO.AdminThongkeDTO;
 import com.phanlop.khoahoc.DTO.UserDTO;
 import com.phanlop.khoahoc.Entity.AccessType;
 import com.phanlop.khoahoc.Entity.Course;
@@ -139,6 +141,7 @@ public class HomeController {
     }
 
     //MỚI
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
     @GetMapping("/course/usrenroll")
     public String getCourseOfUser(Model model,Authentication authentication){
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -152,6 +155,11 @@ public class HomeController {
         model.addAttribute("listCourse", listCourse);
         model.addAttribute("listCourse1", listCourse1);
         List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        int tong = 0;
+        for(Course c : listCourseInCart){
+            tong = tong + c.getGia();
+        }
+        model.addAttribute("tongCart", tong);
         model.addAttribute("listCourseInCart", listCourseInCart);
         return "course_quatrinh";
     }
@@ -183,11 +191,12 @@ public class HomeController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userServices.getUserByUserName(userDetails.getUsername());
         List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        
         int tong = 0;
         for(Course c : listCourseInCart){
             tong = tong + c.getGia();
         }
-        model.addAttribute("tongcart", tong);
+        model.addAttribute("tongCart", tong);
         model.addAttribute("listCourseInCart", listCourseInCart);
         return "checkout";
     }
@@ -200,7 +209,7 @@ public class HomeController {
         Course course = courseService.getCourseById(idCourse);
         List<Course> list = new ArrayList<>();
         list.add(course);
-        model.addAttribute("tongcart", course.getGia());
+        model.addAttribute("tongCart", course.getGia());
         model.addAttribute("listCourseInCart", list);
         return "checkout";
     }
@@ -209,6 +218,13 @@ public class HomeController {
     public String getIndex(Model model){
         List<Course> listCourse = courseService.getAllCourses();
         model.addAttribute("listCourse", listCourse);
+        List<Course> listBanChay = courseService.getAllCourses();
+
+        Collections.sort(listBanChay, Comparator.comparingDouble(Course::getEnrollmentsSize).reversed());
+        while(listBanChay.size()>8){
+            listBanChay.remove(listBanChay.size()-1);
+        }
+        model.addAttribute("listBanChay", listBanChay);
         return "index";
     }
 
@@ -220,6 +236,11 @@ public class HomeController {
         List<Course> listCourse = courseService.filterNoOwnedByUser(user);
         model.addAttribute("listCourse", listCourse);
         List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        int tong = 0;
+        for(Course c : listCourseInCart){
+            tong += c.getGia();
+        }
+        model.addAttribute("tongCart", tong);
         model.addAttribute("listCourseInCart", listCourseInCart);
         model.addAttribute("user", user);
         return "index";
@@ -298,6 +319,11 @@ public class HomeController {
         boolean isInCart = cartServices.isInCart(myCourse, user);
         model.addAttribute("isInCart", isInCart);
         List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        int tong = 0;
+        for(Course c : listCourseInCart){
+            tong += c.getGia();
+        }
+        model.addAttribute("tongCart", tong);
         model.addAttribute("listCourseInCart", listCourseInCart);
         return "courseChitiet";
     }
@@ -369,58 +395,4 @@ public class HomeController {
         return "chapter_watch";
     }
     
-    //SỬA
-//     @PreAuthorize("hasRole('ROLE_STUDENT')")
-//     @GetMapping("/dangkyCourse/{id}")
-//     public String dkyCourse(@PathVariable UUID id, Authentication authentication, Model model){
-//         Course course = courseService.getCourseById(id);
-// //        try {
-// //            course = courseServices.getCourseById(UUID.fromString(courseId));
-// //        } catch (IllegalArgumentException e){
-// //            return ResponseEntity.badRequest().body("Mã khóa học không đúng định dạng");
-// //        }
-
-//         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-//         User user = userServices.getUserByUserName(userDetails.getUsername());
-//         if (course != null && user != null){
-//             Enrollment enroll = enrollmentServices.getEnrollmentByUserAndCourse(user, course);
-//             if (enroll == null){
-//                 Enrollment.EnrollmentId enrollmentId = new Enrollment.EnrollmentId();
-//                 enrollmentId.setUserId(user.getUserId());
-//                 enrollmentId.setCourseId(course.getCourseID());
-//                 Enrollment enrollment = new Enrollment();
-//                 enrollment.setId(enrollmentId);
-//                 enrollment.setUser(user);
-//                 enrollment.setAccessType(AccessType.PENDING);
-//                 enrollment.setCourse(course);
-//                 enrollmentServices.saveEnrollment(enrollment);
-// //                return ResponseEntity.ok("Đã gửi yêu cầu tham gia khóa học! Vui lòng chờ duyệt");
-//                 Lesson lesson = lessonServices.getLessonById(0);
-//                 if (lesson != null){
-//                     List<Lesson> lessons = new ArrayList<>(course.getListLessons().stream().toList());
-//                     lessons.sort(Comparator.comparing(Lesson::getLessonSort));
-//                     if (lesson.getLessonVideo().contains("youtube.com/embed/")){
-//                         model.addAttribute("isYoutube", true);
-//                     } else {
-//                         model.addAttribute("isYoutube", false);
-//                     }
-//                     model.addAttribute("lesson", lesson);
-//                     model.addAttribute("course", course);
-//                     model.addAttribute("lessons", lessons);
-//                 }
-//                 return "chapter_watch";
-//             } else {
-// //                return ResponseEntity.badRequest().body("Bạn đã gửi yêu cầu cho người sở hữu hoặc đã tham gia khóa học này");
-//             }
-//         }
-// //        return ResponseEntity.badRequest().body("Khóa học yêu cầu không tồn tại!");
-//            return "chapter_watch";
-//     }
-
-    // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN', 'ROLE_STUDENT')")
-    // @GetMapping("/account_info")
-    // public String accountInfo() {
-    //     // Do something to get account info
-    //     return "account_info";
-    // }
 }

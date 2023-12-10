@@ -1,7 +1,6 @@
 package com.phanlop.khoahoc.Repository;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,5 +22,9 @@ public interface CartRepository extends JpaRepository<Cart, Long>{
     @Modifying
     @Query("DELETE FROM Cart c WHERE c.user = :user AND c.course = :course")
     void deleteByUserAndCourse(@Param("user") User user, @Param("course") Course course);
-
+    
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Cart c WHERE c.user = :user")
+    void deleteCartByUser(@Param("user") User user);
 }

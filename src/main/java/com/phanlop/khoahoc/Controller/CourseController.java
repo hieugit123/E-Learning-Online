@@ -137,6 +137,7 @@ public class CourseController {
                 course.setCourseOwner(user);
                 course.setCourseName(courseDTO.getCourseName());
                 course.setCourseDes(courseDTO.getCourseDes());
+                course.setGia(courseDTO.getGia());
                if (file != null){
                    course.setCourseAvt(file.getFileLink());
                }
@@ -189,15 +190,15 @@ public class CourseController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @PostMapping("/lesson/edit")
     public ResponseEntity<LessonDTO> editLesson(@ModelAttribute CreateLessonDTO lessonDTO){
-//        File file = fileServices.addFile(lessonDTO.getLessonVideoMulti());
+        File file = fileServices.addFile(lessonDTO.getLessonVideoMulti());
         Lesson lesson = lessonServices.getLessonById(lessonDTO.getLessonId());
         lesson.setLessonTitle(lessonDTO.getLessonTitle());
         lesson.setLessonContent(lessonDTO.getLessonContent());
-//        if (file != null){
-//            lesson.setLessonVideo(file.getFileLink());
-//        } else {
-            lesson.setLessonVideo(lessonDTO.getYoutubeUrl());
-//        }
+        if (file != null){
+            lesson.setLessonVideo(file.getFileLink());
+        } else {
+                lesson.setLessonVideo(lessonDTO.getYoutubeUrl());
+        }
         LessonDTO dto = ObjectMapperUtils.map(lessonServices.saveLesson(lesson), LessonDTO.class);
         return ResponseEntity.ok(dto);
     }
@@ -243,61 +244,6 @@ public class CourseController {
         }
         return ResponseEntity.badRequest().body("Khóa học yêu cầu không tồn tại!");
     }
-    
-
-    
-
-    //SỬA
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-//    @PostMapping("/file/add/{courseId}")
-//    public ResponseEntity<FileDTO> addFileToCourse(@ModelAttribute MultipartFile fileUpload, @PathVariable UUID courseId, Authentication authentication){
-//        File file = fileServices.addFile(fileUpload);
-//        Course course = courseServices.getCourseById(courseId);
-//        if (course != null && file != null){
-//            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-//            User user = userServices.getUserByUserName(userDetails.getUsername());
-//            file.setUploadedUser(user);
-//            file.getCourses().add(course);
-////            course.getListDocuments().add(file);
-//            File saved = fileRepository.save(file);
-//            courseServices.saveCourse(course);
-//            return ResponseEntity.ok(ObjectMapperUtils.map(file, FileDTO.class));
-//        }
-//        return ResponseEntity.badRequest().build();
-//    }
-    //SỬA
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-//    @PostMapping("/file/add2/{courseId}")
-//    public ResponseEntity<FileDTO> addFileToCourse(@RequestParam UUID fileId, @PathVariable UUID courseId, Authentication authentication){
-//        File file = fileRepository.findById(fileId).orElse(null);
-//        Course course = courseServices.getCourseById(courseId);
-//        if (course != null && file != null){
-//            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-//            User user = userServices.getUserByUserName(userDetails.getUsername());
-//            file.setUploadedUser(user);
-//            file.getCourses().add(course);
-////            course.getListLessons().add(file);
-//            File saved = fileRepository.save(file);
-//            courseServices.saveCourse(course);
-//            return ResponseEntity.ok(ObjectMapperUtils.map(file, FileDTO.class));
-//        }
-//        return ResponseEntity.badRequest().build();
-//    }
-    //SỬA
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-//    @PostMapping("/file/remove/{courseId}")
-//    public ResponseEntity<FileDTO> removeFromCourse(@RequestParam UUID fileId, @PathVariable UUID courseId){
-//        File file = fileRepository.findById(fileId).orElse(null);
-//        Course course = courseServices.getCourseById(courseId);
-//        if (course != null && file != null){
-//            file.getCourses().remove(course);
-////            course.getListLessons().remove(file);
-//            File saved = fileRepository.save(file);
-//            courseServices.saveCourse(course);
-//            return ResponseEntity.ok(ObjectMapperUtils.map(saved, FileDTO.class));
-//        }
-//        return ResponseEntity.badRequest().build();
-//    }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @PostMapping("/members/{courseId}")
@@ -348,69 +294,6 @@ public class CourseController {
         }
         return Collections.emptyList();
     }
-
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-//    @PostMapping("/document/{courseId}")
-//    public List<FileDTO> getDocuments(@PathVariable UUID courseId){
-//        Course course = courseServices.getCourseById(courseId);
-//        if (course != null){
-//            return ObjectMapperUtils.mapAll(course.getListDocuments(), FileDTO.class);
-//        }
-//        return Collections.emptyList();
-//    }
-
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-//    @PostMapping("/document/{courseId}/remove")
-//    public List<FileDTO> removeDocument(@PathVariable UUID courseId, @RequestParam UUID documentId){
-//        Course course = courseServices.getCourseById(courseId);
-//        File file = fileServices.getFileByUUID(documentId);
-//        if (course != null && file != null){
-////            course.getListDocuments().remove(file);
-//            file.getCourses().remove(course);
-//            courseServices.saveCourse(course);
-//            fileRepository.save(file);
-//            return ObjectMapperUtils.mapAll(course.getListDocuments(), FileDTO.class);
-//        }
-//        return Collections.emptyList();
-//    }
-
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-//    @PostMapping("/document/{courseId}/add")
-//    public List<FileDTO> addDocument(@PathVariable UUID courseId, @RequestParam UUID documentId){
-//        Course course = courseServices.getCourseById(courseId);
-//        File file = fileServices.getFileByUUID(documentId);
-//        if (course != null && file != null){
-//            course.getListDocuments().add(file);
-//            file.getCourses().add(course);
-//            courseServices.saveCourse(course);
-//            fileRepository.save(file);
-//            return ObjectMapperUtils.mapAll(course.getListDocuments(), FileDTO.class);
-//        }
-//        return Collections.emptyList();
-//    }
-    //SỬA
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-//    @PostMapping("/assignment/{lessonId}")
-//    public List<AssignmentDTO> getAssignments(@PathVariable int lessonId){
-//        Lesson lesson = lessonServices.getLessonById(lessonId);
-//        if (lesson != null){
-//            return ObjectMapperUtils.mapAll(lesson.getListAssignments(), AssignmentDTO.class);
-//        }
-//        return Collections.emptyList();
-//    }
-
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
-//    @PostMapping("/assignment/{courseId}/remove")
-//    public List<AssignmentDTO> getAssignments(@PathVariable UUID courseId, @RequestParam Integer assignmentId){
-//        Course course = courseServices.getCourseById(courseId);
-//        Assignment assignment = assignmentRepository.findById(assignmentId).orElse(null);
-//        if (course != null && assignment != null){
-//            course.getListAssignments().remove(assignment);
-//            courseServices.saveCourse(course);
-//            return ObjectMapperUtils.mapAll(course.getListAssignments(), AssignmentDTO.class);
-//        }
-//        return Collections.emptyList();
-//    }
 
     @GetMapping("/departments")
     public List<DepartmentDTO> getAllDepartments(){

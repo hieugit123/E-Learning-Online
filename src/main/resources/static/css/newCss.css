@@ -39,6 +39,7 @@
 
 .iconAndUser {
     display: flex;
+    align-items: center;
 }
 
 .showDG {
@@ -147,7 +148,7 @@ figure{
 
 
 .teaching {
-    margin-left: 200px;
+    margin-left: 18%;
     color: black;
 }
 
@@ -185,7 +186,7 @@ figure{
 
 .container-content-left {
     min-width: 800px;
-    border-right: 5px solid black;
+    /* border-right: 5px solid black; */
     display: flex;
     flex-direction: column;
 }
@@ -194,8 +195,8 @@ figure{
     width: 95%;
     display: flex;
     justify-content: space-between;
-    margin-top: 50px;
-    border-bottom: 2px solid red;
+    margin-top: 30px;
+    border-bottom: 2px solid #dcd4d4;
     margin-left: 10px;
 }
 
@@ -208,7 +209,7 @@ figure{
 .container-content-left .cartItem .img-cartItem{
     width: 90px;
     height: 90px;
-    margin-right: 100px;
+    margin-right: 15px;
 }
 
 .container-content-left .cartItem .text-cartItem {

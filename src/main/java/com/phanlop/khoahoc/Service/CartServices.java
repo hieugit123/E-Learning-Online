@@ -9,4 +9,5 @@ public interface CartServices {
     List<Course> getCartByUser(User user);
     boolean isInCart(Course course, User user);
     void deleteCart(Course course, User user);
+    void clearCart(User user);
 }

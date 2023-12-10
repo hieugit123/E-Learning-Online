@@ -163,7 +163,8 @@ a{
 .form-cart {
     position: absolute;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #f5f2f2;
+    box-shadow: rgba(213, 217, 217, .5) 0 2px 3px 0;
     border-radius: 3px;
     width: 300px;
     height: 200px;
@@ -187,17 +188,19 @@ a{
     display: flex;
     flex-direction: column;
     width: 300px;
-    height: 500px; 
+    min-height: 200px;
     position: absolute;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #e8e2e2;
     border-radius: 3px;
     display: none;
 }
 
 .cartItem {
-    margin: 10px 0 10px 0;
+    margin: 5px 0 20px 0;
     display: flex;
+    border-bottom: 1px solid rgb(186, 183, 183);
+
 }
 
 .cartItem a{
@@ -205,10 +208,11 @@ a{
 }
 
 .img-cartItem {
-    width: 50px;
-    height: 50px;
-    margin-right: 20px;
-    margin-left: 20px;
+    width: 70px;
+    height: 70px;
+    margin-right: 7px;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 .text-cartItem {
@@ -218,14 +222,15 @@ a{
 }
 
 #btnThanhToan {
-    width: 100px;
-    height: 30px;
-    background-color: #ec5206;
+    width: 200px;
+    height: 40px;
+    background-color: rgb(20, 19, 19);
     color: white;
     font-size: 16px;
     font-weight: 500;
     border-radius: 5px;
-    margin-left: 100px;
+    margin-left: 50px;
+    margin-bottom: 10px;
 }
 
 .teaching:hover {
@@ -240,12 +245,13 @@ a{
 #btnDeleteCartItem {
     border: none;
     border-radius: 3px;
-    background-color: red;
+    background-color: white;
     width: 30px;
     height: 20px;
     margin-left: 30px;
-    color: white;
-    font-size: 10px;
+    color: black;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .notify {
@@ -254,14 +260,15 @@ a{
 .notify-list{
     position: absolute;
     background-color: white;
-    border: 1px solid black;
-    border-radius: 3px;
+    border: 2px solid #ebdfdf;
+    border-radius: 5px;
     width: 300px;
-    height: 200px;
+    min-height: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
     display: none;
+    left: -200px;
 }
 .notify:hover .notify-list{
     display: flex;

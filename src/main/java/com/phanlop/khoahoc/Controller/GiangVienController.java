@@ -51,6 +51,7 @@ public class GiangVienController {
         return "createCourse";
     }
     
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     @GetMapping("/courseDangDo")
     public String getFormCourseDangDo(Authentication authentication, Model model) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
