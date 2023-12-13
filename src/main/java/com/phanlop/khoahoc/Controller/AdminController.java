@@ -503,37 +503,5 @@ public class AdminController {
         
         return "admin";
     }
-
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-//    @GetMapping({"/hoadon"})
-//    public String getDsHD(Model model){
-//        List<HoaDon> dshd = hoaDonServices.getAll();
-//        model.addAttribute("dshd", dshd);
-//        model.addAttribute("flag", 10);
-//        Role role = roleServices.findRoleByName("ROLE_TEACHER");
-//        List<User> listUser = userServices.findUserByRole(role);
-//        int[] arr = new int[listUser.size()];
-//        int tong = 0;
-//        int dem = 0;
-//        for(User user : listUser){
-//            for(HoaDon hd : dshd){
-//                List<CTHoaDon> ListCthd = hd.getListCTHD();
-//                for(CTHoaDon cthd : ListCthd){
-//                    if(cthd.getCourse().getCourseOwner().getEmail().equals(user.getEmail())){
-//                        tong = tong + cthd.getGia();
-//                    }
-//                }
-//             }
-//             arr[dem] = tong;
-//             tong = 0;
-//             dem = dem + 1;
-//        }
-
-//        model.addAttribute("listUser", listUser);
-//        model.addAttribute("arrDT", arr);
-//        return "admin";
-//    }
-
-
     
 }

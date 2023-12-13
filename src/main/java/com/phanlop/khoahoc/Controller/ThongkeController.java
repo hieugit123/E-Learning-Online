@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,10 @@ import com.phanlop.khoahoc.Service.UserServices;
 import com.phanlop.khoahoc.Utils.ObjectMapperUtils;
 
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.phanlop.khoahoc.Service.CTHDServices;
+import com.phanlop.khoahoc.Service.ChiTraServices;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,6 +44,7 @@ public class ThongkeController {
     private final EnrollmentServices enrollmentServices;
     private final HoaDonServices hdServices;
     private final CTHDServices cthdServices;
+    private final ChiTraServices chitraServices;
     @GetMapping("/thongke")
     public String thongkemain(Model model ,Authentication authentication){
          CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -138,47 +142,58 @@ public class ThongkeController {
         return "thongke";
     }
 
+    
+    
 
-    // @GetMapping("/thongke5")
-    // public String thongke5(@RequestParam("teacherid") long teacherid,Model model){
-    //     //lay cac hoa don trong thang hien tai
-    //     List<HoaDon> dshd = hdServices.getAll();
-    //     LocalDate today=LocalDate.now();
-    //     ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");
-    //     int thang=today.getMonthValue();
-    //     for (int i=0;i<dshd.size();i++) {
-    //         LocalDate localDate=LocalDate.ofInstant(dshd.get(i).getNgayMua(), zoneId2);
-    //         int thanglocal=localDate.getMonthValue();
-    //         if(thanglocal!=thang){
-    //             dshd.remove(i);
-    //         }
-    //     }
-    //     User user=userServices.getUserById(teacherid);
-    //     List<Course> courses=courseServices.findCourseOfTeacher(user);
-    //     List<LuotMuaDTO> list = new ArrayList<>();
 
-    //     for(Course c : courses){
-    //         List<UserDTO> listUser = new ArrayList<>();
-    //         for(HoaDon hd : dshd){
-    //             List<CTHoaDon> listCTHD = hd.getListCTHD();
-    //             for(CTHoaDon cthd : listCTHD){
-    //                 if(cthd.getCourse().getCourseID().compareTo(c.getCourseID())){
-    //                     UserDTO user1 = ObjectMapperUtils.map(hd.getUser(), UserDTO.class);
-    //                     listUser.add(user1);
-    //                 }
-    //             }
-    //         }
-    //         CourseDTO course = ObjectMapperUtils.map(c, CourseDTO.class);
-    //         LuotMuaDTO luotmua = new LuotMuaDTO(course, listUser);
-    //         list.add(luotmua);
-    //     }
-
-    //     model.addAttribute("listLuotMua", list);
+    @GetMapping("/thongke5")
+    public String thongke5(@RequestParam("teacherid") long teacherid,Model model){
+         model.addAttribute("teacherid", teacherid);
+        List<LuotMuaDTO> list = new ArrayList<>();
+        //lay cac hoa don trong thang hien tai
+        List<HoaDon> dshd = hdServices.getAll();
         
-    //     int flag=3;
-    //     model.addAttribute("flag", flag);
-    //     return "thongke";
-    // }
+        // ChiTraGV chitra = chitraServices.findByID(idChiTra);
+        LocalDate date = LocalDate.now();
+        User user = userServices.getUserById(teacherid);
+        List<Course> courses = courseServices.findCourseOfTeacher(user);
+
+        ZoneId zoneId2 = ZoneId.of("Asia/Ho_Chi_Minh");
+        int thang=date.getMonthValue();
+        for (int i=0;i<dshd.size();i++) {
+            LocalDate localDate=LocalDate.ofInstant(dshd.get(i).getNgayMua(), zoneId2);
+            int thanglocal=localDate.getMonthValue();
+            if(thanglocal!=thang){
+                dshd.remove(i);
+                i--;
+            }
+        }
+
+        for(Course c : courses){
+            List<UserDTO> listUser = new ArrayList<>();
+            for(HoaDon hd : dshd){
+                List<CTHoaDon> listCTHD = hd.getListCTHD();
+                for(CTHoaDon cthd : listCTHD){
+                    UUID id = cthd.getCourse().getCourseID();
+                    if(id.compareTo(c.getCourseID()) == 0){
+                        UserDTO user1 = ObjectMapperUtils.map(hd.getUser(), UserDTO.class);
+                        listUser.add(user1);
+                    }
+                }
+            }
+            CourseDTO course = ObjectMapperUtils.map(c, CourseDTO.class);
+            LuotMuaDTO luotmua = new LuotMuaDTO();
+            luotmua.setCourse(course);
+            luotmua.setListUser(listUser);
+            list.add(luotmua);
+        }
+
+        model.addAttribute("listLuotMua", list);
+        
+        int flag=3;
+        model.addAttribute("flag", flag);
+        return "thongke";
+    }
 
 
 

@@ -14,13 +14,16 @@
             <i class="bi bi-chat-fill" style="font-size: 20px"></i>
             <div>Thảo luận</div>
         </a>
-        <a href="/teacher/hoadon" class="left-menu-item">
-            <i class="bi bi-list-task" style="font-size: 20px"></i>
-            <div>Bill từ admin</div>
-        </a>
-        <form action="/thongke" method="get">
+        <th:block sec:authorize="hasAnyAuthority('ROLE_TEACHER')">
+            <a href="/thongke" class="left-menu-item">
+                <i class="bi bi-list-task" style="font-size: 20px"></i>
+                <div>Thống kê</div>
+            </a>
+        </th:block>
+        
+        <!-- <form action="/thongke" method="get">
             <button class="button-13" type="submit">Thống kê</button>
-        </form>
+        </form> -->
 
      </th:block>
 

@@ -228,16 +228,21 @@ public class AccountController {
         }
         // Kiểm tra mật khẩu hiện tại
         if (passwordEncoder.matches(passOld, user.getPassword())) {
-            // Mật khẩu hiện tại hợp lệ, thực hiện thay đổi mật khẩu
-            if(passNew.equals(passNewConfirm)){
-                String encryptedPassword = passwordEncoder.encode(passNew);
-                user.setPassword(encryptedPassword);
-                userServices.saveUser(user);
-                String text = "Password changed successfully!";
-                return new ModelAndView("redirect:/account_info?successMessage="+text);
+            if(passNew.isEmpty() || passNewConfirm.isEmpty() || passNew.isBlank() || passNewConfirm.isBlank()){
+                    String text = "The new password cannot be empty!";
+                    return new ModelAndView("redirect:/account_info?errorMessage="+text);
             } else {
-                String text = "New password and confirmation password do not match!";
-                return new ModelAndView("redirect:/account_info?errorMessage="+text);
+                // Mật khẩu hiện tại hợp lệ, thực hiện thay đổi mật khẩu
+                if(passNew.equals(passNewConfirm)){
+                    String encryptedPassword = passwordEncoder.encode(passNew);
+                    user.setPassword(encryptedPassword);
+                    userServices.saveUser(user);
+                    String text = "Password changed successfully!";
+                    return new ModelAndView("redirect:/account_info?successMessage="+text);
+                } else {
+                    String text = "New password and confirmation password do not match!";
+                    return new ModelAndView("redirect:/account_info?errorMessage="+text);
+                }
             }
         } else {
             String text = "Old password is incorrect!";
@@ -259,11 +264,11 @@ public class AccountController {
         System.out.println("mota: " + mota);
         if (user != null) {
             // Cập nhật thông tin tài khoản
-            if(!fullName.equals(""))
+            if(!fullName.equals("") || !fullName.isBlank())
                 user.setFullName(fullName);
-            if(!mota.equals(""))
+            if(!mota.equals("") || !mota.isBlank())
                 user.setMota(mota);
-            if(!email.equals("")){
+            if(!email.equals("") || !email.isBlank()){
                 if(!user.getEmail().equals(email)){
                     User user1 = userServices.getUserByUserName(email);
                     if(user1 == null){

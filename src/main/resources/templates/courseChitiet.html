@@ -83,12 +83,12 @@
                                                 <div>\n
                                                     <span class="text-cartItem" style="width: 145px; display: block;">${name}</span>\n
                                                     <span style="color: black;">${userCreate}</span>\n
-                                                    <h6 style="color: black;">Tổng: ₫ ${gia}</h6>\n
+                                                    <h6 style="color: black;">${gia} ₫</h6>\n
                                                 </div>\n
                                             </a>\n
                                             <button id="btnDeleteCartItem" onclick="deleteCartItem('${courseId}')">Xóa</button>\n
                                         </div>\n
-                                 <h6 style="color: black; font-size: 20px;">${gia} ₫</h6>\n
+                                 <h6 style="color: black; font-size: 20px;">Tổng: ₫ ${gia}</h6>\n
                                     <a href="/checkout"><button id="btnThanhToan">Chuyển đến giỏ hàng</button></a>\n `; 
                     document.querySelector(".form-cart1").innerHTML = htmlInsert;
                     

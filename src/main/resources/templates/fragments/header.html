@@ -130,7 +130,7 @@
                     
             </div>
             </th:block>
-            <th:block sec:authorize="hasAnyAuthority('ROLE_TEACHER')">
+            <!-- <th:block sec:authorize="hasAnyAuthority('ROLE_TEACHER')">
                 <div class="input-group ms-md-auto d-flex form-search position-relative">
             
                     <form action="/search" method="get" style="display: flex; flex-direction: row;">
@@ -142,9 +142,34 @@
                     </form>
                     
                 </div>
-            </th:block>
+            </th:block> -->
             <div class="ms-md-auto login-group">
                 <div class="btn-group d-flex align-items-center">
+                    <div class="notify" sec:authorize="hasAuthority('ROLE_TEACHER')">
+                        <i class="bi bi-bell-fill notify-icon" style="color: black; font-size: 20px; position: relative;;">
+                            <div style="background-color: red; width: 20px; height: 20px; border-radius: 10px; display: flex; justify-content: center; position: absolute; top: -10px; right: -5px;">
+                                <span style="font-size: 15px; color: white; font-weight: 500; margin-top: 0; padding: 0;">1</span>
+                            </div>
+                        </i>
+                        <th:block th:if="${#lists.isEmpty(listNotify)}">
+                            <div class="notify-list">
+                                <span style="color: black; font-size: 16px;">Không có thông báo</span>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${not #lists.isEmpty(listNotify)}" >
+                            <div class="notify-list">
+                                <div style="margin: 10px;">
+                                    <h4 style="color: black; margin: 0 0 10px 0; line-height: 35px; border-bottom: 2px solid rgb(137, 135, 135);">Thông báo.</h4>
+                                    <div class="notify-item" th:each="notify : ${listNotify}" style="margin-bottom: 10px;">
+                                        <h5 th:text="${notify.notiTitle}" style="color: black;"></h5>
+                                        <h6 th:text="${notify.notiContent}" style="color: rgb(63, 62, 62); margin: 0 0 2px 10px;"></h6>
+                                        <span th:text="${notify.createdAt}" style="color: rgb(66, 65, 65); font-size: 14px;  margin: 0 0 2px 10px;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                        
+                    </div>
                     <!-- khi da dang nhap -->
                     <div class="notify" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <i class="bi bi-bell-fill notify-icon" style="color: black; font-size: 20px; position: relative;;">

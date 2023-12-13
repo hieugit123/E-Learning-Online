@@ -127,14 +127,14 @@ public class CourseServicesImpl implements CourseServices {
             return Collections.emptyList();
         }
         List<Course> list = courseRepository.findBySearchList(user, AccessType.ACCEPT);
-        list.removeIf(c -> !c.getCourseName().contains(search));
+        list.removeIf(c -> !c.getCourseName().contains(search) || c.getState() == 0);
         return list;
     }
 
     @Override
     public List<Course> filterBySearch1(String search) {
         List<Course> list = courseRepository.findAll();
-        list.removeIf(c -> !c.getCourseName().contains(search));
+        list.removeIf(c -> !c.getCourseName().contains(search) || c.getState() == 0);
         return list;
     }
 

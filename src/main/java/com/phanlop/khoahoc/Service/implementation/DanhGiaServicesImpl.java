@@ -37,7 +37,7 @@ public class DanhGiaServicesImpl implements DanhGiaServices{
     }
 
     @Override
-    public int calculateAvarageRating(UUID courseId) {
+    public double calculateAvarageRating(UUID courseId) {
         List<DanhGia> reviews = danhgiaRepository.getDanhGiaByCourseCourseID(courseId);
         int totalStars = 0;
 
@@ -45,8 +45,8 @@ public class DanhGiaServicesImpl implements DanhGiaServices{
             totalStars += review.getSao();
         }
 
-        if (reviews.size() > 0) {
-            return (int) totalStars / reviews.size();
+        if (!reviews.isEmpty()) {
+            return (double) totalStars / reviews.size();
         } else {
             return 0; // Trường hợp không có đánh giá, trả về 0.0
         }

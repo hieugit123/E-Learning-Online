@@ -66,6 +66,9 @@
                 }
                     document.querySelector("#sumCart").textContent = tong + " ₫";
         }
+        // $(document).ready(function() {
+        //     checkboxChanged(checkbox);
+        // });
         function thanhToan(){
             // $("#loadingModal").modal('show');
             const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -74,6 +77,11 @@
             checkboxes.forEach(function(checkbox) {
                 selectedItems.push(checkbox.value);
             });
+
+            if(selectedItems.length == 0){
+                Swal.fire('Không có khóa học nào được chọn!', '', 'error');
+                return;
+            }
 
             var sumCart = document.querySelector("#sumCart").textContent.split(" ")[0];
             $.ajax({
@@ -111,7 +119,7 @@
     <h2 style="margin-left: 50px;" class="title-pageCheckout">Giỏ hàng</h2>
     <div class="container">
         <div class="container_checkout">
-            <div th:if="${#lists.isEmpty(listCourseInCart)}">
+            <div th:if="${#lists.isEmpty(listCourseInCart1)}">
                 <div style="display: flex; width: 1250px; height: 350px; border: 1px solid rgb(212, 206, 206); flex-direction: column; align-items: center;">
                     <img src="https://s.udemycdn.com/browse_components/flyout/empty-shopping-cart-v2.jpg" alt="" style="width: 240px; height: 180px;">
                     <span>Giỏ hàng của bạn đang trống. Hãy tiếp tục mua sắm để tìm một khóa học!</span>
@@ -121,8 +129,8 @@
                     </a>
                 </div>
             </div>
-            <div class="container-content-left"  th:if="${not #lists.isEmpty(listCourseInCart)}">
-                <div class="cartItem" th:each="course : ${listCourseInCart}">
+            <div class="container-content-left"  th:if="${not #lists.isEmpty(listCourseInCart1)}">
+                <div class="cartItem" th:each="course : ${listCourseInCart1}">
                     <a th:href="@{/detail1111/{id}(id=${course.courseID})}" style="color: black;">
                         <img th:src="${course.courseAvt}" class="img-cartItem">
                         <div style="display: flex; flex-direction: column;">
@@ -145,14 +153,14 @@
                     <input type="checkbox" id="vehicle1" name="selectedItems[]" th:value="${course.courseID}" onchange="checkboxChanged(this)" checked>
                     
                 </div>
-                <button th:if="${listCourseInCart.size()>1}" style="width: 300px; height: 40px; background-color: black; color: white; font-size: 20px; margin-left: 30%; border-radius: 5px;" onclick="clearCart()">
+                <button th:if="${isChuyen == 1}" style="width: 300px; height: 40px; background-color: black; color: white; font-size: 20px; margin-left: 30%; border-radius: 5px;" onclick="clearCart()">
                 Clear Cart</button>
                 
             </div>
-            <div class="container-content-right" th:if="${not #lists.isEmpty(listCourseInCart)}">
+            <div class="container-content-right" th:if="${not #lists.isEmpty(listCourseInCart1)}">
                 <div class="content" style="margin-left: 20px;">
                     <h2 style="color: #a435f0;">Tổng thanh toán:</h2>
-                    <h2 th:text="${tongCart + ' ₫'}" id="sumCart" style="margin-left: 150px;"></h2>
+                    <h2 th:text="${tongCart1 + ' ₫'}" id="sumCart" style="margin-left: 150px;"></h2>
                     <button id="btnThanhToan" onclick="thanhToan()" style="width: 300px; height: 50px; background-color: #ff671c; border: none; border-radius: 3px; color: white; font-weight: 500; font-size: 20px; margin: 100px 0 0 50%;">
                         THANH TOÁN
                     </button>

@@ -84,7 +84,9 @@ public class CheckoutController {
         model.addAttribute("paymentTime", paymentTime);
         model.addAttribute("transactionId", transactionId);
         
-        boolean check = (boolean) session.getAttribute("isChiTra");
+        Boolean check = (Boolean) session.getAttribute("isChiTra");
+        if(check == null)
+            check = false;
         if(check)
             model.addAttribute("flag", 2);
         else
@@ -116,7 +118,9 @@ public class CheckoutController {
                 cthd.setCourse(course);
                 cthd.setGia(course.getGia());
                 cthdServices.saveCTHD(cthd);
-                hd.getListCTHD().add(cthd);
+                List<CTHoaDon> list = new ArrayList<>();
+                list.add(cthd);
+                hd.setListCTHD(list);
                 hoadonServices.saveHD(hd);
                 Enrollment.EnrollmentId enrollmentId = new Enrollment.EnrollmentId();
                 enrollmentId.setUserId(user.getUserId());
@@ -150,7 +154,7 @@ public class CheckoutController {
                 chiTraServices.save(chitra);
 
                 String title = "Chi trả doanh thu từ F9 - Tháng " + chitra.getThang();
-                String body = "F9 - UNIVERSITY (chân thành cảm ơn bạn đã lựa chọn F9 là nơi học tập, bổ sung tri thức, nâng cao tầm hiểu biết)";
+                String body = "F9 - UNIVERSITY (Doanh thu tháng này của bạn là "+chitra.getSoTienChuyen()+" ). Hãy check tài khoản ATM của bạn. Admin đã thực hiện chi trả.";
                 boolean isSend = emailServices.sendOTPEmail(chitra.getTeacher().getEmail(), title, body);
                 session.setAttribute("isChiTra", false);
                 

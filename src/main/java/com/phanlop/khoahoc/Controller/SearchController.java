@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.phanlop.khoahoc.Config.CustomUserDetails;
 import com.phanlop.khoahoc.Entity.Course;
+import com.phanlop.khoahoc.Entity.User;
 import com.phanlop.khoahoc.Service.CourseServices;
 import com.phanlop.khoahoc.Service.DanhGiaServices;
 
@@ -26,8 +28,23 @@ public class SearchController {
     private final DanhGiaServices danhGiaServices;
     @GetMapping("/search")
     public String searchCourses(@RequestParam("searchText") String searchText, Model model) {
-        if(searchText==""){
-            List<Course> listCourse = courseService.getAllCourses();
+        // CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        // User user = userServices.getUserByUserName(userDetails.getUsername());
+        // List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        // int tong = 0;
+        // for(Course c : listCourseInCart){
+        //     tong += c.getGia();
+        // }
+        // model.addAttribute("tongCart", tong);
+        // model.addAttribute("listCourseInCart", listCourseInCart);
+
+
+        if(searchText.isBlank() || searchText.isEmpty()){
+            List<Course> listCourse = new ArrayList<>();
+            List<Course> list = courseService.getAllCourses();
+                for(Course c : list)
+                    if(c.getState() == 1)
+                        listCourse.add(c);
             model.addAttribute("listCourse", listCourse);
             search=searchText;
             return "search";
@@ -58,12 +75,15 @@ public class SearchController {
         @ModelAttribute("searchText") String searchText,
         @RequestParam("priceRange") Double range,
         @RequestParam("priceOrder") String courseOrder,
-        @RequestParam("rating") int rating,
+        @RequestParam("rating") double rating,
         Model model){
             List<Course> filteredCourses=new ArrayList<>();
             
-            if(searchText==""){
-                filteredCourses=courseService.getAllCourses();
+            if(searchText.isEmpty() || searchText.isBlank()){
+                List<Course> list = courseService.getAllCourses();
+                for(Course c : list)
+                    if(c.getState() == 1)
+                        filteredCourses.add(c);
             }
             else{
                 filteredCourses = courseService.filterBySearch1(searchText);
@@ -153,7 +173,7 @@ public class SearchController {
         }
         else if(range==1 && rating!=0  ){
             for (Course course : filteredCourses) {
-                    if (danhGiaServices.calculateAvarageRating(course.getCourseID()) ==rating) {
+                    if (danhGiaServices.calculateAvarageRating(course.getCourseID()) >= rating) {
                         sortedCourses.add(course);
                     }
                 }

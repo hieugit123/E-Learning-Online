@@ -91,14 +91,15 @@ $('#formAddCourse').submit(function(event) {
     event.preventDefault();
     let formData = new FormData();
     var gia = Number($("#courseGia").val());
-    if(isNaN(gia) || gia < 0){
+    if(isNaN(gia) || gia < 0 || $("#courseGia").val() == ""){
         Swal.fire('Giá không hợp lệ!', '', 'error');
         return;
     }
     formData.append("courseAvt", $("#courseAvt")[0].files[0]);
-    formData.append("courseName", $("#courseName").val())
-    formData.append("courseDes", $("#courseDes").val())
-    formData.append("departmentId", $("#departmentId").val())
+    formData.append("courseName", $("#courseName").val());
+    formData.append("courseDes", $("#courseDes").val());
+    formData.append("departmentId", $("#departmentId").val());
+    formData.append("gia", gia);
     $.ajax({
         url: '/course/add',
         type: 'POST',
@@ -174,11 +175,11 @@ $("#btnEditCourse").on("click", function(event){
         formData.append("courseAvt", file);
     }
     var gia = Number($("#editGia").val());
-    if(isNaN(gia) || gia < 0){
+    if(isNaN(gia) || gia < 0 || $("#editGia").val() == ""){
         Swal.fire('Giá không hợp lệ!', '', 'error');
         return;
     }
-    formData.append("courseGia", $("#editGia").val());
+    formData.append("gia", gia);
     formData.append("courseName", $("#editCourseName").val());
     formData.append("courseDes", $("#editCourseDes").val());
     formData.append("departmentId", $("#editDepartmentId").val());

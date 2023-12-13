@@ -1,5 +1,6 @@
 package com.phanlop.khoahoc.Controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +27,7 @@ import com.phanlop.khoahoc.DTO.DepartmentDTO;
 import com.phanlop.khoahoc.DTO.DetailUserDTO;
 import com.phanlop.khoahoc.DTO.LessonDTO;
 import com.phanlop.khoahoc.Entity.AccessType;
+import com.phanlop.khoahoc.Entity.CTHoaDon;
 import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.Department;
 import com.phanlop.khoahoc.Entity.Enrollment;
@@ -39,6 +41,7 @@ import com.phanlop.khoahoc.Service.EnrollmentServices;
 import com.phanlop.khoahoc.Service.LessonServices;
 import com.phanlop.khoahoc.Service.UserServices;
 import com.phanlop.khoahoc.Service.FileServices;
+import com.phanlop.khoahoc.Service.HoaDonServices;
 import com.phanlop.khoahoc.Repository.FileRepository;
 import com.phanlop.khoahoc.Utils.ObjectMapperUtils;
 
@@ -56,7 +59,19 @@ public class CourseController {
    private final FileServices fileServices;
     private final EnrollmentServices enrollmentServices;
    private final FileRepository fileRepository;
+   private final HoaDonServices hdServices;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/getCourse/{hoadonId}")
+    public List<CourseDTO> getMethodName(@PathVariable Long hoadonId) {
+        List<Course> list = new ArrayList<>(); 
+        List<CTHoaDon> listCTHD = hdServices.findHDById(hoadonId).getListCTHD();
+        for(CTHoaDon cthd : listCTHD){
+            list.add(cthd.getCourse());
+        }
+        return ObjectMapperUtils.mapAll(list, CourseDTO.class);
+    }
+    
 
     //MỚI
     @PostMapping("sendAdmin/{courseId}")

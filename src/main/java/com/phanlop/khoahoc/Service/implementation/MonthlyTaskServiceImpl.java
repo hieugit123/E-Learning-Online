@@ -52,11 +52,12 @@ public class MonthlyTaskServiceImpl implements MonthlyTaskService{
             int thanglocal=localDate.getMonthValue();
             if(thanglocal!=thang){
                 dshd.remove(i);
+                i--;
             }
         }
         
         // CÒN LỌC HÓA ĐƠN TRONG THÁNG HIỆN TẠI: Chưa làm
-
+        int count = 0;
         for(User user : listUser){
             System.out.println("user: " + user.getFullName());
             for(HoaDon hd : dshd){
@@ -65,6 +66,7 @@ public class MonthlyTaskServiceImpl implements MonthlyTaskService{
                     if(cthd.getCourse().getCourseOwner().getEmail().equals(user.getEmail())){
                         tong = tong + cthd.getGia();
                         System.out.println(cthd.getGia());
+                        count++;
                     }
                 }
             }
@@ -82,6 +84,8 @@ public class MonthlyTaskServiceImpl implements MonthlyTaskService{
                 chiTraRepo.save(chitra);
                 tong = 0;
         }
+
+        System.out.println("count: "+count);
 
         //TẠO THÔNG BÁO TỚI ADMIN
         Notify notify = new Notify();

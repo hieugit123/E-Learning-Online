@@ -8,14 +8,14 @@ $("#img").on('change', function(event){
     reader.readAsDataURL(file);
 })
 
-$('#formAddLesson').submit(function(event) {
+$('#formAddChapter').submit(function(event) {
     event.preventDefault();
     let formData = new FormData();
-    let file = $("#lessonVideo")[0].files[0];
+    let file = $("#chapterVideo")[0].files[0];
     if (file)
         formData.append("lessonVideoMulti", file);
-    formData.append("lessonTitle", $("#lessonTitle").val())
-    formData.append("lessonContent", $("#lessonContent").val())
+    formData.append("lessonTitle", $("#chapterTitle").val())
+    formData.append("lessonContent", $("#chapterContent").val())
     formData.append("youtubeUrl", $("#youtubeUrl").val())
     formData.append("courseId", $("#courseId").val());
     $.ajax({
@@ -31,7 +31,7 @@ $('#formAddLesson').submit(function(event) {
             console.log(response);
             Swal.fire({
                 icon: 'success',
-                title: 'Bài học đã được thêm',
+                title: 'Khóa học đã được thêm',
                 showConfirmButton: false,
                 timer: 1500
             }).then(()=>{
@@ -50,10 +50,10 @@ const openEditModal = (chapterId) => {
         url: `/course/lesson/get/${chapterId}`,
         method: 'GET',
         success: function (res){
-            $("#editChapterId").val(res.lessonId);
-            $("#editChapterTitle").val(res.lessonTitle);
+            $("#editLessonId").val(res.lessonId);
+            $("#editLessonTitle").val(res.lessonTitle);
             $("#editYoutubeUrl").val(res.lessonVideo);
-            $("#editChapterContent").val(res.lessonContent);
+            $("#editLessonContent").val(res.lessonContent);
         }
     });
 }
@@ -61,13 +61,13 @@ const openEditModal = (chapterId) => {
 $('#formEditChapter').submit(function(event) {
     event.preventDefault();
     let formData = new FormData();
-    let file = $("#editChapterVideo")[0].files[0];
+    let file = $("#editLessonVideo")[0].files[0];
     if (file)
-        formData.append("chapterVideoMulti", file);
-    formData.append("lessonTitle", $("#editChapterTitle").val())
-    formData.append("lessonContent", $("#editChapterContent").val())
+        formData.append("lessonVideoMulti", file);
+    formData.append("lessonTitle", $("#editLessonTitle").val())
+    formData.append("lessonContent", $("#editLessonContent").val())
     formData.append("youtubeUrl", $("#editYoutubeUrl").val())
-    formData.append("lessonId", $("#editChapterId").val());
+    formData.append("lessonId", $("#editLessonId").val());
     $.ajax({
         url: '/course/lesson/edit',
         type: 'POST',

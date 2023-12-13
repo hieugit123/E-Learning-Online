@@ -34,7 +34,7 @@ public class OTPController {
             String body = "Mã otp của bạn là: "+otpCode;
             boolean isSend = emailServices.sendOTPEmail(email, title, body);
             if (isSend){
-                return ResponseEntity.ok("Gửi OTP thành công "+otpCode);
+                return ResponseEntity.ok("Gửi OTP thành công ");
             }
             return ResponseEntity.badRequest().body("Gửi OTP thất bại !");
         } else {

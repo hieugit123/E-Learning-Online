@@ -103,9 +103,114 @@
             padding: 20px;
             text-align: center;
         }
-        
+
+        #xemtruocModal1 {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Đảm bảo modal nổi trên tất cả các phần tử */
+            width: 650px;
+            height: 530px;
+            background-color: #fff; /* Màu nền modal */
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1); /* Đổ bóng cho modal */
+            border: 2px solid rgb(140, 139, 139);
+            overflow-y: auto;
+            display: none;
+        }
+
+        #xemtruocModal1 > div {
+            padding: 20px;
+            text-align: center;
+        }
         </style>
         <script>
+            function showChiTietChiTra(idChiTra){
+                var form = document.getElementById("xemtruocModal1");
+                form.style.display = "flex";
+                $.ajax({
+                    url: `/admin/getCTChiTra/${idChiTra}`,
+                    type: 'GET',
+                    success: function(res) {
+                        var html1 = `<table id="course-table">
+                        <thead>
+                            <tr>
+                                <th>IMG</th>
+                                <th>Course Name</th>
+                                <th >Course Price</th>
+                                <th >Số học viên mới</th>
+                                <th >Tổng tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                        let html = "";
+
+                        html = res.map(item=>{
+                            return `<tr>
+                                <td><img src="${item.course.courseAvt}"></td>
+                                <td>${item.course.courseName}</td>
+                                <td>${item.course.gia} VND</td>
+                                <td>${item.listUser.length}</td>
+                                <td>${item.listUser.length*item.course.gia} VND</td>
+                            </tr>`
+                        }).join(' ');
+                        var htmlInner = html1 + html + "</tbody></table>";
+
+                        $("#showChiTiet").html(htmlInner);
+
+
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire('Có lỗi khi xem chi tiết!', '', 'error');
+                    }
+                });
+            }
+
+
+            function showChiTiet(idHD){
+                var form = document.getElementById("xemtruocModal1");
+                form.style.display = "flex";
+                $.ajax({
+                    url: `/course/getCourse/${idHD}`,
+                    type: 'GET',
+                    success: function(res) {
+
+                        var html1 = `<table id="course-table">
+                        <thead>
+                            <tr>
+                                <th>IMG</th>
+                                <th>Course Name</th>
+                                <th >Course Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                        let html = "";
+                        html = res.map(item=>{
+                            return `<tr>
+                                <td><img src="${item.courseAvt}"></td>
+                                <td>${item.courseName}</td>
+                                <td>${item.gia} VND</td>
+                               
+                            </tr>`
+                        }).join(' ');
+                        var htmlInner = html1+html+"</tbody></table>";
+
+                        $("#showChiTiet").html(htmlInner);
+
+
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire('Có lỗi khi xem chi tiết!', '', 'error');
+                    }
+                });
+            }
+
             function chiTraChoGV(idChiTra){
                 window.location.href = `http://localhost:8081/admin/chiTraGV/${idChiTra}`;
             }
@@ -425,6 +530,12 @@
                     </div>
                 </div>
                 <div class="course-wrapper px-5 py-4" th:if="${flag==10}">
+                    <div class="" id="xemtruocModal1">
+                        <h2>Danh sách chi tiết hóa đơn</h2>
+                        <button onclick="closeChiTietHD()" style="width: 50px; height: 30px; background-color: white; border: none; position: absolute; top: 0; right: 0;"><i class="bi bi-x-square-fill"></i></button>
+                        <div id="showChiTiet"  style="max-height: 480px; overflow-y: auto;">
+                        </div>
+                    </div>
                     <label for="form2" style="margin-bottom: 7px;">Lọc theo ngày</label>
                     <form action="/admin/locHDtheoDate" method="get" id="form2">
                         <div class="date-picker">
@@ -461,7 +572,7 @@
                                         <td th:text="${hd.ngayMua}"></td>
                                         <td th:text="${hd.tongTien + ' VND'}"></td>
                                         <td th:text="${hd.user.fullName}"></td>
-                                        <td><button style="border: none; border-radius: 3px; background-color: #0d6efd; color: white;">Chi tiết</button></td>
+                                        <td><button th:attr="onclick=|showChiTiet('${hd.HoaDonId}')|" style="border: none; border-radius: 3px; background-color: #0d6efd; color: white;">Chi tiết</button></td>
                                         <td>
                                             <button th:attr="onclick=|inHoaDon('${hd.HoaDonId}')|" style="border: none; border-radius: 3px; background-color: #f80303; color: white;">In hóa đơn</button>
                                         </td>
@@ -473,6 +584,12 @@
                 </div>
 
                 <div class="course-wrapper px-5 py-4" th:if="${flag==11}">
+                    <div class="" id="xemtruocModal1">
+                        <h2>Danh sách chi tiết</h2>
+                        <button onclick="closeChiTietChiTra()" style="width: 50px; height: 30px; background-color: white; border: none; position: absolute; top: 0; right: 0;"><i class="bi bi-x-square-fill"></i></button>
+                        <div id="showChiTiet" style="max-height: 480px; overflow-y: auto;">
+                        </div>
+                    </div>
                     <h2 style="margin: 20px 0 10px 0;">Chi trả lương cho teacher</h2>
                     <select id="month-select" style="margin-bottom: 15px;">
                         <option value="all">Tất cả</option>
@@ -518,7 +635,7 @@
                                     <button th:if="${chitra.state == 0}" th:attr="onclick=|chiTraChoGV('${chitra.Id}')|" style="border: none; background-color: aqua;">Chi trả</button>
                                 </td>
                                 <td>
-                                    <button style="background-color: white; border: none;">Chi tiết</button>
+                                    <button th:attr="onclick=|showChiTietChiTra('${chitra.Id}')|" style="background-color: white; border: none;">Chi tiết</button>
                                 </td>
                             </tr>
                         </tbody>                        
@@ -849,6 +966,16 @@
 
         function closeXemTruocModal(){
             var form = document.getElementById("xemtruocModal");
+            form.style.display = "none";
+        }
+
+        function closeChiTietHD(){
+            var form = document.getElementById("xemtruocModal1");
+            form.style.display = "none";
+        }
+
+        function closeChiTietChiTra(){
+            var form = document.getElementById("xemtruocModal1");
             form.style.display = "none";
         }
     </script>

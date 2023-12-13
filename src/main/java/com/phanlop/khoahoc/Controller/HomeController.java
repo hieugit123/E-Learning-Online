@@ -196,21 +196,34 @@ public class HomeController {
         for(Course c : listCourseInCart){
             tong = tong + c.getGia();
         }
+        model.addAttribute("isChuyen", 1);
         model.addAttribute("tongCart", tong);
+        model.addAttribute("tongCart1", tong);
         model.addAttribute("listCourseInCart", listCourseInCart);
+        model.addAttribute("listCourseInCart1", listCourseInCart);
         return "checkout";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_STUDENT')")
     @GetMapping("/checkout/{idCourse}")
-    public String checkOutCourse(@PathVariable UUID idCourse, Model model){
+    public String checkOutCourse(@PathVariable UUID idCourse, Model model, Authentication authentication){
         // if (authentication == null || !authentication.isAuthenticated())
         //     return "redirect:/login";
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userServices.getUserByUserName(userDetails.getUsername());
         Course course = courseService.getCourseById(idCourse);
         List<Course> list = new ArrayList<>();
         list.add(course);
-        model.addAttribute("tongCart", course.getGia());
-        model.addAttribute("listCourseInCart", list);
+        List<Course> listCourseInCart = cartServices.getCartByUser(user);
+        int tong = 0;
+        for(Course c : listCourseInCart){
+            tong = tong + c.getGia();
+        }
+        model.addAttribute("isChuyen", 0);
+        model.addAttribute("tongCart", tong);
+        model.addAttribute("tongCart1", course.getGia());
+        model.addAttribute("listCourseInCart1", list);
+        model.addAttribute("listCourseInCart", listCourseInCart);
         return "checkout";
     }
 

@@ -52,8 +52,20 @@
             form.style.display = "flex";
             var title = document.querySelector("#titleVd");
             title.textContent = titleVd;
-            var video = document.querySelector("#srcVideoXemTruoc");
-            video.src = linkVd;
+            if (linkVd.startsWith("/uploads/")) {
+                var iframe = document.querySelector("#srcVideoXemTruoc1");
+                iframe.style.display = "none";
+                var video = document.querySelector("#srcVideoXemTruoc");
+                video.style.display = "block";
+                video.src = linkVd;
+            } else {
+                var video = document.querySelector("#srcVideoXemTruoc");
+                video.style.display = "none";
+                var iframe = document.querySelector("#srcVideoXemTruoc1");
+                iframe.style.display = "block";
+                iframe.src = linkVd;
+            }
+            
         }
 
         function closeXemTruocModal(){
@@ -149,11 +161,12 @@
         </div>
     </div>
 
-    <!--    Modal thêm lesson -->
+    
+    <!--    Modal thêm chapter -->
     <div class="modal fade" id="addChapterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form id="formAddLesson">
+                <form id="formAddChapter">
                     <input type="hidden" class="d-none" th:value="${course.courseID}" name="courseId" id="courseId">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">Thêm nội dung</h1>
@@ -161,21 +174,21 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="lessonTitle" class="form-label">Tên bài học</label>
-                            <input type="text" class="form-control" id="lessonTitle" placeholder="">
+                            <label for="chapterTitle" class="form-label">Tên bài học</label>
+                            <input type="text" class="form-control" id="chapterTitle" placeholder="">
                         </div>
                         <div class="mb-3">
-                            <label for="lessonVideo" class="form-label">Video của bài học</label>
-                            <input type="file" class="form-control" id="lessonVideo" placeholder="">
+                            <label for="chapterVideo" class="form-label">Video của bài học</label>
+                            <input type="file" class="form-control" id="chapterVideo" placeholder="">
                             <input type="text" class="form-control mt-2" id="youtubeUrl" placeholder="Hoặc link youtube">
                         </div>
                         <div class="mb-3">
-                            <label for="lessonContent" class="form-label">Nội dung khóa học</label>
-                            <textarea class="form-control" id="lessonContent" rows="3"></textarea>
+                            <label for="chapterContent" class="form-label">Nội dung khóa học</label>
+                            <textarea class="form-control" id="chapterContent" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" id="btnAddLesson">Thêm bài học</button>
+                        <button type="submit" class="btn btn-success" id="btnAddChapter">Thêm bài học</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                 </form>
@@ -188,7 +201,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form id="formEditChapter">
-                    <input type="hidden" class="d-none" id="editChapterId">
+                    <input type="hidden" class="d-none" id="editLessonId">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">Sửa nội dung</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -196,16 +209,16 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Tên bài học</label>
-                            <input type="text" class="form-control" id="editChapterTitle" placeholder="">
+                            <input type="text" class="form-control" id="editLessonTitle" placeholder="">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Video của bài học</label>
-                            <input type="file" class="form-control" id="editChapterVideo" placeholder="">
+                            <input type="file" class="form-control" id="editLessonVideo" placeholder="">
                             <input type="text" class="form-control mt-2" id="editYoutubeUrl" placeholder="Hoặc link video">
                         </div>
                         <div class="mb-3">
-                            <label for="editChapterContent" class="form-label">Nội dung khóa học</label>
-                            <textarea class="form-control" id="editChapterContent" rows="3"></textarea>
+                            <label for="editLessonContent" class="form-label">Nội dung khóa học</label>
+                            <textarea class="form-control" id="editLessonContent" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -254,7 +267,11 @@
             <button onclick="closeXemTruocModal()" style="width: 50px; height: 30px; background-color: white; margin-left: 150px; color: blue; border: none;"><i class="bi bi-x-square-fill"></i></button>
         </div>
         <h4 style="margin: 0 0 70px 0; color: white;" id="titleVd">1. Khái niệm, kỹ thuật cần biết</h4>
-        <iframe id="srcVideoXemTruoc" width="550" height="300" th:src="${lessons.get(0).getLessonVideo()}" frameborder="0" allowfullscreen></iframe>
+        <iframe id="srcVideoXemTruoc1" width="550" height="300" th:src="${lessons.get(0).getLessonVideo()}" frameborder="0" allowfullscreen></iframe>
+        <video width="550" height="300" controls id="srcVideoXemTruoc">
+            <source th:src="${lessons.get(0).getLessonVideo()}" type="video/mp4">
+          </video>
+          
         <h6 style="margin-top: 10px; color: white;">Video mẫu miễn phí</h6>
     </div>
 </div>

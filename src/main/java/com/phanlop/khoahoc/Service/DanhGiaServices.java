@@ -18,7 +18,7 @@ import com.phanlop.khoahoc.Entity.User;
 public interface DanhGiaServices {
     List<DanhGia> getAllDanhGia(Course course);
     Long getSoLuongDanhGia();
-    int calculateAvarageRating(UUID course);
+    double calculateAvarageRating(UUID course);
     DanhGia findDGByUserAndCourse(Course course, User user);
     void saveDanhGia(DanhGia dg);
 }
