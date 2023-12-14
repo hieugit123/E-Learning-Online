@@ -41,6 +41,13 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
 
     Page<Course> findCourseByCourseOwnerAndDepartmentOrderByCreateDateDesc(User user, Department department, Pageable pageable);
     Page<Course> findCourseByCourseOwnerOrderByCreateDateDesc(User user, Pageable pageable);
+
+    //phan trang student
+    @Query("SELECT c FROM Course c WHERE c NOT IN (SELECT e.course FROM Enrollment e WHERE e.user = :user)")
+    Page<Course> findCourseUser(User user, Pageable pageable);
+    //phan trang home
+    @Query("SELECT c FROM Course c")
+    Page<Course> findCourse(Pageable pageable);
     //Filter
     @Query("SELECT c FROM Course c ORDER BY c.gia ASC")
     List<Course> findByOrderByGiaAsc();

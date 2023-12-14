@@ -228,9 +228,14 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String getIndex(Model model){
-        List<Course> listCourse = courseService.getAllCourses();
-        model.addAttribute("listCourse", listCourse);
+    public String getIndex(@RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "10") int pageSize,
+                              Model model){
+        page = page - 1;
+        Page<Course> courses = courseService.filterCourseKhiChuaLogin(page, pageSize);
+        model.addAttribute("listCourse", courses.getContent());
+        model.addAttribute("totalPages", courses.getTotalPages());
+        model.addAttribute("currentPage", page + 1);
         List<Course> listBanChay = courseService.getAllCourses();
 
         Collections.sort(listBanChay, Comparator.comparingDouble(Course::getEnrollmentsSize).reversed());
@@ -243,11 +248,17 @@ public class HomeController {
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping("/student")
-    public String getHomePageStudent(Authentication authentication, Model model){
+    public String getHomePageStudent(@RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "10") int pageSize,
+                              Authentication authentication, Model model){
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userServices.getUserByUserName(userDetails.getUsername());
-        List<Course> listCourse = courseService.filterNoOwnedByUser(user);
-        model.addAttribute("listCourse", listCourse);
+        page = page - 1;
+        Page<Course> courses = courseService.filterCourseUserChuaThamGia(user, page, pageSize);
+        model.addAttribute("user", user);
+        model.addAttribute("listCourse", courses.getContent());
+        model.addAttribute("totalPages", courses.getTotalPages());
+        model.addAttribute("currentPage", page + 1);
         List<Course> listCourseInCart = cartServices.getCartByUser(user);
         int tong = 0;
         for(Course c : listCourseInCart){
@@ -268,7 +279,7 @@ public class HomeController {
     @GetMapping("/teacher")
     public String getHomeTeacherPage(@RequestParam(defaultValue = "0") int khoa,
                               @RequestParam(defaultValue = "1") int page,
-                              @RequestParam(defaultValue = "12") int pageSize,
+                              @RequestParam(defaultValue = "10") int pageSize,
                               Authentication authentication,
                               Model model) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();

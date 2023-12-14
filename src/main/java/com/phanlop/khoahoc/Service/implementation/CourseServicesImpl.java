@@ -224,5 +224,17 @@ public class CourseServicesImpl implements CourseServices {
         }
     }
 
+    @Override
+    public Page<Course> filterCourseUserChuaThamGia(User user, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return courseRepository.findCourseUser(user, pageable);
+    }
+
+    @Override
+    public Page<Course> filterCourseKhiChuaLogin(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return courseRepository.findCourse(pageable);
+    }
+
     
 }
