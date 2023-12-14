@@ -215,6 +215,14 @@ public class CourseServicesImpl implements CourseServices {
     public List<Course> findCourseOfTeacher(User user) {
         return courseRepository.findByCourseOwner(user);
     }
+    @Override
+    public Page<Course> findCoursesPaged(int page, int size, String searchText) {
+        if (searchText != null && !searchText.isEmpty()) {
+            return courseRepository.findBycourseNameContainingIgnoreCase(searchText, PageRequest.of(page, size));
+        } else {
+            return courseRepository.findAll(PageRequest.of(page, size));
+        }
+    }
 
     @Override
     public Page<Course> filterCourseUserChuaThamGia(User user, int pageNo, int pageSize) {

@@ -35,4 +35,5 @@ public interface CourseServices {
     List<Course> findCourseByUserId(User user);
     List<Course> findCourseOfTeacher(User user);
     List<Course> findCourseChoDuyet();
+    Page<Course> findCoursesPaged(int page, int size, String searchText);
 }

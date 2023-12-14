@@ -69,6 +69,23 @@
         box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
         outline: 0;
         }
+        .pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
     </style>
 </head>
 <body>
@@ -104,6 +121,7 @@
     </div>
     <div style="display: flex;">
         <h2>Kết quả tìm kiếm: <span th:text="${searchText}"></span></h2></span>
+        
         <th:block sec:authorize="hasAuthority('ROLE_STUDENT')">
             <a href="/course/usrenroll" style="margin-left: 300px;"><h6>Quá trình học tập của tôi</h6></a>
         </th:block>
@@ -146,7 +164,24 @@
                     </a>
                 </th:block>
             </th:block>
-            
+              <!-- Thêm nút phân trang -->
+         <ul class="pagination">
+            <li th:if="${currentPage > 0}">
+                <a th:href="@{/search(page=0, size=8, searchText=${searchText})}">First</a>
+            </li>
+            <li th:if="${currentPage > 0}">
+                <a th:href="@{/search(page=${currentPage - 1}, size=8, searchText=${searchText})}">Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i} ? 'active' : ''">
+                <a th:href="@{/search(page=${i}, size=8, searchText=${searchText})}" th:text="${i + 1}"></a>
+            </li>
+            <li th:if="${currentPage < totalPages - 1}">
+                <a th:href="@{/search(page=${currentPage + 1}, size=8, searchText=${searchText})}" >Next</a>
+            </li>
+            <li th:if="${currentPage < totalPages - 1}">
+                <a th:href="@{/search(page=${totalPages - 1}, size=8, searchText=${searchText})}">Last</a>
+            </li>
+        </ul>
         </div>
         <div th:if="${#lists.isEmpty(listCourse)}" class="course-list d-flex flex-wrap">
             <div class="not-found">Not Found</div>
