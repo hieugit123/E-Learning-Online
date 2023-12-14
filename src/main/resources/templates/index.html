@@ -22,6 +22,18 @@
     <link rel="stylesheet" th:href="@{/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/footerCss.css}">
     <style>
+        .khoa-item {
+            height: 85px; 
+            width: 255px;
+            border: 2px solid rgb(172, 171, 171);
+            border-radius: 5px;
+            margin-right: 20px;
+            font-size: 20px;
+            text-align: center;
+            line-height: 85px;
+            font-weight: 600;
+            cursor: pointer;
+        }
         .fixed-corner {
             width: 150px;
             height: 160px;
@@ -85,9 +97,39 @@
                         </a>
                     </th:block>
                 </th:block>
+                
             </div>
+            <th:block th:if="${not #lists.isEmpty(listCourse) && #lists.size(listCourse) > 1}">
+                    <nav class="mt-3 d-flex justify-content-center align-items-center">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" th:href="@{'?page=' + ${currentPage - 1 < 1 ? 1 : currentPage - 1}}">Trước</a></li>
+                            <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                <li class="page-item">
+                                    <a th:if="${ i == currentPage }" class="page-link active" th:href="@{'?page=' + ${i}}" th:text="${i}"></a>
+                                    <a th:if="${ i != currentPage }" class="page-link" th:href="@{'?page=' + ${i}}" th:text="${i}"></a>
+                                </li>
+                            </th:block>
+                            <li class="page-item"><a class="page-link" th:href="@{'?page=' + ${currentPage + 1 >= totalPages ? totalPages : currentPage + 1}}">Tiếp</a></li>
+                        </ul>
+                    </nav>
+            </th:block>
 
-            <h3 style="margin-top: 80px;">Khóa học bán chạy</h3>
+            <h3 style="margin-top: 20px;">Các chủ đề đề xuất cho bạn</h3>
+            <div class="Khoa-List" style="display: flex; margin-top: 15px;">
+                <div class="khoa-item">
+                    Công nghệ thông tin
+                </div>    
+                <div class="khoa-item">
+                    Ngôn ngữ anh
+                </div>    
+                <div class="khoa-item">
+                    Điện tử viễn thông
+                </div>    
+                <div class="khoa-item">
+                    Toán ứng dụng
+                </div>            
+            </div>
+            <h3 style="margin-top: 50px;">Khóa học bán chạy</h3>
             <div th:if="${not #lists.isEmpty(listBanChay)}" class="course-list d-flex flex-wrap">
                 <th:block th:each="course : ${listBanChay}">
                     <th:block th:if="${course.state} == 1">
@@ -135,6 +177,20 @@
                         </th:block>
                 </th:block>
             </div>
+            <th:block th:if="${not #lists.isEmpty(listCourse) && #lists.size(listCourse) > 1}">
+                <nav class="mt-3 d-flex justify-content-center align-items-center">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" th:href="@{'?page=' + ${currentPage - 1 < 1 ? 1 : currentPage - 1}}">Trước</a></li>
+                        <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                            <li class="page-item">
+                                <a th:if="${ i == currentPage }" class="page-link active" th:href="@{'?page=' + ${i}}" th:text="${i}"></a>
+                                <a th:if="${ i != currentPage }" class="page-link" th:href="@{'?page=' + ${i}}" th:text="${i}"></a>
+                            </li>
+                        </th:block>
+                        <li class="page-item"><a class="page-link" th:href="@{'?page=' + ${currentPage + 1 >= totalPages ? totalPages : currentPage + 1}}">Tiếp</a></li>
+                    </ul>
+                </nav>
+            </th:block>
         </th:block>
     </div>
 </div>

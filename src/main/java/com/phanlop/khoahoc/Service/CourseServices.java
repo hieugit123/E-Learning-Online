@@ -9,6 +9,8 @@ import com.phanlop.khoahoc.Entity.Course;
 import com.phanlop.khoahoc.Entity.User;
 
 public interface CourseServices {
+    Page<Course> filterCourseKhiChuaLogin(int pageNo, int pageSize);
+    Page<Course> filterCourseUserChuaThamGia(User user, int pageNo, int pageSize);
     List<Course> getAllCourses();
     List<Course> searchByCourseOwner(User user, String text);
     Course getCourseById(UUID courseId);

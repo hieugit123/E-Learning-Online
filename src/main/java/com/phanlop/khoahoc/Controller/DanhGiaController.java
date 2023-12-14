@@ -123,7 +123,7 @@ public class DanhGiaController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userServices.getUserByUserName(userDetails.getUsername());
         int soSao = Integer.parseInt(soSaoInput);
-        Course course = courseService.getCourseById(UUID.fromString(courseId));
+        Course course = courseServices.getCourseById(UUID.fromString(courseId));
         DanhGia dg = new DanhGia();
         dg.setContentDanhgia(motaDG);
         dg.setCourse(course);
