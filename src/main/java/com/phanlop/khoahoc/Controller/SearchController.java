@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +31,7 @@ public class SearchController {
     private final CourseServices courseService;
     private final DanhGiaServices danhGiaServices;
     @GetMapping("/search")
-    public String searchCourses(@RequestParam("searchText") String searchText, Model model) {
+    public String searchCourses(@RequestParam(required = false) String searchText, @RequestParam(defaultValue = "8") int size,Model model, @RequestParam(defaultValue = "0") int page) {
         // CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         // User user = userServices.getUserByUserName(userDetails.getUsername());
         // List<Course> listCourseInCart = cartServices.getCartByUser(user);
@@ -38,21 +42,19 @@ public class SearchController {
         // model.addAttribute("tongCart", tong);
         // model.addAttribute("listCourseInCart", listCourseInCart);
 
+        
+            Page<Course> pageableCourses = courseService.findCoursesPaged(page, size, searchText);
+            List<Course>tempCourse=pageableCourses.getContent();
+            tempCourse = tempCourse.stream()
+            .filter(course -> course.getState()==1)
+            .collect(Collectors.toList());
+            Page<Course> updatedPageableCourses = new PageImpl<>(tempCourse, pageableCourses.getPageable(), pageableCourses.getTotalElements());
+            model.addAttribute("listCourse", updatedPageableCourses.getContent());
+            model.addAttribute("currentPage", updatedPageableCourses.getNumber());
+            model.addAttribute("totalPages", updatedPageableCourses.getTotalPages());
+            model.addAttribute("searchText", searchText); // Truyền searchText để hiển thị lại trên giao diện
+          
 
-        if(searchText.isBlank() || searchText.isEmpty()){
-            List<Course> listCourse = new ArrayList<>();
-            List<Course> list = courseService.getAllCourses();
-                for(Course c : list)
-                    if(c.getState() == 1)
-                        listCourse.add(c);
-            model.addAttribute("listCourse", listCourse);
-            search=searchText;
-            return "search";
-        }
-        List<Course> listCourse = courseService.filterBySearch1(searchText);
-        search=searchText;
-        model.addAttribute("searchText", searchText);
-        model.addAttribute("listCourse", listCourse);
         return "search";
     }
 
@@ -185,6 +187,9 @@ public class SearchController {
         } else if (courseOrder.equals("desc")) {
             Collections.sort(sortedCourses, Comparator.comparingDouble(Course::getGia).reversed());
         }
+        else if (courseOrder.equals("recent")) {
+                    Collections.sort(sortedCourses, Comparator.comparing(Course::getCreateDate));
+                }
 
         // Đưa danh sách khóa học đã sắp xếp vào model để hiển thị lên trang search
         model.addAttribute("searchText", searchText);
