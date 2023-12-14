@@ -55,7 +55,7 @@ public class SearchController {
             model.addAttribute("searchText", searchText); // Truyền searchText để hiển thị lại trên giao diện
           
 
-        return "search";
+            return "search";
     }
 
     @PostMapping("search/SortBy")

@@ -70,9 +70,16 @@
         outline: 0;
         }
         .pagination {
-  display: inline-block;
+    list-style: none;
+    display: flex;
+    justify-content: center; /* Optional: Adjust as needed */
+    align-items: center; /* Optional: Adjust as needed */
+    padding: 0;
 }
 
+.pagination li {
+    margin: 0 5px; /* Adjust spacing between items */
+}
 .pagination a {
   color: black;
   float: left;
@@ -164,8 +171,10 @@
                     </a>
                 </th:block>
             </th:block>
-              <!-- Thêm nút phân trang -->
-         <ul class="pagination">
+            
+         
+        </div>
+        <ul class="pagination">
             <li th:if="${currentPage > 0}">
                 <a th:href="@{/search(page=0, size=8, searchText=${searchText})}">First</a>
             </li>
@@ -176,17 +185,18 @@
                 <a th:href="@{/search(page=${i}, size=8, searchText=${searchText})}" th:text="${i + 1}"></a>
             </li>
             <li th:if="${currentPage < totalPages - 1}">
-                <a th:href="@{/search(page=${currentPage + 1}, size=8, searchText=${searchText})}" >Next</a>
+                <a th:href="@{/search(page=${currentPage + 1}, size=8, searchText=${searchText})}">Next</a>
             </li>
             <li th:if="${currentPage < totalPages - 1}">
                 <a th:href="@{/search(page=${totalPages - 1}, size=8, searchText=${searchText})}">Last</a>
             </li>
         </ul>
-        </div>
         <div th:if="${#lists.isEmpty(listCourse)}" class="course-list d-flex flex-wrap">
             <div class="not-found">Not Found</div>
         </div>
+        
     </div>
+    
 </div>
 <script th:src="@{/js/header.js}"></script>
 <script th:src="@{/js/newJs.js}"></script>
